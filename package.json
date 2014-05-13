@@ -1,0 +1,33 @@
+{
+  "name": "storage.js",
+  "version": "0.0.1",
+  "description": "storage.js",
+  "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
+  "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/archangel-irk/storage.git"
+  },
+  "scripts": {
+    "test": "grunt && make test"
+  },
+  "devDependencies": {
+    "grunt": ">=0.4.2",
+    "grunt-contrib-jshint": ">=0.6.3",
+    "grunt-contrib-nodeunit": ">=0.2.0",
+    "grunt-contrib-uglify": ">=0.2.2",
+    "grunt-contrib-watch": ">=0.5.3",
+    "grunt-contrib-concat": ">=0.3.0",
+    "grunt-concat-sourcemap": ">=0.4.0",
+    "grunt-contrib-clean": ">=0.5.0",
+    "mocha": ">=1.17.1",
+    "should": ">=2.x",
+    "chai": ">=1.x",
+    "jsdom": ">=0.10.1",
+    "jquery": ">=2.1.0",
+    "knockout": ">=3.0.0",
+    "weakmap": ">=0.0.6",
+    "lodash": ">=2.4.x",
+    "time-grunt": "0.2.10"
+  }
+}

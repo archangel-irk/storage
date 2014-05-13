@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>storage.js</title>
+	<script src="lib/lodash.js"></script>
+	<script src="lib/jquery-2.1.1.js"></script>
+	<script src="lib/knockout-3.0.0.debug.js"></script>
+	<script src="lib/knockout-es5.js"></script>
+
+	<script src="storage.js"></script>
+</head>
+<body>
+<script type="text/html" id="Template">
+    <input data-bind="value: id">
+    <br>
+    <span data-bind="text: userId"></span>
+    <input data-bind="value: clientId">
+    <input data-bind="value: token">
+    <input data-bind="value: created">
+    <input data-bind="value: wifiForEditing">
+
+    <label>
+        <input data-bind="checked: wifiForEditing" type="radio" name="rast" value="true"> true
+    </label>
+    <label>
+        <input data-bind="checked: wifiForEditing" type="radio" name="rast" value="false"> false
+    </label>
+    <ul data-bind="foreach: getChildren()">
+        <li data-bind="text: $data"></li>
+    </ul>
+</script>
+<div id="elem"></div>
+
+<script type="text/html" id="Template2">
+    <ul data-bind="foreach: rootNodes">
+        <li data-bind="text: $data"></li>
+    </ul>
+    <ul data-bind="foreach: getChildren(2)">
+        <li data-bind="text: $data"></li>
+    </ul>
+</script>
+<div id="elem2"></div>
+
+<script>
+var User = new Schema('User', {
+  userId: {
+    type: String,
+    required: true
+  },
+  clientId: {
+    type: String,
+    required: true
+  },
+  token: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  wifi: Boolean,
+
+  children: [ Number ]
+},{
+  strict: false
+});
+
+storage.createCollection('users', User );
+
+var doc = storage.users.add({
+    userId: 'e45345',
+    fuck: 'fuck',
+    wifi: true,
+    children: [1,2,3,4,5]
+});
+
+ko.defineProperty(doc, 'wifiForEditing', {
+    get: function() {
+        return this.wifi.toString();
+    },
+    set: function( val ){
+        this.wifi = (val === 'true');
+    }
+});
+
+var id = doc.id;
+
+doc.getChildren = function(){
+    return storage.users.findById( id ).children;
+};
+
+var doc2 = new storage.Document( new Schema('Tree', {
+  rootNodes: []
+}));
+
+doc2.getChildren = function( param ){
+    return _.filter( storage.users.findById( id ).children, function ( num ) {
+        return num % param == 0;
+    });
+};
+
+/*doc.getSubtotal = function() {
+    return "$" + this.userId + this.clientId;
+};*/
+
+ko.renderTemplate('Template', doc, {}, $('#elem')[0]);
+ko.renderTemplate('Template2', doc2, {}, $('#elem2')[0]);
+
+console.log( doc2.rootNodes );
+doc2.rootNodes = doc2.getChildren( 1 );
+console.log( doc2.rootNodes );
+
+//----------------------------------------------
+
+/*storage.createCollection('amsterdam');
+
+var doc = storage.amsterdam.add({
+    id: 0,
+    price: 10,
+    quantity: 5,
+    getSubtotal: function() {
+        return "$" + (this.price * this.quantity).toFixed(2);
+    }
+});
+
+ko.applyBindings( doc );*/
+
+//----------------------------------------------
+
+function OrderLine(data) {
+    this.item = data.item;
+    this.price = data.price;
+    this.quantity = data.quantity;
+
+    this.getSubtotal = function() {
+        return "$" + (this.price * this.quantity).toFixed(2);
+    };
+
+    // Instead of declaring ko.observable properties, we just have one call to ko.track
+    ko.track(this);
+}
+
+var orderLine = new OrderLine({
+    item: "asd",
+    price: 4,
+    quantity: 2
+});
+
+</script>
+</body>
+</html>

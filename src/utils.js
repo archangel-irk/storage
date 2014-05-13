@@ -1,0 +1,347 @@
+/**
+ * User: Constantine Melnikov
+ * Email: ka.melnikov@gmail.com
+ * Date: 18.02.14
+ * Time: 18:49
+ */
+
+var utils = {};
+
+!function () {
+/**
+ * Pluralization rules.
+ *
+ * These rules are applied while processing the argument to `pluralize`.
+ *
+ */
+var rules = [
+  [/(m)an$/gi, '$1en'],
+  [/(pe)rson$/gi, '$1ople'],
+  [/(child)$/gi, '$1ren'],
+  [/^(ox)$/gi, '$1en'],
+  [/(ax|test)is$/gi, '$1es'],
+  [/(octop|vir)us$/gi, '$1i'],
+  [/(alias|status)$/gi, '$1es'],
+  [/(bu)s$/gi, '$1ses'],
+  [/(buffal|tomat|potat)o$/gi, '$1oes'],
+  [/([ti])um$/gi, '$1a'],
+  [/sis$/gi, 'ses'],
+  [/(?:([^f])fe|([lr])f)$/gi, '$1$2ves'],
+  [/(hive)$/gi, '$1s'],
+  [/([^aeiouy]|qu)y$/gi, '$1ies'],
+  [/(x|ch|ss|sh)$/gi, '$1es'],
+  [/(matr|vert|ind)ix|ex$/gi, '$1ices'],
+  [/([m|l])ouse$/gi, '$1ice'],
+  [/(kn|w|l)ife$/gi, '$1ives'],
+  [/(quiz)$/gi, '$1zes'],
+  [/s$/gi, 's'],
+  [/([^a-z])$/, '$1'],
+  [/$/gi, 's']
+];
+
+/**
+ * Uncountable words.
+ *
+ * These words are applied while processing the argument to `pluralize`.
+ * @api public
+ */
+var uncountables = [
+  'advice',
+  'energy',
+  'excretion',
+  'digestion',
+  'cooperation',
+  'health',
+  'justice',
+  'labour',
+  'machinery',
+  'equipment',
+  'information',
+  'pollution',
+  'sewage',
+  'paper',
+  'money',
+  'species',
+  'series',
+  'rain',
+  'rice',
+  'fish',
+  'sheep',
+  'moose',
+  'deer',
+  'news',
+  'expertise',
+  'status',
+  'media'
+];
+
+/*!
+ * Pluralize function.
+ *
+ * @author TJ Holowaychuk (extracted from _ext.js_)
+ * @param {String} string to pluralize
+ * @api private
+ */
+
+utils.pluralize = function (str) {
+  var found;
+  if (!~uncountables.indexOf(str.toLowerCase())){
+    found = rules.filter(function(rule){
+      return str.match(rule[0]);
+    });
+    if (found[0]) return str.replace(found[0][0], found[0][1]);
+  }
+  return str;
+}
+
+/*!
+ * Determines if `a` and `b` are deep equal.
+ *
+ * Modified from node/lib/assert.js
+ * Modified from mongoose/utils.js
+ *
+ * @param {any} a a value to compare to `b`
+ * @param {any} b a value to compare to `a`
+ * @return {Boolean}
+ * @api private
+ */
+utils.deepEqual = function deepEqual (a, b) {
+  if (utils.isStorageObject(a)) a = a.toObject();
+  if (utils.isStorageObject(b)) b = b.toObject();
+
+  return _.isEqual(a, b);
+};
+
+
+
+var toString = Object.prototype.toString;
+
+function isRegExp (o) {
+  return 'object' == typeof o
+      && '[object RegExp]' == toString.call(o);
+}
+
+function cloneRegExp (regexp) {
+  if (!isRegExp(regexp)) {
+    throw new TypeError('Not a RegExp');
+  }
+
+  var flags = [];
+  if (regexp.global) flags.push('g');
+  if (regexp.multiline) flags.push('m');
+  if (regexp.ignoreCase) flags.push('i');
+  return new RegExp(regexp.source, flags.join(''));
+}
+
+/*!
+ * Object clone with Storage natives support.
+ *
+ * If options.minimize is true, creates a minimal data object. Empty objects and undefined values will not be cloned. This makes the data payload sent to MongoDB as small as possible.
+ *
+ * Functions are never cloned.
+ *
+ * @param {Object} obj the object to clone
+ * @param {Object} options
+ * @return {Object} the cloned object
+ * @api private
+ */
+utils.clone = function clone (obj, options) {
+  if (obj === undefined || obj === null)
+    return obj;
+
+  if ( _.isArray( obj ) ) {
+    return cloneArray( obj, options );
+  }
+
+  if ( utils.isStorageObject( obj ) ) {
+    if (options && options.json && 'function' === typeof obj.toJSON) {
+      return obj.toJSON( options );
+    } else {
+      return obj.toObject( options );
+    }
+  }
+
+  if ( obj.constructor ) {
+    switch (obj.constructor.name) {
+      case 'Object':
+        return cloneObject(obj, options);
+      case 'Date':
+        return new obj.constructor( +obj );
+      case 'RegExp':
+        return cloneRegExp( obj );
+      default:
+        // ignore
+        break;
+    }
+  }
+
+  if ( obj instanceof ObjectID ) {
+    return new ObjectID( obj.id );
+  }
+
+  if ( !obj.constructor && _.isObject( obj ) ) {
+    // object created with Object.create(null)
+    return cloneObject( obj, options );
+  }
+
+  if ( obj.valueOf ){
+    return obj.valueOf();
+  }
+};
+var clone = utils.clone;
+
+/*!
+ * ignore
+ */
+function cloneObject (obj, options) {
+  var retainKeyOrder = options && options.retainKeyOrder
+    , minimize = options && options.minimize
+    , ret = {}
+    , hasKeys
+    , keys
+    , val
+    , k
+    , i;
+
+  if ( retainKeyOrder ) {
+    for (k in obj) {
+      val = clone( obj[k], options );
+
+      if ( !minimize || ('undefined' !== typeof val) ) {
+        hasKeys || (hasKeys = true);
+        ret[k] = val;
+      }
+    }
+  } else {
+    // faster
+
+    keys = Object.keys( obj );
+    i = keys.length;
+
+    while (i--) {
+      k = keys[i];
+      val = clone(obj[k], options);
+
+      if (!minimize || ('undefined' !== typeof val)) {
+        if (!hasKeys) hasKeys = true;
+        ret[k] = val;
+      }
+    }
+  }
+
+  return minimize
+    ? hasKeys && ret
+    : ret;
+}
+
+function cloneArray (arr, options) {
+  var ret = [];
+  for (var i = 0, l = arr.length; i < l; i++) {
+    ret.push( clone( arr[i], options ) );
+  }
+  return ret;
+}
+
+/*!
+ * Merges `from` into `to` without overwriting existing properties.
+ *
+ * @param {Object} to
+ * @param {Object} from
+ * @api private
+ */
+utils.merge = function merge (to, from) {
+  var keys = Object.keys(from)
+    , i = keys.length
+    , key;
+
+  while (i--) {
+    key = keys[i];
+    if ('undefined' === typeof to[key]) {
+      to[key] = from[key];
+    } else if ( _.isObject(from[key]) ) {
+      merge(to[key], from[key]);
+    }
+  }
+};
+
+/*!
+ * Generates a random string
+ *
+ * @api private
+ */
+
+utils.random = function () {
+  return Math.random().toString().substr(3);
+};
+
+
+/*!
+ * Returns if `v` is a storage object that has a `toObject()` method we can use.
+ *
+ * This is for compatibility with libs like Date.js which do foolish things to Natives.
+ *
+ * @param {any} v
+ * @api private
+ */
+utils.isStorageObject = function ( v ) {
+  return v instanceof Document ||
+         v instanceof StorageArray;
+};
+
+/*!
+ * Return the value of `obj` at the given `path`.
+ *
+ * @param {String} path
+ * @param {Object} obj
+ */
+
+utils.getValue = function (path, obj, map) {
+  return storage.mpath.get(path, obj, '_doc', map);
+};
+
+/*!
+ * Sets the value of `obj` at the given `path`.
+ *
+ * @param {String} path
+ * @param {Anything} val
+ * @param {Object} obj
+ */
+
+utils.setValue = function (path, val, obj, map) {
+  storage.mpath.set(path, val, obj, '_doc', map);
+};
+
+utils.setImmediate = (function() {
+  // Для поддержки тестов (окружение node.js)
+  if ( typeof global === 'object' && process.nextTick ) return process.nextTick;
+  // Если в браузере уже реализован этот метод
+  if ( window.setImmediate ) return window.setImmediate;
+
+  var head = { }, tail = head; // очередь вызовов, 1-связный список
+
+  var ID = Math.random(); // уникальный идентификатор
+
+  function onmessage(e) {
+    if(e.data != ID) return; // не наше сообщение
+    head = head.next;
+    var func = head.func;
+    delete head.func;
+    func();
+  }
+
+  if(window.addEventListener) { // IE9+, другие браузеры
+    window.addEventListener('message', onmessage, false);
+  } else { // IE8
+    window.attachEvent( 'onmessage', onmessage );
+  }
+
+  return window.postMessage ? function(func) {
+    tail = tail.next = { func: func };
+    window.postMessage(ID, "*");
+  } :
+  function(func) { // IE<8
+    setTimeout(func, 0);
+  };
+}());
+
+}();
