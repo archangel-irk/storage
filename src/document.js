@@ -1254,7 +1254,7 @@ Document.prototype.$__handleSave = function(){
     if ( !resource ){
       innerPromise.resolve( this );
     } else {
-      resource( obj ).create().always( innerPromise.resolve );
+      resource.create( obj ).always( innerPromise.resolve );
     }
 
     this.$__reset();
@@ -1277,7 +1277,7 @@ Document.prototype.$__handleSave = function(){
       if ( !resource ){
         innerPromise.resolve( this );
       } else {
-        resource( this.id, delta ).update().always( innerPromise.resolve );
+        resource( this.id ).update( delta ).always( innerPromise.resolve );
       }
     } else {
       this.$__reset();
