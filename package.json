@@ -28,6 +28,7 @@
     "knockout": ">=3.0.0",
     "weakmap": ">=0.0.6",
     "lodash": ">=2.4.x",
-    "time-grunt": "0.2.10"
+    "time-grunt": "0.2.10",
+    "browserify": "latest"
   }
 }

@@ -638,4 +638,4 @@ Mongoose.prototype.mquery = require('mquery');
  * @api public
  */
 
-var mongoose = module.exports = exports = new Mongoose;
+var mongoose = module.exports = new Mongoose;
