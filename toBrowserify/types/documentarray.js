@@ -2,12 +2,10 @@
  * Module dependencies.
  */
 
-var MongooseArray = require('./array')
-  , driver = global.MONGOOSE_DRIVER_PATH || '../drivers/node-mongodb-native'
+var StorageArray = require('./array')
   , ObjectId = require(driver + '/objectid')
   , ObjectIdSchema = require('../schema/objectid')
   , utils = require('../utils')
-  , util = require('util')
   , Document = require('../document');
 
 /**
@@ -17,46 +15,46 @@ var MongooseArray = require('./array')
  * @param {String} path the path to this array
  * @param {Document} doc parent document
  * @api private
- * @return {MongooseDocumentArray}
- * @inherits MongooseArray
+ * @return {StorageDocumentArray}
+ * @inherits StorageArray
  * @see http://bit.ly/f6CnZU
+ * TODO: подчистить код
+ *
+ * Весь нужный код скопирован
  */
-
-function MongooseDocumentArray (values, path, doc) {
+function StorageDocumentArray (values, path, doc) {
   var arr = [];
 
   // Values always have to be passed to the constructor to initialize, since
-  // otherwise MongooseArray#push will mark the array as modified to the parent.
+  // otherwise StorageArray#push will mark the array as modified to the parent.
   arr.push.apply(arr, values);
-  arr.__proto__ = MongooseDocumentArray.prototype;
+  arr.__proto__ = StorageDocumentArray.prototype;
 
-  arr._atomics = {};
   arr.validators = [];
   arr._path = path;
 
   if (doc) {
     arr._parent = doc;
     arr._schema = doc.schema.path(path);
+    // Проброс изменения состояния в поддокумент
     doc.on('save', arr.notify('save'));
     doc.on('isNew', arr.notify('isNew'));
   }
 
   return arr;
-};
+}
 
 /*!
- * Inherits from MongooseArray
+ * Inherits from StorageArray
  */
-
-MongooseDocumentArray.prototype.__proto__ = MongooseArray.prototype;
+StorageDocumentArray.prototype.__proto__ = StorageArray.prototype;
 
 /**
- * Overrides MongooseArray#cast
+ * Overrides StorageArray#cast
  *
  * @api private
  */
-
-MongooseDocumentArray.prototype._cast = function (value) {
+StorageDocumentArray.prototype._cast = function (value) {
   if (value instanceof this._schema.casterConstructor) {
     if (!(value.__parent && value.__parentArray)) {
       // value may have been created using array.create()
@@ -69,8 +67,7 @@ MongooseDocumentArray.prototype._cast = function (value) {
   // handle cast('string') or cast(ObjectId) etc.
   // only objects are permitted so we can safely assume that
   // non-objects are to be interpreted as _id
-  if (Buffer.isBuffer(value) ||
-      value instanceof ObjectId || !utils.isObject(value)) {
+  if ( value instanceof ObjectId || !_.isObject(value) ) {
     value = { _id: value };
   }
 
@@ -85,15 +82,14 @@ MongooseDocumentArray.prototype._cast = function (value) {
  *     var embeddedDoc = m.array.id(some_id);
  *
  * @return {EmbeddedDocument|null} the subdocument or null if not found.
- * @param {ObjectId|String|Number|Buffer} id
+ * @param {ObjectId|String|Number} id
  * @TODO cast to the _id based on schema for proper comparison
  * @api public
  */
-
-MongooseDocumentArray.prototype.id = function (id) {
+StorageDocumentArray.prototype.id = function (id) {
   var casted
     , sid
-    , _id
+    , _id;
 
   try {
     var casted_ = ObjectIdSchema.prototype.cast.call({}, id);
@@ -108,7 +104,7 @@ MongooseDocumentArray.prototype.id = function (id) {
     if (_id instanceof Document) {
       sid || (sid = String(id));
       if (sid == _id._id) return this[i];
-    } else if (!(_id instanceof ObjectId)) {
+    } else if (!(_id instanceof ObjectID)) {
       sid || (sid = String(id));
       if (sid == _id) return this[i];
     } else if (casted == _id) {
@@ -131,27 +127,10 @@ MongooseDocumentArray.prototype.id = function (id) {
  * @api public
  */
 
-MongooseDocumentArray.prototype.toObject = function (options) {
+StorageDocumentArray.prototype.toObject = function (options) {
   return this.map(function (doc) {
     return doc && doc.toObject(options) || null;
   });
-};
-
-/**
- * Helper for console.log
- *
- * @api public
- */
-
-MongooseDocumentArray.prototype.inspect = function () {
-  return '[' + this.map(function (doc) {
-    if (doc) {
-      return doc.inspect
-        ? doc.inspect()
-        : util.inspect(doc)
-    }
-    return 'null'
-  }).join('\n') + ']';
 };
 
 /**
@@ -163,9 +142,9 @@ MongooseDocumentArray.prototype.inspect = function () {
  * @api public
  */
 
-MongooseDocumentArray.prototype.create = function (obj) {
+StorageDocumentArray.prototype.create = function (obj) {
   return new this._schema.casterConstructor(obj);
-}
+};
 
 /**
  * Creates a fn that notifies all child docs of `event`.
@@ -174,20 +153,13 @@ MongooseDocumentArray.prototype.create = function (obj) {
  * @return {Function}
  * @api private
  */
-
-MongooseDocumentArray.prototype.notify = function notify (event) {
+StorageDocumentArray.prototype.notify = function notify (event) {
   var self = this;
   return function notify (val) {
     var i = self.length;
     while (i--) {
       if (!self[i]) continue;
-      self[i].emit(event, val);
+      self[i].trigger(event, val);
     }
   }
-}
-
-/*!
- * Module exports.
- */
-
-module.exports = MongooseDocumentArray;
+};

@@ -11,8 +11,14 @@
  * Module dependencies.
  */
 
-var Collection = require('./collection');
-//Schema = require('./schema')
+var Collection = require('./collection')
+  , Schema = require('./schema')
+  /*, SchemaType = require('./schematype')
+  , VirtualType = require('./virtualtype')
+  , Types = require('./types')
+  , Document = require('./document')
+  , utils = require('./utils')
+  , format = utils.toCollectionName;*/
 
 
 /**
@@ -75,14 +81,14 @@ _.extend( storage, {
   Document: Document,
   Collection: Collection,
   Schema: Schema,
-  ObjectId: ObjectID,
+  ObjectId: ObjectId,
 
   SchemaType: SchemaType,
   Types: {
     Array: StorageArray,
     DocumentArray: StorageDocumentArray,
     EmbeddedDocument: EmbeddedDocument,
-    ObjectID: ObjectID
+    ObjectId: ObjectId
   },
   VirtualType: VirtualType,
 

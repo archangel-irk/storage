@@ -2,21 +2,17 @@
  * Module dependencies.
  */
 
-var Document = require('../document')
-  , inspect = require('util').inspect
-  , Promise = require('../promise');
+var Document = require('../document');
 
 /**
  * EmbeddedDocument constructor.
  *
- * @param {Object} obj js object returned from the db
+ * @param {Object} data js object returned from the db
  * @param {MongooseDocumentArray} parentArr the parent array of this document
- * @param {Boolean} skipId
  * @inherits Document
  * @api private
  */
-
-function EmbeddedDocument (obj, parentArr, skipId, fields) {
+function EmbeddedDocument ( data, parentArr ) {
   if (parentArr) {
     this.__parentArray = parentArr;
     this.__parent = parentArr._parent;
@@ -25,8 +21,9 @@ function EmbeddedDocument (obj, parentArr, skipId, fields) {
     this.__parent = undefined;
   }
 
-  Document.call(this, obj, fields, skipId);
+  Document.call( this, data, undefined );
 
+  // Нужно для проброса изменения значения из родительского документа, например при сохранении
   var self = this;
   this.on('isNew', function (val) {
     self.isNew = val;
@@ -51,7 +48,6 @@ EmbeddedDocument.prototype.__proto__ = Document.prototype;
  * @param {String} path the path which changed
  * @api public
  */
-
 EmbeddedDocument.prototype.markModified = function (path) {
   if (!this.__parentArray) return;
 
@@ -79,10 +75,10 @@ EmbeddedDocument.prototype.markModified = function (path) {
  */
 
 EmbeddedDocument.prototype.save = function (fn) {
-  var promise = new Promise(fn);
-  promise.fulfill();
+  var promise = $.Deferred().done(fn);
+  promise.resolve();
   return promise;
-};
+}
 
 /**
  * Removes the subdocument from its parent array.
@@ -90,7 +86,6 @@ EmbeddedDocument.prototype.save = function (fn) {
  * @param {Function} [fn]
  * @api public
  */
-
 EmbeddedDocument.prototype.remove = function (fn) {
   if (!this.__parentArray) return this;
 
@@ -103,7 +98,6 @@ EmbeddedDocument.prototype.remove = function (fn) {
     }
     this.__parentArray.pull({ _id: _id });
     this.willRemove = true;
-    registerRemoveListener(this);
   }
 
   if (fn)
@@ -112,45 +106,12 @@ EmbeddedDocument.prototype.remove = function (fn) {
   return this;
 };
 
-/*!
- * Registers remove event listeners for triggering
- * on subdocuments.
- *
- * @param {EmbeddedDocument} sub
- * @api private
- */
-
-function registerRemoveListener (sub) {
-  var owner = sub.ownerDocument();
-
-  owner.on('save', emitRemove);
-  owner.on('remove', emitRemove);
-
-  function emitRemove () {
-    owner.removeListener('save', emitRemove);
-    owner.removeListener('remove', emitRemove);
-    sub.emit('remove', sub);
-    owner = sub = emitRemove = null;
-  }
-}
-
 /**
  * Override #update method of parent documents.
  * @api private
  */
-
 EmbeddedDocument.prototype.update = function () {
   throw new Error('The #update method is not available on EmbeddedDocuments');
-};
-
-/**
- * Helper for console.log
- *
- * @api public
- */
-
-EmbeddedDocument.prototype.inspect = function () {
-  return inspect(this.toObject());
 };
 
 /**
@@ -161,7 +122,6 @@ EmbeddedDocument.prototype.inspect = function () {
  * @return {Boolean}
  * @api public
  */
-
 EmbeddedDocument.prototype.invalidate = function (path, err, val, first) {
   if (!this.__parent) {
     var msg = 'Unable to invalidate a subdocument that has not been added to an array.'
@@ -191,7 +151,6 @@ EmbeddedDocument.prototype.invalidate = function (path, err, val, first) {
  *
  * @return {Document}
  */
-
 EmbeddedDocument.prototype.ownerDocument = function () {
   if (this.$__.ownerDocument) {
     return this.$__.ownerDocument;
@@ -216,7 +175,6 @@ EmbeddedDocument.prototype.ownerDocument = function () {
  * @method $__fullPath
  * @memberOf EmbeddedDocument
  */
-
 EmbeddedDocument.prototype.$__fullPath = function (path) {
   if (!this.$__.fullPath) {
     var parent = this;
@@ -239,14 +197,13 @@ EmbeddedDocument.prototype.$__fullPath = function (path) {
   return path
     ? this.$__.fullPath + '.' + path
     : this.$__.fullPath;
-}
-;
+};
+
 /**
  * Returns this sub-documents parent document.
  *
  * @api public
  */
-
 EmbeddedDocument.prototype.parent = function () {
   return this.__parent;
 };
@@ -256,7 +213,6 @@ EmbeddedDocument.prototype.parent = function () {
  *
  * @api public
  */
-
 EmbeddedDocument.prototype.parentArray = function () {
   return this.__parentArray;
 };
