@@ -1,6 +1,6 @@
 /**
  * STRORAGE
- * вдохновлён mongoose 3.8.4 (по состоянию на 3.8.7 - ничего нужного для хранилища не изменилось)
+ * вдохновлён mongoose 3.8.4 (исправлены баги по 3.8.12)
  */
 !function(){
   var storage;
@@ -3736,7 +3736,7 @@ Schema.prototype.add = function add ( obj, prefix ) {
  *
  * Keys in this object are names that are rejected in schema declarations b/c they conflict with mongoose functionality. Using these key name will throw an error.
  *
- *      on, emit, _events, db, init, isNew, errors, schema, options, modelName, collection, _pres, _posts, toObject
+ *      on, emit, _events, db, get, set, init, isNew, errors, schema, options, modelName, collection, _pres, _posts, toObject
  *
  * _NOTE:_ Use of these terms as method names is permitted, but play at your own risk, as they may be existing mongoose document methods you are stomping on.
  *
@@ -3747,6 +3747,8 @@ Schema.reserved = Object.create( null );
 var reserved = Schema.reserved;
 reserved.on =
 reserved.db =
+reserved.get =
+reserved.set =
 reserved.init =
 reserved.isNew =
 reserved.errors =
@@ -3755,6 +3757,7 @@ reserved.options =
 reserved.modelName =
 reserved.collection =
 reserved.toObject =
+reserved.domain =
 reserved.emit =    // EventEmitter
 reserved._events = // EventEmitter
 reserved._pres = reserved._posts = 1; // hooks.js
@@ -4134,16 +4137,12 @@ Schema.prototype.static = function(name, fn) {
  * @param {Object} [value] if not passed, the current option value is returned
  * @api public
  */
-Schema.prototype.set = function (key, value, _tags) {
+Schema.prototype.set = function (key, value) {
   if (1 === arguments.length) {
     return this.options[key];
   }
 
   switch (key) {
-    case 'read':
-      //TODO:
-      this.options[key] = mquery.utils.readPref(value, _tags);
-      break;
     case 'safe':
       this.options[key] = false === value
         ? { w: 0 }
@@ -4784,7 +4783,7 @@ Document.prototype.set = function (path, val, type, options) {
   // if this doc is being constructed we should not trigger getters
   var priorVal = constructing
     ? undefined
-    : this.get(path);
+    : this.getValue(path);
 
   if (!schema || undefined === val) {
     this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);
@@ -4815,9 +4814,9 @@ Document.prototype.$__shouldModify = function (
     pathToMark, path, constructing, parts, schema, val, priorVal) {
 
   if (this.isNew) return true;
-  if (this.isDirectModified(pathToMark)){
+  /*if (this.isDirectModified(pathToMark)){
     return false;
-  }
+  }*/
 
   if ( undefined === val && !this.isSelected(path) ) {
     // when a path is not selected in a query, its initial

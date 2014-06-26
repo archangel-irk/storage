@@ -437,7 +437,7 @@ Document.prototype.set = function (path, val, type, options) {
   // if this doc is being constructed we should not trigger getters
   var priorVal = constructing
     ? undefined
-    : this.get(path);
+    : this.getValue(path);
 
   if (!schema || undefined === val) {
     this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);
@@ -468,9 +468,9 @@ Document.prototype.$__shouldModify = function (
     pathToMark, path, constructing, parts, schema, val, priorVal) {
 
   if (this.isNew) return true;
-  if (this.isDirectModified(pathToMark)){
+  /*if (this.isDirectModified(pathToMark)){
     return false;
-  }
+  }*/
 
   if ( undefined === val && !this.isSelected(path) ) {
     // when a path is not selected in a query, its initial

@@ -98,6 +98,13 @@ TestDocument.prototype.hooksTest = function(fn){
   fn(null, arguments);
 };
 
+var childSchema = new Schema({ counter: Number });
+
+var parentSchema = new Schema({
+  name: String,
+  children: [childSchema]
+});
+
 /**
  * Test.
  */
@@ -1170,5 +1177,26 @@ describe('document', function(){
         done();
       })
     })
-  })
+  });
+
+  describe('gh-2082', function() {
+    it('works', function(done) {
+      var Parent = storage.createCollection('gh2082', parentSchema);
+
+      var parent = Parent.add({name: 'Hello'});
+      parent.save(function(parent) {
+        parent.children.push( {counter: 0} );
+        parent.save(function(parent) {
+          parent.children[0].counter += 1;
+          parent.save(function(parent) {
+            parent.children[0].counter += 1;
+            parent.save(function(parent) {
+              assert.equal(2, parent.children[0].counter);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
 });
