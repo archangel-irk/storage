@@ -1,10 +1,13 @@
 /**
  * Реализации хранилища
+ * вдохновлён mongoose 3.8.4 (исправлены баги по 3.8.12)
+ *
  * http://docs.meteor.com/#selectors
  * https://github.com/meteor/meteor/tree/master/packages/minimongo
  *
  * browserify --debug toBrowserify/storage.js --standalone storage > toBrowserify/bundle.js
  */
+
 'use strict';
 
 /*!
@@ -13,12 +16,11 @@
 
 var Collection = require('./collection')
   , Schema = require('./schema')
-  /*, SchemaType = require('./schematype')
+  , SchemaType = require('./schematype')
   , VirtualType = require('./virtualtype')
   , Types = require('./types')
   , Document = require('./document')
-  , utils = require('./utils')
-  , format = utils.toCollectionName;*/
+  , utils = require('./utils');
 
 
 /**
@@ -30,6 +32,8 @@ var Collection = require('./collection')
  * @api public
  */
 function Storage () {
+  // Хранилище схем
+  this.schemas = {};
   this.collectionNames = [];
 }
 

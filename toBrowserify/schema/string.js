@@ -1,3 +1,11 @@
+/*!
+ * Module dependencies.
+ */
+
+var SchemaType = require('../schematype')
+  , CastError = SchemaType.CastError
+  , errorMessages = require('../error').messages
+
 /**
  * String SchemaType constructor.
  *
@@ -246,3 +254,8 @@ StringSchema.prototype.cast = function ( value ) {
   throw new CastError('string', value, this.path);
 };
 
+/*!
+ * Module exports.
+ */
+
+module.exports = StringSchema;

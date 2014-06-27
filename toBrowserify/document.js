@@ -5,16 +5,14 @@
 var Events = require('events')
   , StorageError = require('./error')
   , MixedSchema = require('./schema/mixed')
+  , SchemaArray = require('./schema/array')
   , Schema = require('./schema')
   , ValidatorError = require('./schematype').ValidatorError
   , utils = require('./utils')
   , clone = utils.clone
-  , inspect = require('util').inspect
   , ValidationError = StorageError.ValidationError
   , InternalCache = require('./internal')
   , deepEqual = utils.deepEqual
-  , hooks = require('hooks')
-  , Promise = require('./promise')
   , DocumentArray = require('./types/documentarray')
   , StorageArray = require('./types/array')
   , Embedded = require('./types/embedded');
@@ -115,7 +113,7 @@ function Document ( data, collectionName, schema, fields, init ){
 }
 
 /*!
- * Inherits from ArraySchema.
+ * Inherits from EventEmitter.
  */
 Document.prototype.__proto__ = Events.prototype;
 
@@ -1112,7 +1110,7 @@ function define (self, prop, subprops, prototype, prefix, keys) {
   } else {
     var allObservablesForObject = ko.es5.getAllObservablesForObject( self, true ),
       schema = prototype.schema || prototype.constructor.schema,
-      isArray = schema.path( path ) instanceof ArraySchema,
+      isArray = schema.path( path ) instanceof SchemaArray,
       observable = isArray ? ko.observableArray()
                            : ko.observable();
 

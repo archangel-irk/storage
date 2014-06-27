@@ -3,7 +3,7 @@
  */
 
 var StorageArray = require('./array')
-  , ObjectId = require(driver + '/objectid')
+  , ObjectId = require('./objectid')
   , ObjectIdSchema = require('../schema/objectid')
   , utils = require('../utils')
   , Document = require('../document');
@@ -163,3 +163,9 @@ StorageDocumentArray.prototype.notify = function notify (event) {
     }
   }
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = StorageDocumentArray;

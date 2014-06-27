@@ -1,3 +1,10 @@
+/*!
+ * Module requirements.
+ */
+
+var SchemaType = require('../schematype');
+var CastError = SchemaType.CastError;
+
 /**
  * Date SchemaType constructor.
  *
@@ -54,3 +61,9 @@ DateSchema.prototype.cast = function (value) {
 
   throw new CastError('date', value, this.path );
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = DateSchema;

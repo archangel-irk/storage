@@ -118,7 +118,7 @@ function idGetter () {
  * Inherit from EventEmitter.
  */
 
-Schema.prototype.__proto__ = EventEmitter.prototype;
+Schema.prototype.__proto__ = Events.prototype;
 
 /**
  * Schema as flat paths
@@ -775,9 +775,6 @@ Schema.prototype.discriminator = function discriminator (name, schema) {
 
 module.exports = Schema;
 window.Schema = Schema;
-
-// Хранилище схем
-storage.schemas = {};
 
 // require down here because of reference issues
 

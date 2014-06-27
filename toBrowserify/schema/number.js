@@ -1,3 +1,11 @@
+/*!
+ * Module requirements.
+ */
+
+var SchemaType = require('../schematype')
+  , CastError = SchemaType.CastError
+  , errorMessages = require('../error').messages
+
 /**
  * Number SchemaType constructor.
  *
@@ -149,3 +157,9 @@ NumberSchema.prototype.cast = function ( value ) {
 
   throw new CastError('number', value, this.path);
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = NumberSchema;

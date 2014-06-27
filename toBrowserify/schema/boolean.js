@@ -1,9 +1,8 @@
-/**
- * User: Constantine Melnikov
- * Email: ka.melnikov@gmail.com
- * Date: 16.01.14
- * Time: 17:11
+/*!
+ * Module dependencies.
  */
+
+var SchemaType = require('../schematype');
 
 /**
  * Boolean SchemaType constructor.
@@ -44,3 +43,9 @@ BooleanSchema.prototype.cast = function (value) {
   if ('false' === value) return false;
   return !! value;
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = BooleanSchema;

@@ -1,3 +1,9 @@
+/*!
+ * Module dependencies.
+ */
+
+var SchemaType = require('../schematype');
+
 /**
  * Mixed SchemaType constructor.
  *
@@ -51,3 +57,8 @@ Mixed.prototype.cast = function (val) {
   return val;
 };
 
+/*!
+ * Module exports.
+ */
+
+module.exports = Mixed;

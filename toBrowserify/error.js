@@ -46,7 +46,8 @@ StorageError.messages = require('./error/messages');
 StorageError.CastError = require('./error/cast');
 StorageError.ValidationError = require('./error/validation');
 StorageError.ValidatorError = require('./error/validator');
-StorageError.VersionError =require('./error/version');
-StorageError.OverwriteModelError = require('./error/overwriteModel');
-StorageError.MissingSchemaError = require('./error/missingSchema');
-StorageError.DivergentArrayError = require('./error/divergentArray');
+//todo:
+//StorageError.VersionError = require('./error/version');
+//StorageError.OverwriteModelError = require('./error/overwriteModel');
+//StorageError.MissingSchemaError = require('./error/missingSchema');
+//StorageError.DivergentArrayError = require('./error/divergentArray');

@@ -3,7 +3,7 @@
  */
 
 var ObjectId = require('./types/objectid')
-  , mpath = require('mpath')
+  , mpath = require('./mpath')
   , StorageArray = require('./types').Array
   , Document = require('./document');
 
@@ -84,7 +84,7 @@ var uncountables = exports.uncountables;
  * @api private
  */
 
-utils.pluralize = function (str) {
+exports.pluralize = function (str) {
   var found;
   if (!~uncountables.indexOf(str.toLowerCase())){
     found = rules.filter(function(rule){
@@ -189,7 +189,7 @@ exports.clone = function clone (obj, options) {
     return obj.valueOf();
   }
 };
-var clone = utils.clone;
+var clone = exports.clone;
 
 /*!
  * ignore
