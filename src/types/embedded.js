@@ -1,3 +1,9 @@
+/*!
+ * Module dependencies.
+ */
+
+var Document = require('../document');
+
 /**
  * EmbeddedDocument constructor.
  *
@@ -27,8 +33,8 @@ function EmbeddedDocument ( data, parentArr ) {
 /*!
  * Inherit from Document
  */
-EmbeddedDocument.prototype = Object.create( Document.prototype );
-EmbeddedDocument.prototype.constructor = EmbeddedDocument;
+
+EmbeddedDocument.prototype.__proto__ = Document.prototype;
 
 /**
  * Marks the embedded doc modified.
@@ -210,3 +216,9 @@ EmbeddedDocument.prototype.parent = function () {
 EmbeddedDocument.prototype.parentArray = function () {
   return this.__parentArray;
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = EmbeddedDocument;

@@ -1,7 +1,3 @@
-!function(){
-// fork https://github.com/aheckmann/mpath
-var mpath = {};
-
 /**
  * Returns the value of object `o` at the given `path`.
  *
@@ -29,7 +25,8 @@ var mpath = {};
  * @param {String} [special] When this property name is present on any object in the path, walking will continue on the value of this property.
  * @param {Function} [map] Optional function which receives each individual found value. The value returned from `map` is used in the original values place.
  */
-mpath.get = function (path, o, special, map) {
+
+exports.get = function (path, o, special, map) {
   var lookup;
 
   if ('function' == typeof special) {
@@ -64,7 +61,7 @@ mpath.get = function (path, o, special, map) {
 
       return obj.map(function (item) {
         return item
-          ? mpath.get(paths, item, special || lookup, map)
+          ? exports.get(paths, item, special || lookup, map)
           : map(undefined);
       });
     }
@@ -81,7 +78,7 @@ mpath.get = function (path, o, special, map) {
   }
 
   return map(obj);
-};
+}
 
 /**
  * Sets the `val` at the given `path` of object `o`.
@@ -92,7 +89,8 @@ mpath.get = function (path, o, special, map) {
  * @param {String} [special] When this property name is present on any object in the path, walking will continue on the value of this property.
  * @param {Function} [map] Optional function which is passed each individual value before setting it. The value returned from `map` is used in the original values place.
  */
-mpath.set = function (path, val, o, special, map, _copying) {
+
+exports.set = function (path, val, o, special, map, _copying) {
   var lookup;
 
   if ('function' == typeof special) {
@@ -123,7 +121,7 @@ mpath.set = function (path, val, o, special, map, _copying) {
   // current array.
   var copy = _copying || /\$/.test(path)
     , obj = o
-    , part;
+    , part
 
   for (var i = 0, len = parts.length - 1; i < len; ++i) {
     part = parts[i];
@@ -141,12 +139,12 @@ mpath.set = function (path, val, o, special, map, _copying) {
       if (!copy && Array.isArray(val)) {
         for (var j = 0; j < obj.length && j < val.length; ++j) {
           // assignment of single values of array
-          mpath.set(paths, val[j], obj[j], special || lookup, map, copy);
+          exports.set(paths, val[j], obj[j], special || lookup, map, copy);
         }
       } else {
         for (var j = 0; j < obj.length; ++j) {
           // assignment of entire value
-          mpath.set(paths, val, obj[j], special || lookup, map, copy);
+          exports.set(paths, val, obj[j], special || lookup, map, copy);
         }
       }
       return;
@@ -206,7 +204,7 @@ mpath.set = function (path, val, o, special, map, _copying) {
       obj[part] = map(val);
     }
   }
-};
+}
 
 /*!
  * Returns the value passed to it.
@@ -215,6 +213,3 @@ mpath.set = function (path, val, o, special, map, _copying) {
 function K (v) {
   return v;
 }
-
-storage.mpath = mpath;
-}();

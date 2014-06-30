@@ -1,3 +1,23 @@
+/*!
+ * Module dependencies.
+ */
+
+var SchemaType = require('../schematype')
+  , CastError = SchemaType.CastError
+  , Types = {
+        Boolean: require('./boolean')
+      , Date: require('./date')
+      , Number: require('./number')
+      , String: require('./string')
+      , ObjectId: require('./objectid')
+    }
+  , StorageArray = require('../types').Array
+  , EmbeddedDoc = require('../types').Embedded
+  , Mixed = require('./mixed')
+  , utils = require('../utils');
+
+console.log( SchemaType );
+
 /**
  * Array SchemaType constructor
  *
@@ -7,7 +27,7 @@
  * @inherits SchemaType
  * @api private
  */
-function ArraySchema (key, cast, options) {
+function SchemaArray (key, cast, options) {
   if (cast) {
     var castOptions = {};
 
@@ -33,7 +53,7 @@ function ArraySchema (key, cast, options) {
 
     this.casterConstructor = caster;
     this.caster = new caster(null, castOptions);
-    if ( this.caster instanceof EmbeddedDocument === false ) {
+    if (!(this.caster instanceof EmbeddedDoc)) {
       this.caster.path = key;
     }
   }
@@ -59,7 +79,7 @@ function ArraySchema (key, cast, options) {
 /*!
  * Inherits from SchemaType.
  */
-ArraySchema.prototype.__proto__ = SchemaType.prototype;
+SchemaArray.prototype.__proto__ = SchemaType.prototype;
 
 /**
  * Check required
@@ -67,7 +87,7 @@ ArraySchema.prototype.__proto__ = SchemaType.prototype;
  * @param {Array} value
  * @api private
  */
-ArraySchema.prototype.checkRequired = function (value) {
+SchemaArray.prototype.checkRequired = function (value) {
   return !!(value && value.length);
 };
 
@@ -78,7 +98,7 @@ ArraySchema.prototype.checkRequired = function (value) {
  * @param {Object} scope
  * @api private
  */
-ArraySchema.prototype.applyGetters = function (value, scope) {
+SchemaArray.prototype.applyGetters = function (value, scope) {
   if (this.caster.options && this.caster.options.ref) {
     // means the object id was populated
     return value;
@@ -95,7 +115,7 @@ ArraySchema.prototype.applyGetters = function (value, scope) {
  * @param {Boolean} init whether this is an initialization cast
  * @api private
  */
-ArraySchema.prototype.cast = function ( value, doc, init ) {
+SchemaArray.prototype.cast = function ( value, doc, init ) {
   if (Array.isArray(value)) {
     if (!(value instanceof StorageArray)) {
       value = new StorageArray(value, this.path, doc);
@@ -117,3 +137,9 @@ ArraySchema.prototype.cast = function ( value, doc, init ) {
     return this.cast([value], doc, init);
   }
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = SchemaArray;

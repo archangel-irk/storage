@@ -1,20 +1,19 @@
-/**
- * User: Constantine Melnikov
- * Email: ka.melnikov@gmail.com
- * Date: 18.02.14
- * Time: 18:49
+/*!
+ * Module dependencies.
  */
 
-var utils = {};
+var ObjectId = require('./types/objectid')
+  , mpath = require('./mpath')
+  , StorageArray = require('./types').Array
+  , Document = require('./document');
 
-!function () {
 /**
  * Pluralization rules.
  *
  * These rules are applied while processing the argument to `pluralize`.
  *
  */
-var rules = [
+exports.pluralization = [
   [/(m)an$/gi, '$1en'],
   [/(pe)rson$/gi, '$1ople'],
   [/(child)$/gi, '$1ren'],
@@ -38,6 +37,7 @@ var rules = [
   [/([^a-z])$/, '$1'],
   [/$/gi, 's']
 ];
+var rules = exports.pluralization;
 
 /**
  * Uncountable words.
@@ -45,7 +45,7 @@ var rules = [
  * These words are applied while processing the argument to `pluralize`.
  * @api public
  */
-var uncountables = [
+exports.uncountables = [
   'advice',
   'energy',
   'excretion',
@@ -74,6 +74,7 @@ var uncountables = [
   'status',
   'media'
 ];
+var uncountables = exports.uncountables;
 
 /*!
  * Pluralize function.
@@ -83,7 +84,7 @@ var uncountables = [
  * @api private
  */
 
-utils.pluralize = function (str) {
+exports.pluralize = function (str) {
   var found;
   if (!~uncountables.indexOf(str.toLowerCase())){
     found = rules.filter(function(rule){
@@ -105,7 +106,7 @@ utils.pluralize = function (str) {
  * @return {Boolean}
  * @api private
  */
-utils.deepEqual = function deepEqual (a, b) {
+exports.deepEqual = function deepEqual (a, b) {
   if (utils.isStorageObject(a)) a = a.toObject();
   if (utils.isStorageObject(b)) b = b.toObject();
 
@@ -145,7 +146,7 @@ function cloneRegExp (regexp) {
  * @return {Object} the cloned object
  * @api private
  */
-utils.clone = function clone (obj, options) {
+exports.clone = function clone (obj, options) {
   if (obj === undefined || obj === null)
     return obj;
 
@@ -153,7 +154,7 @@ utils.clone = function clone (obj, options) {
     return cloneArray( obj, options );
   }
 
-  if ( utils.isStorageObject( obj ) ) {
+  if ( isStorageObject( obj ) ) {
     if (options && options.json && 'function' === typeof obj.toJSON) {
       return obj.toJSON( options );
     } else {
@@ -175,8 +176,8 @@ utils.clone = function clone (obj, options) {
     }
   }
 
-  if ( obj instanceof ObjectID ) {
-    return new ObjectID( obj.id );
+  if ( obj instanceof ObjectId ) {
+    return new ObjectId( obj.id );
   }
 
   if ( !obj.constructor && _.isObject( obj ) ) {
@@ -188,7 +189,7 @@ utils.clone = function clone (obj, options) {
     return obj.valueOf();
   }
 };
-var clone = utils.clone;
+var clone = exports.clone;
 
 /*!
  * ignore
@@ -249,7 +250,7 @@ function cloneArray (arr, options) {
  * @param {Object} from
  * @api private
  */
-utils.merge = function merge (to, from) {
+exports.merge = function merge (to, from) {
   var keys = Object.keys(from)
     , i = keys.length
     , key;
@@ -270,7 +271,7 @@ utils.merge = function merge (to, from) {
  * @api private
  */
 
-utils.random = function () {
+exports.random = function () {
   return Math.random().toString().substr(3);
 };
 
@@ -283,10 +284,11 @@ utils.random = function () {
  * @param {any} v
  * @api private
  */
-utils.isStorageObject = function ( v ) {
+exports.isStorageObject = function ( v ) {
   return v instanceof Document ||
          v instanceof StorageArray;
 };
+var isStorageObject = exports.isStorageObject;
 
 /*!
  * Return the value of `obj` at the given `path`.
@@ -295,8 +297,8 @@ utils.isStorageObject = function ( v ) {
  * @param {Object} obj
  */
 
-utils.getValue = function (path, obj, map) {
-  return storage.mpath.get(path, obj, '_doc', map);
+exports.getValue = function (path, obj, map) {
+  return mpath.get(path, obj, '_doc', map);
 };
 
 /*!
@@ -307,11 +309,11 @@ utils.getValue = function (path, obj, map) {
  * @param {Object} obj
  */
 
-utils.setValue = function (path, val, obj, map) {
-  storage.mpath.set(path, val, obj, '_doc', map);
+exports.setValue = function (path, val, obj, map) {
+  mpath.set(path, val, obj, '_doc', map);
 };
 
-utils.setImmediate = (function() {
+exports.setImmediate = (function() {
   // Для поддержки тестов (окружение node.js)
   if ( typeof global === 'object' && process.nextTick ) return process.nextTick;
   // Если в браузере уже реализован этот метод
@@ -344,4 +346,3 @@ utils.setImmediate = (function() {
   };
 }());
 
-}();

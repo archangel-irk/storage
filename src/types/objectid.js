@@ -2,15 +2,15 @@
 var rcheckForHex = new RegExp("^[0-9a-fA-F]{24}$");
 
 /**
-* Create a new ObjectID instance
+* Create a new ObjectId instance
 *
 * @param {String} [id] Can be a 24 byte hex string.
-* @return {Object} instance of ObjectID.
+* @return {Object} instance of ObjectId.
 */
-var ObjectID = function ObjectID( id ) {
+function ObjectId( id ) {
   // Конструктор можно использовать без new
-  if (!(this instanceof ObjectID)) return new ObjectID( id );
-  //if ( id instanceof ObjectID ) return id;
+  if (!(this instanceof ObjectId)) return new ObjectId( id );
+  //if ( id instanceof ObjectId ) return id;
 
   // Throw an error if it's not a valid setup
   if ( id != null && typeof id != 'string' && id.length != 24 )
@@ -26,14 +26,14 @@ var ObjectID = function ObjectID( id ) {
   } else {
     throw new Error('Value passed in is not a valid 24 character hex string');
   }
-};
+}
 
 // Private array of chars to use
-ObjectID.prototype.CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+ObjectId.prototype.CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
 //TODO: можно ли использовать большие символы A-Z?
-// Generate a random ObjectID.
-ObjectID.prototype.generate = function(){
+// Generate a random ObjectId.
+ObjectId.prototype.generate = function(){
   var chars = this.CHARS, _id = new Array( 36 ), rnd = 0, r;
   for ( var i = 0; i < 24; i++ ) {
     if ( rnd <= 0x02 )
@@ -48,12 +48,12 @@ ObjectID.prototype.generate = function(){
 };
 
 /**
-* Return the ObjectID id as a 24 byte hex string representation
+* Return the ObjectId id as a 24 byte hex string representation
 *
 * @return {String} return the 24 byte hex string representation.
 * @api public
 */
-ObjectID.prototype.toHexString = function() {
+ObjectId.prototype.toHexString = function() {
   return this.id;
 };
 
@@ -63,7 +63,7 @@ ObjectID.prototype.toHexString = function() {
 * @return {String} return the 24 byte hex string representation.
 * @api private
 */
-ObjectID.prototype.toString = function() {
+ObjectId.prototype.toString = function() {
   return this.toHexString();
 };
 
@@ -73,21 +73,23 @@ ObjectID.prototype.toString = function() {
 * @return {String} return the 24 byte hex string representation.
 * @api private
 */
-ObjectID.prototype.toJSON = function() {
+ObjectId.prototype.toJSON = function() {
   return this.toHexString();
 };
 
 /**
-* Compares the equality of this ObjectID with `otherID`.
+* Compares the equality of this ObjectId with `otherID`.
 *
-* @param {Object} otherID ObjectID instance to compare against.
-* @return {Bool} the result of comparing two ObjectID's
+* @param {Object} otherID ObjectId instance to compare against.
+* @return {Bool} the result of comparing two ObjectId's
 * @api public
 */
-ObjectID.prototype.equals = function equals( otherID ){
-  var id = ( otherID instanceof ObjectID || otherID.toHexString )
+ObjectId.prototype.equals = function equals( otherID ){
+  var id = ( otherID instanceof ObjectId || otherID.toHexString )
     ? otherID.id
-    : new ObjectID( otherID ).id;
+    : new ObjectId( otherID ).id;
 
   return this.id === id;
 };
+
+module.exports = ObjectId;

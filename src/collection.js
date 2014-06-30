@@ -254,3 +254,9 @@ Collection.prototype = {
     this.array = _.toArray( this.documents );
   }
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = Collection;

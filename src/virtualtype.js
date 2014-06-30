@@ -96,3 +96,8 @@ VirtualType.prototype.applySetters = function (value, scope) {
   return v;
 };
 
+/*!
+ * exports
+ */
+
+module.exports = VirtualType;

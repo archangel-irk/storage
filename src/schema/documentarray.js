@@ -1,4 +1,13 @@
-var Subdocument = EmbeddedDocument;
+
+/*!
+ * Module dependencies.
+ */
+
+var SchemaType = require('../schematype')
+  , ArrayType = require('./array')
+  , MongooseDocumentArray = require('../types/documentarray')
+  , Subdocument = require('../types/embedded')
+  , Document = require('../document');
 
 /**
  * SubdocsArray SchemaType constructor
@@ -16,9 +25,7 @@ function DocumentArray (key, schema, options) {
     Subdocument.apply( this, arguments );
   }
 
-  EmbeddedDocument.prototype = Object.create( Subdocument.prototype );
-  EmbeddedDocument.prototype.constructor = EmbeddedDocument;
-
+  EmbeddedDocument.prototype.__proto__ = Subdocument.prototype;
   EmbeddedDocument.prototype.$__setSchema( schema );
 
   // apply methods
@@ -34,7 +41,7 @@ function DocumentArray (key, schema, options) {
   EmbeddedDocument.options = options;
   this.schema = schema;
 
-  ArraySchema.call(this, key, EmbeddedDocument, options);
+  ArrayType.call(this, key, EmbeddedDocument, options);
 
   this.schema = schema;
   var path = this.path;
@@ -48,10 +55,9 @@ function DocumentArray (key, schema, options) {
 }
 
 /*!
- * Inherits from ArraySchema.
+ * Inherits from ArrayType.
  */
-DocumentArray.prototype = Object.create( ArraySchema.prototype );
-DocumentArray.prototype.constructor = DocumentArray;
+DocumentArray.prototype.__proto__ = ArrayType.prototype;
 
 /**
  * Performs local validations first, then validations on each embedded doc
@@ -171,3 +177,8 @@ function scopePaths (array, fields, init) {
   return hasKeys && selected || undefined;
 }
 
+/*!
+ * Module exports.
+ */
+
+module.exports = DocumentArray;

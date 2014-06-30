@@ -1,7 +1,16 @@
 // Машина состояний используется для пометки, в каком состоянии находятся поле
 // Например: если поле имеет состояние default - значит его значением является значение по умолчанию
 // Примечание: для массивов в общем случае это означает пустой массив
+
+/*!
+ * Dependencies
+ */
+
+var StateMachine = require('./statemachine');
+
 var ActiveRoster = StateMachine.ctor('require', 'modify', 'init', 'default');
+
+module.exports = InternalCache;
 
 function InternalCache () {
   this.strictMode = undefined;

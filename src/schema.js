@@ -1,5 +1,12 @@
-!function(){
-var Types;
+/*!
+ * Module dependencies.
+ */
+
+var Events = require('./events')
+  , VirtualType = require('./virtualtype')
+  , utils = require('./utils')
+  , Types
+  , schemas;
 
 /**
  * Schema constructor.
@@ -40,7 +47,7 @@ function Schema ( name, baseSchema, obj, options ) {
   // Если это именованая схема
   if ( typeof name === 'string' ){
     this.name = name;
-    storage.schemas[ name ] = this;
+    schemas[ name ] = this;
   } else {
     options = obj;
     obj = baseSchema;
@@ -107,6 +114,12 @@ function idGetter () {
     ? null
     : String(this._id);
 }
+
+/*!
+ * Inherit from EventEmitter.
+ */
+
+Schema.prototype.__proto__ = Events.prototype;
 
 /**
  * Schema as flat paths
@@ -761,11 +774,8 @@ Schema.prototype.discriminator = function discriminator (name, schema) {
  * exports
  */
 
-storage.Schema = Schema;
+module.exports = Schema;
 window.Schema = Schema;
-
-// Хранилище схем
-storage.schemas = {};
 
 // require down here because of reference issues
 
@@ -781,12 +791,11 @@ storage.schemas = {};
  *
  * - [String](#schema-string-js)
  * - [Number](#schema-number-js)
- * - [Boolean](#schema-boolean-js)
+ * - [Boolean](#schema-boolean-js) | Bool
  * - [Array](#schema-array-js)
- * - [Buffer](#schema-buffer-js)
  * - [Date](#schema-date-js)
- * - [ObjectId](#schema-objectid-js)
- * - [Mixed](#schema-mixed-js)
+ * - [ObjectId](#schema-objectid-js) | Oid
+ * - [Mixed](#schema-mixed-js) | Object
  *
  * Using this exposed access to the `Mixed` SchemaType, we can use them in our schema.
  *
@@ -795,21 +804,15 @@ storage.schemas = {};
  *
  * @api public
  */
-Schema.Types = {
-  String: StringSchema,
-  Number: NumberSchema,
-  Date: DateSchema,
-  Boolean: BooleanSchema,
-  Mixed: Mixed,
-  ObjectId: ObjectId,
-  Array: ArraySchema,
-  DocumentArray: DocumentArray
-};
+Schema.Types = require('./schema/index');
+
+// Хранилище схем
+Schema.schemas = schemas = {};
+
+
+/*!
+ * ignore
+ */
 
 Types = Schema.Types;
-Schema.ObjectId = Types.ObjectId;
-}();
-
-var Types = storage.Schema.Types,
-  Schema = storage.Schema;
-
+var ObjectId = Schema.ObjectId = Types.ObjectId;

@@ -11,59 +11,27 @@ module.exports = function (grunt) {
   grunt.initConfig({
     //pkg: grunt.file.readJSON('package.json'),
     watch: {
-      files: ['test/**/*', 'src/**/*.js'],
-      tasks: ['concat_sourcemap']
+      files: ['src/**/*.js'],
+      tasks: ['browserify']
     },
 
-    concat_sourcemap: {
-      dist: {
-        src: [
-          'src/intro.js',
-
-          'src/events.js',
-          'src/mpath.js',
-
-          // STORAGE
-          'src/utils.js',
-          'src/error.js',
-          'src/types/objectid.js',
-          'src/types/embedded.js',
-          'src/types/array.js',
-          'src/types/documentarray.js',
-
-          'src/statemachine.js',
-          'src/internal.js',
-          'src/virtualtype.js',
-
-          'src/schematype.js',
-          'src/schema/string.js',
-          'src/schema/boolean.js',
-          'src/schema/number.js',
-          'src/schema/objectid.js',
-          'src/schema/date.js',
-          'src/schema/mixed.js',
-          'src/schema/array.js',
-          'src/schema/documentarray.js',
-
-          'src/schema.js',
-          'src/document.js',
-          'src/collection.js',
-          'src/storage.js',
-          'src/outro.js'
-        ],
-        dest: 'storage.js',
-        nonull: true
+    browserify: {
+      main: {
+        options: {
+          bundleOptions: {
+            debug: true,
+            standalone: 'storage'
+          }
+        },
+        src: 'src/storage.js',
+        dest: 'storage.js'
       }
-    },
-
-    clean: ['dist']
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-concat-sourcemap');
-  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('default', ['clean', 'concat_sourcemap'] );
-  grunt.registerTask('dev', ['clean', 'concat_sourcemap', 'watch'] );
+  grunt.registerTask('default', ['browserify'] );
+  grunt.registerTask('dev', ['browserify', 'watch'] );
 };

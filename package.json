@@ -9,26 +9,25 @@
     "url": "https://github.com/archangel-irk/storage.git"
   },
   "scripts": {
-    "test": "grunt && make test"
+    "test": "grunt && make test",
+    "build-js": "browserify --debug src/storage.js --standalone storage > storage.js"
   },
   "devDependencies": {
-    "grunt": ">=0.4.2",
-    "grunt-contrib-jshint": ">=0.6.3",
-    "grunt-contrib-nodeunit": ">=0.2.0",
-    "grunt-contrib-uglify": ">=0.2.2",
-    "grunt-contrib-watch": ">=0.5.3",
-    "grunt-contrib-concat": ">=0.3.0",
-    "grunt-concat-sourcemap": ">=0.4.0",
-    "grunt-contrib-clean": ">=0.5.0",
-    "mocha": ">=1.17.1",
-    "should": ">=2.x",
-    "chai": ">=1.x",
-    "jsdom": ">=0.10.1",
-    "jquery": ">=2.1.0",
-    "knockout": ">=3.0.0",
-    "weakmap": ">=0.0.6",
-    "lodash": ">=2.4.x",
-    "time-grunt": "0.2.10",
-    "browserify": "latest"
+    "grunt": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-nodeunit": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-browserify": "latest",
+    "browserify": "latest",
+    "mocha": "latest",
+    "should": "latest",
+    "chai": "latest",
+    "jsdom": "latest",
+    "jquery": "latest",
+    "knockout": "latest",
+    "weakmap": "latest",
+    "lodash": "latest",
+    "time-grunt": "latest"
   }
 }

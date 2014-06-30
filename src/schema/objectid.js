@@ -1,3 +1,13 @@
+/*!
+ * Module dependencies.
+ */
+
+var SchemaType = require('../schematype')
+  , CastError = SchemaType.CastError
+  , oid = require('../types/objectid')
+  , utils = require('../utils')
+  , Document = require('../document');
+
 /**
  * ObjectId SchemaType constructor.
  *
@@ -8,7 +18,7 @@
  */
 
 function ObjectId (key, options) {
-  SchemaType.call(this, key, options, 'ObjectID');
+  SchemaType.call(this, key, options, 'ObjectId');
 }
 
 /*!
@@ -32,18 +42,6 @@ ObjectId.prototype.auto = function ( turnOn ) {
   return this;
 };
 
-/*!
- * ignore
- */
-function defaultId () {
-  return new ObjectID();
-}
-
-function resetId (v) {
-  this.$__._id = null;
-  return v;
-}
-
 /**
  * Check required
  *
@@ -53,7 +51,7 @@ ObjectId.prototype.checkRequired = function ( value ) {
   if (SchemaType._isRef( this, value )) {
     return null != value;
   } else {
-    return value instanceof ObjectID;
+    return value instanceof oid;
   }
 };
 
@@ -77,7 +75,7 @@ ObjectId.prototype.cast = function ( value ) {
     }
 
     // setting a populated path
-    if (value instanceof ObjectID ) {
+    if (value instanceof oid ) {
       return value;
     } else if ( !_.isPlainObject( value ) ) {
       throw new CastError('ObjectId', value, this.path);
@@ -98,15 +96,15 @@ ObjectId.prototype.cast = function ( value ) {
 
   if (value === null) return value;
 
-  if (value instanceof ObjectID)
+  if (value instanceof oid)
     return value;
 
-  if ( value._id && value._id instanceof ObjectID )
+  if ( value._id && value._id instanceof oid )
     return value._id;
 
   if (value.toString) {
     try {
-      return new ObjectID( value.toString() );
+      return new oid( value.toString() );
     } catch (err) {
       throw new CastError('ObjectId', value, this.path);
     }
@@ -114,3 +112,21 @@ ObjectId.prototype.cast = function ( value ) {
 
   throw new CastError('ObjectId', value, this.path);
 };
+
+/*!
+ * ignore
+ */
+function defaultId () {
+  return new oid();
+}
+
+function resetId (v) {
+  this.$__._id = null;
+  return v;
+}
+
+/*!
+ * Module exports.
+ */
+
+module.exports = ObjectId;

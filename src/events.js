@@ -1,4 +1,3 @@
-!function(){
 // Backbone.Events
 // ---------------
 
@@ -8,11 +7,13 @@
 // succession.
 //
 //     var object = {};
-//     _.extend(object, Events);
+//     _.extend(object, Events.prototype);
 //     object.on('expand', function(){ alert('expanded'); });
 //     object.trigger('expand');
 //
-var Events = {
+function Events() {}
+
+Events.prototype = {
 
   // Bind an event to a `callback` function. Passing `"all"` will bind
   // the callback to all events fired.
@@ -99,7 +100,6 @@ var Events = {
     }
     return this;
   }
-
 };
 
 // Regular expression used to split event strings.
@@ -161,5 +161,4 @@ _.each(listenMethods, function(implementation, method) {
   };
 });
 
-storage.Events = Events;
-}();
+module.exports = Events;

@@ -1,3 +1,12 @@
+/*!
+ * Module dependencies.
+ */
+
+var error = require('./error');
+var errorMessages = error.messages;
+var CastError = error.CastError;
+var ValidatorError = error.ValidatorError;
+
 /**
  * SchemaType constructor
  *
@@ -540,3 +549,13 @@ SchemaType._isRef = function( self, value ){
 
   return false;
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = SchemaType;
+
+SchemaType.CastError = CastError;
+
+SchemaType.ValidatorError = ValidatorError;

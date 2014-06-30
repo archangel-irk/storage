@@ -1,3 +1,21 @@
+/*!
+ * Module dependencies.
+ */
+
+var Events = require('./events')
+  , StorageError = require('./error')
+  , MixedSchema = require('./schema/mixed')
+  , SchemaArray = require('./schema/array')
+  , Schema = require('./schema')
+  , ValidatorError = require('./schematype').ValidatorError
+  , utils = require('./utils')
+  , clone = utils.clone
+  , ValidationError = StorageError.ValidationError
+  , InternalCache = require('./internal')
+  , deepEqual = utils.deepEqual
+  , DocumentArray = require('./types/documentarray')
+  , Embedded = require('./types/embedded');
+
 /**
  * Конструктор документа.
  *
@@ -31,23 +49,24 @@ function Document ( data, collectionName, schema, fields, init ){
     data = null;
 
     if ( schema.options._id ){
-      data = { _id: new ObjectID() };
+      data = { _id: new ObjectId() };
     }
 
   } else {
     // При создании EmbeddedDocument, в нём уже есть схема и ему не нужен _id
     schema = this.schema || schema;
-    // Сгенерировать ObjectID, если он отсутствует и его требует схема
+    // Сгенерировать ObjectId, если он отсутствует и его требует схема
     if ( !this.schema && schema.options._id ){
       data = data || {};
 
       if ( !data._id ){
-        data._id = new ObjectID();
+        data._id = new ObjectId();
       }
     }
   }
 
   if ( !schema ){
+    //todo: throw new mongoose.Error.MissingSchemaError(name);
     throw new TypeError('Нельзя создавать документ без схемы');
   }
 
@@ -93,9 +112,9 @@ function Document ( data, collectionName, schema, fields, init ){
 }
 
 /*!
- * Inherits from ArraySchema.
+ * Inherits from EventEmitter.
  */
-Document.prototype.__proto__ = storage.Events;
+Document.prototype.__proto__ = Events.prototype;
 
 /**
  * The documents schema.
@@ -345,7 +364,7 @@ Document.prototype.set = function (path, val, type, options) {
             && _.isPlainObject(path[key])
             && ( !path[key].constructor || 'Object' == path[key].constructor.name )
             && 'virtual' != pathtype
-            && !( this.$__path( prefix + key ) instanceof Mixed )
+            && !( this.$__path( prefix + key ) instanceof MixedSchema )
             && !( this.schema.paths[key] && this.schema.paths[key].options.ref )
           ){
 
@@ -946,7 +965,7 @@ Document.prototype.$__reset = function reset () {
     return self.getValue(i);
   })
   .filter(function (val) {
-    return val && val instanceof StorageDocumentArray && val.length;
+    return val && val instanceof DocumentArray && val.length;
   })
   .forEach(function (array) {
     var i = array.length;
@@ -1090,7 +1109,7 @@ function define (self, prop, subprops, prototype, prefix, keys) {
   } else {
     var allObservablesForObject = ko.es5.getAllObservablesForObject( self, true ),
       schema = prototype.schema || prototype.constructor.schema,
-      isArray = schema.path( path ) instanceof ArraySchema,
+      isArray = schema.path( path ) instanceof SchemaArray,
       observable = isArray ? ko.observableArray()
                            : ko.observable();
 
@@ -1131,11 +1150,11 @@ Document.prototype.$__setSchema = function ( schema ) {
 Document.prototype.$__getAllSubdocs = function () {
   function docReducer(seed, path) {
     var val = this[path];
-    if (val instanceof EmbeddedDocument) seed.push(val);
-    if (val instanceof StorageDocumentArray)
+    if (val instanceof Embedded) seed.push(val);
+    if (val instanceof DocumentArray)
       val.forEach(function _docReduce(doc) {
         if (!doc || !doc._doc) return;
-        if (doc instanceof EmbeddedDocument) seed.push(doc);
+        if (doc instanceof Embedded) seed.push(doc);
         seed = Object.keys(doc._doc).reduce(docReducer.bind(doc._doc), seed);
       });
     return seed;
@@ -1181,7 +1200,7 @@ Document.prototype.$__getArrayPathsToValidate = function () {
       return this.getValue(i);
     }.bind(this))
     .filter(function (val) {
-      return val && val instanceof StorageDocumentArray && val.length;
+      return val && val instanceof DocumentArray && val.length;
     }).reduce(function(seed, array) {
       return seed.concat(array);
     }, [])
@@ -1821,3 +1840,10 @@ Document.prototype.empty = function(){
     }
   }
 };
+
+/*!
+ * Module exports.
+ */
+
+Document.ValidationError = ValidationError;
+module.exports = Document;

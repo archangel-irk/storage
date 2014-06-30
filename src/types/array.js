@@ -1,4 +1,14 @@
 //TODO: почистить код
+
+/*!
+ * Module dependencies.
+ */
+
+var EmbeddedDocument = require('./embedded');
+var Document = require('../document');
+var ObjectId = require('./objectid');
+var utils = require('../utils');
+
 /**
  * Storage Array constructor.
  *
@@ -71,7 +81,7 @@ StorageArray.prototype._cast = function ( value ) {
 
     // only objects are permitted so we can safely assume that
     // non-objects are to be interpreted as _id
-    if ( value instanceof ObjectID || !_.isObject(value) ) {
+    if ( value instanceof ObjectId || !_.isObject(value) ) {
       value = { _id: value };
     }
 
@@ -388,10 +398,16 @@ StorageArray.prototype.toObject = function (options) {
  * @api public
  */
 StorageArray.prototype.indexOf = function indexOf (obj) {
-  if (obj instanceof ObjectID) obj = obj.toString();
+  if (obj instanceof ObjectId) obj = obj.toString();
   for (var i = 0, len = this.length; i < len; ++i) {
     if (obj == this[i])
       return i;
   }
   return -1;
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = StorageArray;

@@ -1,4 +1,3 @@
-
 /*!
  * StateMachine represents a minimal `interface` for the
  * constructors it builds via StateMachine.ctor(...).
@@ -6,7 +5,7 @@
  * @api private
  */
 
-var StateMachine = function StateMachine () {
+var StateMachine = module.exports = function StateMachine () {
   this.paths = {};
   this.states = {};
 };

@@ -1,3 +1,13 @@
+/*!
+ * Module dependencies.
+ */
+
+var StorageArray = require('./array')
+  , ObjectId = require('./objectid')
+  , ObjectIdSchema = require('../schema/objectid')
+  , utils = require('../utils')
+  , Document = require('../document');
+
 /**
  * DocumentArray constructor
  *
@@ -37,8 +47,7 @@ function StorageDocumentArray (values, path, doc) {
 /*!
  * Inherits from StorageArray
  */
-StorageDocumentArray.prototype = Object.create( StorageArray.prototype );
-StorageDocumentArray.prototype.constructor = StorageDocumentArray;
+StorageDocumentArray.prototype.__proto__ = StorageArray.prototype;
 
 /**
  * Overrides StorageArray#cast
@@ -55,10 +64,10 @@ StorageDocumentArray.prototype._cast = function (value) {
     return value;
   }
 
-  // handle cast('string') or cast(ObjectID) etc.
+  // handle cast('string') or cast(ObjectId) etc.
   // only objects are permitted so we can safely assume that
   // non-objects are to be interpreted as _id
-  if ( value instanceof ObjectID || !_.isObject(value) ) {
+  if ( value instanceof ObjectId || !_.isObject(value) ) {
     value = { _id: value };
   }
 
@@ -73,7 +82,7 @@ StorageDocumentArray.prototype._cast = function (value) {
  *     var embeddedDoc = m.array.id(some_id);
  *
  * @return {EmbeddedDocument|null} the subdocument or null if not found.
- * @param {ObjectID|String|Number} id
+ * @param {ObjectId|String|Number} id
  * @TODO cast to the _id based on schema for proper comparison
  * @api public
  */
@@ -83,7 +92,7 @@ StorageDocumentArray.prototype.id = function (id) {
     , _id;
 
   try {
-    var casted_ = ObjectId.prototype.cast.call({}, id);
+    var casted_ = ObjectIdSchema.prototype.cast.call({}, id);
     if (casted_) casted = String(casted_);
   } catch (e) {
     casted = null;
@@ -154,3 +163,9 @@ StorageDocumentArray.prototype.notify = function notify (event) {
     }
   }
 };
+
+/*!
+ * Module exports.
+ */
+
+module.exports = StorageDocumentArray;
