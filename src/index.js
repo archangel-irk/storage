@@ -5,7 +5,7 @@
  * http://docs.meteor.com/#selectors
  * https://github.com/meteor/meteor/tree/master/packages/minimongo
  *
- * browserify --debug src/storage.js --standalone storage > storage.js
+ * browserify --debug src/index.js --standalone storage > storage.js
  */
 
 'use strict';

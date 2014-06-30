@@ -4,8 +4,8 @@
 
 var ObjectId = require('./types/objectid')
   , mpath = require('./mpath')
-  , StorageArray = require('./types').Array
-  , Document = require('./document');
+  , StorageArray
+  , Document
 
 /**
  * Pluralization rules.
@@ -285,6 +285,9 @@ exports.random = function () {
  * @api private
  */
 exports.isStorageObject = function ( v ) {
+  Document || (Document = require('./document'));
+  StorageArray || (StorageArray = require('./types/array'));
+
   return v instanceof Document ||
          v instanceof StorageArray;
 };

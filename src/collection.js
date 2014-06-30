@@ -1,3 +1,10 @@
+/*!
+ * Module dependencies.
+ */
+
+var Schema = require('./schema')
+  , Document = require('./document')
+
 //TODO: написать метод .upsert( doc ) - обновление документа, а если его нет, то создание
 
 //TODO: доделать логику с apiResource (сохранять ссылку на него и использовть при методе doc.save)

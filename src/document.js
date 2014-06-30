@@ -5,7 +5,7 @@
 var Events = require('./events')
   , StorageError = require('./error')
   , MixedSchema = require('./schema/mixed')
-  , SchemaArray = require('./schema/array')
+  , ObjectId = require('./types/objectid')
   , Schema = require('./schema')
   , ValidatorError = require('./schematype').ValidatorError
   , utils = require('./utils')
@@ -13,8 +13,9 @@ var Events = require('./events')
   , ValidationError = StorageError.ValidationError
   , InternalCache = require('./internal')
   , deepEqual = utils.deepEqual
-  , DocumentArray = require('./types/documentarray')
-  , Embedded = require('./types/embedded');
+  , DocumentArray
+  , SchemaArray
+  , Embedded
 
 /**
  * Конструктор документа.
@@ -959,6 +960,7 @@ Document.prototype.invalidate = function (path, errorMsg, value) {
 
 Document.prototype.$__reset = function reset () {
   var self = this;
+  DocumentArray || (DocumentArray = require('./types/documentarray'));
 
   this.$__.activePaths
   .map('init', 'modify', function (i) {
@@ -1107,6 +1109,8 @@ function define (self, prop, subprops, prototype, prefix, keys) {
     });
 
   } else {
+    SchemaArray || (SchemaArray = require('./schema/array'));
+
     var allObservablesForObject = ko.es5.getAllObservablesForObject( self, true ),
       schema = prototype.schema || prototype.constructor.schema,
       isArray = schema.path( path ) instanceof SchemaArray,
@@ -1148,6 +1152,9 @@ Document.prototype.$__setSchema = function ( schema ) {
  * @memberOf Document
  */
 Document.prototype.$__getAllSubdocs = function () {
+  DocumentArray || (DocumentArray = require('./types/documentarray'));
+  Embedded = Embedded || require('./types/embedded');
+
   function docReducer(seed, path) {
     var val = this[path];
     if (val instanceof Embedded) seed.push(val);
@@ -1194,6 +1201,8 @@ Document.prototype.$__presaveValidate = function $__presaveValidate() {
  * @memberOf Document
  */
 Document.prototype.$__getArrayPathsToValidate = function () {
+  DocumentArray || (DocumentArray = require('./types/documentarray'));
+
   // validate all document arrays.
   return this.$__.activePaths
     .map('init', 'modify', function (i) {

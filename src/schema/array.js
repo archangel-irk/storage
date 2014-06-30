@@ -11,12 +11,9 @@ var SchemaType = require('../schematype')
       , String: require('./string')
       , ObjectId: require('./objectid')
     }
-  , StorageArray = require('../types').Array
-  , EmbeddedDoc = require('../types').Embedded
+  , StorageArray = require('../types/array')
   , Mixed = require('./mixed')
-  , utils = require('../utils');
-
-console.log( SchemaType );
+  , EmbeddedDoc
 
 /**
  * Array SchemaType constructor
@@ -53,6 +50,10 @@ function SchemaArray (key, cast, options) {
 
     this.casterConstructor = caster;
     this.caster = new caster(null, castOptions);
+
+    // lazy load
+    EmbeddedDoc || (EmbeddedDoc = require('../types/embedded'));
+
     if (!(this.caster instanceof EmbeddedDoc)) {
       this.caster.path = key;
     }

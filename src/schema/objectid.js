@@ -6,7 +6,7 @@ var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
   , oid = require('../types/objectid')
   , utils = require('../utils')
-  , Document = require('../document');
+  , Document
 
 /**
  * ObjectId SchemaType constructor.
@@ -68,6 +68,9 @@ ObjectId.prototype.cast = function ( value ) {
     if (null == value) {
       return value;
     }
+
+    // lazy load
+    Document || (Document = require('./../document'));
 
     if (value instanceof Document) {
       value.$__.wasPopulated = true;

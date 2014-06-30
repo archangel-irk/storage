@@ -5,7 +5,7 @@
 
 var SchemaType = require('../schematype')
   , ArrayType = require('./array')
-  , MongooseDocumentArray = require('../types/documentarray')
+  , StorageDocumentArray = require('../types/documentarray')
   , Subdocument = require('../types/embedded')
   , Document = require('../document');
 
