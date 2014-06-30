@@ -8,7 +8,7 @@ $ = jQuery = require('jquery');
 ko = require('knockout');
 require('../lib/knockout-es5.js');
 
-var storage = require('../storage.js')
+var storage = window.storage = require('../storage')
   , Schema = storage.Schema
   , utils = storage.utils
   , assert = require('assert')
@@ -16,7 +16,7 @@ var storage = require('../storage.js')
 
 var ObjectId = Schema.ObjectId
   , Document = storage.Document
-  , DocumentObjectId = storage.Types.ObjectID;
+  , DocumentObjectId = storage.Types.ObjectId;
 
 /**
  * Setup.
@@ -31,7 +31,7 @@ Comments.add({
   , comments  : [Comments]
 });
 
-var BlogPost = new Schema({
+var BlogPostSchema = new Schema({
     title     : String
   , author    : String
   , slug      : String
@@ -48,13 +48,13 @@ var BlogPost = new Schema({
   , nested    : { array: [Number] }
 });
 
-BlogPost
+BlogPostSchema
 .path('title')
 .get(function(v) {
   if (v) return v.toUpperCase();
 });
 
-BlogPost
+BlogPostSchema
 .virtual('titleWithAuthor')
 .get(function () {
   return this.get('title') + ' by ' + this.get('author');
@@ -65,20 +65,20 @@ BlogPost
   this.set('author', split[1]);
 });
 
-BlogPost.method('cool', function(){
+BlogPostSchema.method('cool', function(){
   return this;
 });
 
-BlogPost.static('woot', function(){
+BlogPostSchema.static('woot', function(){
   return this;
 });
 
-var modelName = 'docuemnt.modified.blogpost';
+var collectionName = 'docuemnt.modified.blogpost';
 
 describe('document modified', function(){
   describe('modified states', function(){
     it('reset after save', function(done){
-      var B = storage.createCollection(modelName, BlogPost)
+      var B = storage.createCollection(collectionName, BlogPostSchema)
         , pending = 2;
 
       var b = B.add();
@@ -100,7 +100,7 @@ describe('document modified', function(){
     });
 
     it('of embedded docs reset after save', function(done){
-      var BlogPost = storage.createCollection(modelName, BlogPost);
+      var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
 
       var post = BlogPost.add({ title: 'hocus pocus' });
       post.comments.push({ title: 'Humpty Dumpty', comments: [{title: 'nested'}] });
@@ -109,13 +109,15 @@ describe('document modified', function(){
         assert.equal(false, mFlag);
         assert.equal(false, post.isModified('title'));
         done();
+      }).fail(function( e ){
+        console.log( e );
       });
     })
   });
 
   describe('isModified', function(){
     it('should not throw with no argument', function(done){
-      var BlogPost = storage.createCollection(modelName, BlogPost);
+      var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
       var post = BlogPost.add();
 
       var threw = false;
@@ -130,7 +132,7 @@ describe('document modified', function(){
     });
 
     it('when modifying keys', function(done){
-      var BlogPost = storage.createCollection(modelName, BlogPost);
+      var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
 
       var post = BlogPost.add();
       post.init({
@@ -152,7 +154,7 @@ describe('document modified', function(){
     });
 
     it('setting a key identically to its current value should not dirty the key', function(done){
-      var BlogPost = storage.createCollection(modelName, BlogPost);
+      var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
 
       var post = BlogPost.add();
       post.init({
@@ -169,7 +171,7 @@ describe('document modified', function(){
 
     describe('on DocumentArray', function(){
       it('work', function (done) {
-        var BlogPost = storage.createCollection(modelName, BlogPost);
+        var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
         var post = BlogPost.add();
         post.init({
             title       : 'Test'
@@ -187,7 +189,7 @@ describe('document modified', function(){
         done();
       });
       it('with accessors', function(done){
-        var BlogPost = storage.createCollection(modelName, BlogPost);
+        var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
 
         var post = BlogPost.add();
         post.init({
@@ -209,7 +211,7 @@ describe('document modified', function(){
     describe('on StorageArray', function(){
       it('atomic methods', function(done){
         // COMPLETEME
-        var BlogPost = storage.createCollection(modelName, BlogPost);
+        var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
 
         var post = BlogPost.add();
         assert.equal(false, post.isModified('owners'));
@@ -219,7 +221,7 @@ describe('document modified', function(){
       });
       it('native methods', function(done){
         // COMPLETEME
-        var BlogPost = storage.createCollection(modelName, BlogPost);
+        var BlogPost = storage.createCollection(collectionName, BlogPostSchema);
 
         var post = BlogPost.add();
         assert.equal(false, post.isModified('owners'));
@@ -228,7 +230,7 @@ describe('document modified', function(){
     });
 
     it('on entire document', function(done){
-      var B = storage.createCollection(modelName, BlogPost);
+      var B = storage.createCollection(collectionName, BlogPostSchema);
 
       var doc = B.add({
           title       : 'Test'

@@ -15,7 +15,7 @@ var Events = require('./events')
   , deepEqual = utils.deepEqual
   , DocumentArray
   , SchemaArray
-  , Embedded
+  , Embedded;
 
 /**
  * Конструктор документа.
@@ -72,7 +72,7 @@ function Document ( data, collectionName, schema, fields, init ){
   }
 
   this.schema = schema;
-  this.collection = storage[ collectionName ];
+  this.collection = window.storage[ collectionName ];
   this.collectionName = collectionName;
 
   if ( this.collection ){
@@ -411,7 +411,7 @@ Document.prototype.set = function (path, val, type, options) {
     for (var i = 0; i < parts.length; ++i) {
       subpath = parts.slice(0, i+1).join('.');
       schema = this.schema.path(subpath);
-      if (schema instanceof Mixed) {
+      if (schema instanceof MixedSchema) {
         // allow changes to sub paths of mixed types
         mixed = true;
         break;

@@ -5,7 +5,7 @@
 var ObjectId = require('./types/objectid')
   , mpath = require('./mpath')
   , StorageArray
-  , Document
+  , Document;
 
 /**
  * Pluralization rules.
@@ -107,8 +107,8 @@ exports.pluralize = function (str) {
  * @api private
  */
 exports.deepEqual = function deepEqual (a, b) {
-  if (utils.isStorageObject(a)) a = a.toObject();
-  if (utils.isStorageObject(b)) b = b.toObject();
+  if (isStorageObject(a)) a = a.toObject();
+  if (isStorageObject(b)) b = b.toObject();
 
   return _.isEqual(a, b);
 };

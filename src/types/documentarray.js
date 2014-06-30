@@ -104,7 +104,7 @@ StorageDocumentArray.prototype.id = function (id) {
     if (_id instanceof Document) {
       sid || (sid = String(id));
       if (sid == _id._id) return this[i];
-    } else if (!(_id instanceof ObjectID)) {
+    } else if (!(_id instanceof ObjectId)) {
       sid || (sid = String(id));
       if (sid == _id) return this[i];
     } else if (casted == _id) {

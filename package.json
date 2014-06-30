@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "grunt && make test",
-    "build-js": "browserify --debug src/storage.js --standalone storage > storage.js"
+    "build-js": "browserify src/ --standalone storage > storage.js -d"
   },
   "devDependencies": {
     "grunt": "latest",

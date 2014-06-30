@@ -21,7 +21,7 @@ function ValidatorError (path, msg, type, val) {
   StorageError.call(this, message);
   this.name = 'ValidatorError';
   this.path = path;
-  this.kind = type;
+  this.type = type;
   this.value = val;
 }
 

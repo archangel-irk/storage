@@ -4,7 +4,7 @@
 
 var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
-  , errorMessages = require('../error').messages
+  , errorMessages = require('../error').messages;
 
 /**
  * Number SchemaType constructor.

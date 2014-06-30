@@ -124,7 +124,7 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
   i = value.length;
 
   while (i--) {
-    if (!(value[i] instanceof EmbeddedDocument) && value[i]) {
+    if (!(value[i] instanceof Subdocument) && value[i]) {
       if (init) {
         selected || (selected = scopePaths(this, doc.$__.selected, init));
         subdoc = new this.casterConstructor(null, value, true, selected);

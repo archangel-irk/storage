@@ -8,7 +8,7 @@ $ = jQuery = require('jquery');
 ko = require('knockout');
 require('../lib/knockout-es5.js');
 
-var storage = require('../storage.js')
+var storage = window.storage = require('../storage.js')
   , Schema = storage.Schema
   , utils = storage.utils
   , assert = require('assert')
@@ -360,12 +360,12 @@ describe('types array', function(){
       var d6 = new Date( +d1 + 10000);
       doc.date.push(d1, d2);
 
-      var id1 = new storage.Types.ObjectID;
-      var id2 = new storage.Types.ObjectID;
-      var id3 = new storage.Types.ObjectID;
-      var id4 = new storage.Types.ObjectID;
-      var id5 = new storage.Types.ObjectID;
-      var id6 = new storage.Types.ObjectID;
+      var id1 = new storage.Types.ObjectId;
+      var id2 = new storage.Types.ObjectId;
+      var id3 = new storage.Types.ObjectId;
+      var id4 = new storage.Types.ObjectId;
+      var id5 = new storage.Types.ObjectId;
+      var id6 = new storage.Types.ObjectId;
 
       doc.id.push(id1, id2);
 
@@ -1046,7 +1046,7 @@ describe('types array', function(){
       });
 
       it('supports passing objectids', function(done){
-        var OID = storage.Types.ObjectID;
+        var OID = storage.Types.ObjectId;
         var a = new OID;
         var b = new OID;
         var c = new OID;

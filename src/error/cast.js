@@ -16,10 +16,10 @@ var StorageError = require('../error.js');
 function CastError (type, value, path) {
   StorageError.call(this, 'Cast to ' + type + ' failed for value "' + value + '" at path "' + path + '"');
   this.name = 'CastError';
-  this.kind = type;
+  this.type = type;
   this.value = value;
   this.path = path;
-};
+}
 
 /*!
  * Inherits from MongooseError.

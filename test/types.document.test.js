@@ -9,14 +9,14 @@ $ = jQuery = require('jquery');
 ko = require('knockout');
 require('../lib/knockout-es5.js');
 
-var storage = require('../storage.js')
+var storage = window.storage = require('../storage.js')
   , Schema = storage.Schema
   , utils = storage.utils
   , assert = require('assert')
   , random = utils.random;
 
-var EmbeddedDocument = storage.Types.EmbeddedDocument
-  , StorageDocumentArray = storage.Types.DocumentArray
+var EmbeddedDocument = storage.Types.Embedded
+  , DocumentArray = storage.Types.DocumentArray
   , SchemaType = storage.SchemaType
   , ValidationError = storage.Error.ValidationError;
 
@@ -33,7 +33,7 @@ Dummy.prototype.constructor = Dummy;
 Dummy.prototype.$__setSchema(new Schema);
 
 function Subdocument () {
-  var arr = new StorageDocumentArray;
+  var arr = new DocumentArray;
   arr._path = 'jsconf.ar';
   arr._parent = new Dummy;
   arr[0] = this;
@@ -43,8 +43,7 @@ function Subdocument () {
 /**
  * Inherits from EmbeddedDocument.
  */
-Subdocument.prototype = Object.create( EmbeddedDocument.prototype );
-Subdocument.prototype.constructor = Subdocument;
+Subdocument.prototype.__proto__ = EmbeddedDocument.prototype;
 
 
 /**
@@ -119,13 +118,13 @@ describe('types.document', function(){
 
     assert.equal(m.id, m.$__._id);
     var old = m.id;
-    m._id = new storage.Types.ObjectID;
+    m._id = new storage.Types.ObjectId;
     assert.equal(m.id, m.$__._id);
     assert.strictEqual(true, old !== m.$__._id);
 
     var m2= Movie.add();
     delete m2._doc._id;
-    m2.init({ _id: new storage.Types.ObjectID });
+    m2.init({ _id: new storage.Types.ObjectId });
     assert.equal(m2.id, m2.$__._id);
     assert.strictEqual(true, m.$__._id !== m2.$__._id);
     assert.strictEqual(true, m.id !== m2.id);

@@ -23,7 +23,7 @@ module.exports = function (grunt) {
             standalone: 'storage'
           }
         },
-        src: 'src/storage.js',
+        src: 'src/index.js',
         dest: 'storage.js'
       }
     }

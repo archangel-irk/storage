@@ -5,7 +5,7 @@
  * http://docs.meteor.com/#selectors
  * https://github.com/meteor/meteor/tree/master/packages/minimongo
  *
- * browserify --debug src/index.js --standalone storage > storage.js
+ * browserify src/ --standalone storage > storage.js -d
  */
 
 'use strict';
@@ -100,7 +100,7 @@ Storage.prototype.Collection = Collection;
  * @api public
  */
 
-//Storage.prototype.Schema = Schema;
+Storage.prototype.Schema = Schema;
 
 /**
  * The Mongoose [SchemaType](#schematype_SchemaType) constructor
@@ -109,7 +109,7 @@ Storage.prototype.Collection = Collection;
  * @api public
  */
 
-//Storage.prototype.SchemaType = SchemaType;
+Storage.prototype.SchemaType = SchemaType;
 
 /**
  * The various Mongoose SchemaTypes.
@@ -123,7 +123,7 @@ Storage.prototype.Collection = Collection;
  * @api public
  */
 
-//Storage.prototype.SchemaTypes = Schema.Types;
+Storage.prototype.SchemaTypes = Schema.Types;
 
 /**
  * The Mongoose [VirtualType](#virtualtype_VirtualType) constructor
@@ -178,6 +178,9 @@ Storage.prototype.Document = Document;
 
 Storage.prototype.Error = require('./error');
 
+
+
+Storage.prototype.StateMachine = require('./statemachine');
 Storage.prototype.utils = utils;
 Storage.prototype.ObjectId = Types.ObjectId;
 Storage.prototype.schemas = Schema.schemas;

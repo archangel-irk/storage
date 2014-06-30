@@ -9,7 +9,7 @@ $ = jQuery = require('jquery');
 ko = require('knockout');
 require('../lib/knockout-es5.js');
 
-var storage = require('../storage.js')
+var storage = window.storage = require('../storage.js')
   , Schema = storage.Schema
   , utils = storage.utils
   , assert = require('assert')
@@ -18,7 +18,7 @@ var storage = require('../storage.js')
 var setValue = utils.setValue
   , StorageArray = storage.Types.Array
   , StorageDocumentArray = storage.Types.DocumentArray
-  , EmbeddedDocument = storage.Types.EmbeddedDocument
+  , EmbeddedDocument = storage.Types.Embedded
   , collection = 'types.documentarray_' + random();
 
 /**

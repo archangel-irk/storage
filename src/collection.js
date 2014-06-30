@@ -3,7 +3,7 @@
  */
 
 var Schema = require('./schema')
-  , Document = require('./document')
+  , Document = require('./document');
 
 //TODO: написать метод .upsert( doc ) - обновление документа, а если его нет, то создание
 

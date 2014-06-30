@@ -6,7 +6,7 @@ var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
   , oid = require('../types/objectid')
   , utils = require('../utils')
-  , Document
+  , Document;
 
 /**
  * ObjectId SchemaType constructor.
