@@ -186,6 +186,10 @@ Storage.prototype.utils = utils;
 Storage.prototype.ObjectId = Types.ObjectId;
 Storage.prototype.schemas = Schema.schemas;
 
+Storage.prototype.setAdapter = function( adapterHooks ){
+  Document.prototype.adapterHooks = adapterHooks;
+};
+
 /*
  * Generate a random uuid.
  * http://www.broofa.com/Tools/Math.uuid.htm

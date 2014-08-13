@@ -156,6 +156,12 @@ Document.prototype.id;
  */
 Document.prototype.errors;
 
+Document.prototype.adapterHooks = {
+  documentDefineProperty: $.noop(),
+  documentSetInitialValue: $.noop(),
+  documentGetValue: $.noop()
+};
+
 /**
  * Builds the default doc structure
  *
@@ -266,8 +272,6 @@ function init (self, obj, doc, prefix) {
       if (obj[i] === null) {
         doc[i] = null;
       } else if (obj[i] !== undefined) {
-        var observable = ko.getObservable( self, path );
-
         if (schema) {
           self.$__try(function(){
             doc[i] = schema.cast(obj[i], self, true);
@@ -276,8 +280,7 @@ function init (self, obj, doc, prefix) {
           doc[i] = obj[i];
         }
 
-        // Установить начальное значение
-        observable && observable( doc[i] );
+        self.adapterHooks.documentSetInitialValue.call( self, self, path, doc[i] );
       }
       // mark as hydrated
       self.$__.activePaths.init(path);
@@ -551,13 +554,7 @@ Document.prototype.$__set = function ( pathToMark, path, constructing, parts, sc
     if ( last ) {
       obj[parts[i]] = val;
 
-      var observable = ko.getObservable( this, path );
-
-      //TODO: Иногда observable === null, понять почему так порисходит и исправить это
-      //console.log( path, observable );
-
-      // Обновим observable (чтобы работали привязки)
-      observable && observable( val );
+      this.adapterHooks.documentSetValue.call( this, this, path, val );
 
     } else {
       if (obj[parts[i]] && 'Object' === obj[parts[i]].constructor.name) {
@@ -634,8 +631,7 @@ Document.prototype.get = function (path, type) {
     obj = schema.applyGetters(obj, this);
   }
 
-  var observable = ko.getObservable( this, path );
-  observable && observable();
+  this.adapterHooks.documentGetValue.call( this, this, path );
 
   return obj;
 };
@@ -1106,44 +1102,13 @@ function define (self, prop, subprops, prototype, prefix, keys) {
     });
 
   } else {
-    SchemaArray || (SchemaArray = require('./schema/array'));
-
-    var allObservablesForObject = ko.es5.getAllObservablesForObject( self, true ),
-      schema = prototype.schema || prototype.constructor.schema,
-      isArray = schema.path( path ) instanceof SchemaArray,
-      observable = isArray ? ko.observableArray()
-                           : ko.observable();
-
     Object.defineProperty( prototype, prop, {
         enumerable: true
       , get: function ( ) { return this.get.call(this.$__.scope || this, path); }
       , set: function (v) { return this.set.call(this.$__.scope || this, path, v); }
     });
 
-    // Поддержка Knockout.Validation
-    var validators = schema.path(path) && schema.path(path).validators;
-    if(validators && validators.length){
-      var i = validators.length;
-      while(i--){
-        var validator = validators[i][0]
-          , message = validators[i][1]
-          , type = validators[i][2];
-
-        //if( type = 'required' )
-        observable.extend({  // custom validator
-          validation: {
-            validator: validator,
-            message: message
-          }
-        })
-      }
-    }
-
-    allObservablesForObject[ path ] = observable;
-
-    if ( isArray ) {
-      ko.es5.notifyWhenPresentOrFutureArrayValuesMutate( ko, observable );
-    }
+    self.adapterHooks.documentDefineProperty.call( self, self, path, prototype );
   }
 }
 
