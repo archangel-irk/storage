@@ -8,12 +8,22 @@
 	<script src="lib/knockout-3.1.0.debug.js"></script>
 	<script src="lib/knockout-es5.js"></script>
 
+
+	<script src="lib/knockout.validation.js"></script>
+	<script src="lib/knockout.validation.ru-RU.js"></script>
+
 	<script src="storage.js"></script>
+	<script src="adapters/storage.knockout-es5.adapter.js"></script>
 </head>
 <body>
+<script id="customMessageTemplate" type="text/html">
+    <em class="customMessage" data-bind='validationMessage: (console.warn("wewefwef"), field)'></em>
+</script>
+
+<div data-bind='text: formErrors().length'></div>
 <label>
     Name
-    <input data-bind="value: name, validate: true" type="text" name="name">
+    <input data-bind="value: user.name, validate: true" type="text" name="name">
 </label>
 
 <form data-bind="validate: true" action="#" id="form_sample_1" class="form-horizontal" novalidate="novalidate">
@@ -67,7 +77,16 @@ var user = storage.users.add();
 
 //? user.validate();
 
-ko.applyBindings( user );
+userObservable = ko.es5.getAllObservablesForObject( user );
+
+window.vm = {
+    user: userObservable,
+    formErrors: ko.validation.group( userObservable )
+};
+
+ko.applyBindings( vm );
+
+//ko.es5.getAllObservablesForObject( account, true );
 
 </script>
 </body>

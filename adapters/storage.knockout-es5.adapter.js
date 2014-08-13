@@ -37,6 +37,7 @@
       allObservablesForObject[ path ] = observable;
 
       if ( isArray ) {
+        //todo: а действительно нужен вызов этого мметода?
         ko.es5.notifyWhenPresentOrFutureArrayValuesMutate( ko, observable );
       }
     },
