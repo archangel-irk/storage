@@ -488,9 +488,6 @@ Document.prototype.$__shouldModify = function (
     pathToMark, path, constructing, parts, schema, val, priorVal) {
 
   if (this.isNew) return true;
-  /*if (this.isDirectModified(pathToMark)){
-    return false;
-  }*/
 
   if ( undefined === val && !this.isSelected(path) ) {
     // when a path is not selected in a query, its initial
@@ -1567,14 +1564,20 @@ Document.prototype.toObject = function (options) {
 
   // When internally saving this document we always pass options,
   // bypassing the custom schema options.
-  if (!(options && 'Object' == options.constructor.name)) {
+  var optionsParameter = options;
+  if (!(options && 'Object' == options.constructor.name) ||
+    (options && options._useSchemaOptions)) {
     options = this.schema.options.toObject
-      ? utils.clone(this.schema.options.toObject)
+      ? clone(this.schema.options.toObject)
       : {};
   }
 
   if ( options.minimize === undefined ){
     options.minimize = this.schema.options.minimize;
+  }
+
+  if (!optionsParameter) {
+    options._useSchemaOptions = true;
   }
 
   var ret = utils.clone(this._doc, options);
@@ -1724,7 +1727,9 @@ Document.prototype.toJSON = function (options) {
 /**
  * Returns true if the Document stores the same data as doc.
  *
- * Documents are considered equal when they have matching `_id`s.
+ * Documents are considered equal when they have matching `_id`s, unless neither
+ * document has an `_id`, in which case this function falls back to using
+ * `deepEqual()`.
  *
  * @param {Document} doc a document to compare
  * @return {Boolean}
@@ -1734,10 +1739,13 @@ Document.prototype.toJSON = function (options) {
 Document.prototype.equals = function (doc) {
   var tid = this.get('_id');
   var docid = doc.get('_id');
+  if (!tid && !docid) {
+    return deepEqual(this, doc);
+  }
   return tid && tid.equals
     ? tid.equals(docid)
     : tid === docid;
-};
+}
 
 /**
  * Gets _id(s) used during population of the given `path`.

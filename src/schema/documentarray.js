@@ -119,6 +119,11 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
 
   if (!(value instanceof StorageDocumentArray)) {
     value = new StorageDocumentArray(value, this.path, doc);
+    if (prev && prev._handlers) {
+      for (var key in prev._handlers) {
+        doc.off(key, prev._handlers[key]);
+      }
+    }
   }
 
   i = value.length;
@@ -130,7 +135,11 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
         subdoc = new this.casterConstructor(null, value, true, selected);
         value[i] = subdoc.init(value[i]);
       } else {
-        if (prev && (subdoc = prev.id(value[i]._id))) {
+        try {
+          subdoc = prev.id(value[i]._id);
+        } catch(e) {}
+
+        if (prev && subdoc) {
           // handle resetting doc with existing id but differing data
           // doc.array = [{ doc: 'val' }]
           subdoc.set(value[i]);

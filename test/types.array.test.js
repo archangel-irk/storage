@@ -527,6 +527,30 @@ describe('types array', function(){
         });
       });
     });
+
+    it('handles sub-documents that do not have an _id gh-1973', function(done) {
+      var e = new Schema({ name: String, arr: [] }, { _id: false })
+        , schema = new Schema({
+          doc: [e]
+        });
+
+      var M = storage.createCollection('gh1973', schema);
+      var m = M.add();
+
+      m.doc.addToSet({ name: 'Rap' });
+      m.save(function(m) {
+        assert.equal(1, m.doc.length);
+        assert.equal('Rap', m.doc[0].name);
+        m.doc.addToSet({ name: 'House' });
+        assert.equal(2, m.doc.length);
+        m.save(function(m) {
+          assert.equal(2, m.doc.length);
+          assert.ok(m.doc.some(function(v) { return v.name === 'Rap' }));
+          assert.ok(m.doc.some(function(v) { return v.name === 'House' }));
+          done();
+        });
+      });
+    });
   });
 
   describe('sort()', function(){

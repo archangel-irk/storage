@@ -1,7 +1,8 @@
 /**
- * Реализации хранилища
- * вдохновлён mongoose 3.8.4 (исправлены баги по 3.8.12)
+ * Хранилище документов по схемам
+ * вдохновлён mongoose 3.8.4 (исправлены баги по 3.8.14)
  *
+ * Реализации хранилища
  * http://docs.meteor.com/#selectors
  * https://github.com/meteor/meteor/tree/master/packages/minimongo
  *

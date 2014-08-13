@@ -36,9 +36,13 @@ function StorageDocumentArray (values, path, doc) {
   if (doc) {
     arr._parent = doc;
     arr._schema = doc.schema.path(path);
+    arr._handlers = {
+      isNew: arr.notify('isNew'),
+      save: arr.notify('save')
+    }
     // Проброс изменения состояния в поддокумент
-    doc.on('save', arr.notify('save'));
-    doc.on('isNew', arr.notify('isNew'));
+    doc.on('save', arr._handlers.save);
+    doc.on('isNew', arr._handlers.isNew);
   }
 
   return arr;
