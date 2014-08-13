@@ -1120,6 +1120,25 @@ function define (self, prop, subprops, prototype, prefix, keys) {
       , set: function (v) { return this.set.call(this.$__.scope || this, path, v); }
     });
 
+    // Поддержка Knockout.Validation
+    var validators = schema.path(path) && schema.path(path).validators;
+    if(validators && validators.length){
+      var i = validators.length;
+      while(i--){
+        var validator = validators[i][0]
+          , message = validators[i][1]
+          , type = validators[i][2];
+
+        //if( type = 'required' )
+        observable.extend({  // custom validator
+          validation: {
+            validator: validator,
+            message: message
+          }
+        })
+      }
+    }
+
     allObservablesForObject[ path ] = observable;
 
     if ( isArray ) {
