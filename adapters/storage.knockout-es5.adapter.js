@@ -49,7 +49,6 @@
     },
 
     documentSetInitialValue: function( doc, path, value ){
-      console.log( doc, path, value );
       var observable = ko.getObservable( doc, path );
       // Установить начальное значение
       observable && observable( value );
