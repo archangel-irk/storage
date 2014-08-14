@@ -1,4 +1,10 @@
 /**
+ * Адаптер для использования библиотеки knockout и knockout-es5
+ * Нужен для возможности two-way bindings
+ *
+ * Если подойдёт и односторонняя привязка из html в js,
+ * то (предположительно) можно обойтись без адаптера
+ *
  * User: Constantine Melnikov
  * Email: ka.melnikov@gmail.com
  * Created on 13.08.14

@@ -157,9 +157,10 @@ Document.prototype.id;
 Document.prototype.errors;
 
 Document.prototype.adapterHooks = {
-  documentDefineProperty: $.noop(),
-  documentSetInitialValue: $.noop(),
-  documentGetValue: $.noop()
+  documentDefineProperty: $.noop,
+  documentSetInitialValue: $.noop,
+  documentGetValue: $.noop,
+  documentSetValue: $.noop
 };
 
 /**
