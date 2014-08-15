@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>array.js</title>
+</head>
+<body>
+
+<script>
+    function pro () {};
+    pro.prototype = { f: function(){}, b: 'b' };
+
+    // create an <iframe>
+    var iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    // write a script into the <iframe> and steal its Array object
+    frames[frames.length - 1].document.write(
+            "<script>Array.prototype = parent.A.prototype; parent.Array2 = Array;<\/script>"
+    );
+
+    function A ( values ){
+        var arr = new Array2();
+
+        arr.push.apply(arr, values);
+        //arr.__proto__ = A.prototype;
+        return arr ;
+    }
+    A.prototype = new Array;
+    //A.prototype = Object.create( Array.prototype );
+    //A.prototype.constructor = A;
+    A.prototype.asd = 'asdasdasd';
+
+    var a = A(["Sarah", "Tricia", "Joanna"]);
+    a.push('13123123');
+
+    console.dir( a );
+    console.log( a.constructor.name );
+</script>
+</body>
+</html>
