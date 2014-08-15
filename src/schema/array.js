@@ -80,7 +80,8 @@ function SchemaArray (key, cast, options) {
 /*!
  * Inherits from SchemaType.
  */
-SchemaArray.prototype.__proto__ = SchemaType.prototype;
+SchemaArray.prototype = Object.create( SchemaType.prototype );
+SchemaArray.prototype.constructor = SchemaArray;
 
 /**
  * Check required
@@ -118,7 +119,7 @@ SchemaArray.prototype.applyGetters = function (value, scope) {
  */
 SchemaArray.prototype.cast = function ( value, doc, init ) {
   if (Array.isArray(value)) {
-    if (!(value instanceof StorageArray)) {
+    if (!(value.isStorageArray)) {
       value = new StorageArray(value, this.path, doc);
     }
 

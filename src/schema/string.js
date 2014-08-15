@@ -24,7 +24,8 @@ function StringSchema (key, options) {
 /*!
  * Inherits from SchemaType.
  */
-StringSchema.prototype.__proto__ = SchemaType.prototype;
+StringSchema.prototype = Object.create( SchemaType.prototype );
+StringSchema.prototype.constructor = StringSchema;
 
 /**
  * Adds an enum validator

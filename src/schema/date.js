@@ -21,7 +21,8 @@ function DateSchema (key, options) {
 /*!
  * Inherits from SchemaType.
  */
-DateSchema.prototype.__proto__ = SchemaType.prototype;
+DateSchema.prototype = Object.create( SchemaType.prototype );
+DateSchema.prototype.constructor = DateSchema;
 
 /**
  * Required validator for date

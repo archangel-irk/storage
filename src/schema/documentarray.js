@@ -25,7 +25,8 @@ function DocumentArray (key, schema, options) {
     Subdocument.apply( this, arguments );
   }
 
-  EmbeddedDocument.prototype.__proto__ = Subdocument.prototype;
+  EmbeddedDocument.prototype = Object.create( Subdocument.prototype );
+  EmbeddedDocument.prototype.constructor = EmbeddedDocument;
   EmbeddedDocument.prototype.$__setSchema( schema );
 
   // apply methods
@@ -57,7 +58,8 @@ function DocumentArray (key, schema, options) {
 /*!
  * Inherits from ArrayType.
  */
-DocumentArray.prototype.__proto__ = ArrayType.prototype;
+DocumentArray.prototype = Object.create( ArrayType.prototype );
+DocumentArray.prototype.constructor = DocumentArray;
 
 /**
  * Performs local validations first, then validations on each embedded doc
@@ -117,7 +119,7 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
     return this.cast([value], doc, init, prev);
   }
 
-  if (!(value instanceof StorageDocumentArray)) {
+  if (!(value.isStorageDocumentArray)) {
     value = new StorageDocumentArray(value, this.path, doc);
     if (prev && prev._handlers) {
       for (var key in prev._handlers) {

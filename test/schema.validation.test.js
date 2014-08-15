@@ -437,8 +437,8 @@ describe('schema', function(){
 
           var a = A.add();
           a.validate(function (err) {
-            assert.equal('Path `requiredString1` is required.', err.errors.requiredString1);
-            assert.equal('oops, requiredString2 is missing. required', err.errors.requiredString2);
+            assert.equal('Path `requiredString1` is required.', err.errors.requiredString1.message);
+            assert.equal('oops, requiredString2 is missing. required', err.errors.requiredString2.message);
 
             a.requiredString1 = a.requiredString2 = 'hi';
             a.name = 'three';
@@ -448,14 +448,14 @@ describe('schema', function(){
             a.numMax0 = a.numMax1 = 30;
 
             a.validate(function (err) {
-              assert.equal('`three` is not a valid enum value for path `name`.', err.errors.name);
-              assert.equal('enum validator failed for path: myenum with y', err.errors.myenum);
-              assert.equal('Path `matchString0` is invalid (no match).', err.errors.matchString0);
-              assert.equal('invalid string for matchString1 with value: no match', err.errors.matchString1);
-              assert.equal('Path `numMin0` (2) is less than minimum allowed value (10).', String(err.errors.numMin0));
-              assert.equal('hey, numMin1 is too small', String(err.errors.numMin1));
-              assert.equal('Path `numMax0` (30) is more than maximum allowed value (20).', err.errors.numMax0);
-              assert.equal('hey, numMax1 (30) is greater than 20', String(err.errors.numMax1));
+              assert.equal('`three` is not a valid enum value for path `name`.', err.errors.name.message);
+              assert.equal('enum validator failed for path: myenum with y', err.errors.myenum.message);
+              assert.equal('Path `matchString0` is invalid (no match).', err.errors.matchString0.message);
+              assert.equal('invalid string for matchString1 with value: no match', err.errors.matchString1.message);
+              assert.equal('ValidatorError: Path `numMin0` (2) is less than minimum allowed value (10).', String(err.errors.numMin0));
+              assert.equal('ValidatorError: hey, numMin1 is too small', String(err.errors.numMin1));
+              assert.equal('Path `numMax0` (30) is more than maximum allowed value (20).', err.errors.numMax0.message);
+              assert.equal('ValidatorError: hey, numMax1 (30) is greater than 20', String(err.errors.numMax1));
 
               a.name = 'one';
               a.myenum = 'x';
@@ -479,7 +479,7 @@ describe('schema', function(){
           var m = M.add({ x: [3,4,5,6] });
 
           m.validate(function (err) {
-            assert.equal('x failed validation (3,4,5,6)', String(err.errors.x));
+            assert.equal('ValidatorError: x failed validation (3,4,5,6)', String(err.errors.x));
             assert.equal('user defined', err.errors.x.type);
             done();
           })
@@ -501,7 +501,7 @@ describe('schema', function(){
           var m = M.add({ x: [3,4,5,6] });
 
           m.validate(function (err) {
-            assert.equal('x failed validation (3,4,5,6)', String(err.errors.x));
+            assert.equal('ValidatorError: x failed validation (3,4,5,6)', String(err.errors.x));
             assert.equal('customType', err.errors.x.type);
             done();
           })
@@ -520,7 +520,7 @@ describe('schema', function(){
           var m = M.add({ x: [3,4,5,6] });
 
           m.validate(function (err) {
-            assert.equal('x failed validation (3,4,5,6)', String(err.errors.x));
+            assert.equal('ValidatorError: x failed validation (3,4,5,6)', String(err.errors.x));
             assert.equal('customType', err.errors.x.type);
             done();
           })

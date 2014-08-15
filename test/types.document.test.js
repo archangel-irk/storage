@@ -43,7 +43,8 @@ function Subdocument () {
 /**
  * Inherits from EmbeddedDocument.
  */
-Subdocument.prototype.__proto__ = EmbeddedDocument.prototype;
+Subdocument.prototype = Object.create( EmbeddedDocument.prototype );
+Subdocument.prototype.constructor = Subdocument;
 
 
 /**

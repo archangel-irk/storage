@@ -36,8 +36,8 @@ ValidatorError.prototype.toString = function () {
 /*!
  * Inherits from MongooseError
  */
-
-ValidatorError.prototype.__proto__ = StorageError.prototype;
+ValidatorError.prototype = Object.create( StorageError.prototype );
+ValidatorError.prototype.constructor = ValidatorError;
 
 /*!
  * exports

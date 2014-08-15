@@ -286,10 +286,10 @@ exports.random = function () {
  */
 exports.isStorageObject = function ( v ) {
   Document || (Document = require('./document'));
-  StorageArray || (StorageArray = require('./types/array'));
+  //StorageArray || (StorageArray = require('./types/array'));
 
   return v instanceof Document ||
-         v instanceof StorageArray;
+       ( v && v.isStorageArray );
 };
 var isStorageObject = exports.isStorageObject;
 

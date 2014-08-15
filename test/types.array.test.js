@@ -37,8 +37,8 @@ describe('types array', function(){
   it('behaves and quacks like an Array', function(done){
     var a = new StorageArray;
 
-    assert.ok(a instanceof Array);
-    assert.ok(a instanceof StorageArray);
+    assert.ok( a instanceof Array );
+    assert.ok( a.isStorageArray );
     assert.equal(true, Array.isArray(a));
     done();
   });

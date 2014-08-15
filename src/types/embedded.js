@@ -33,8 +33,8 @@ function EmbeddedDocument ( data, parentArr ) {
 /*!
  * Inherit from Document
  */
-
-EmbeddedDocument.prototype.__proto__ = Document.prototype;
+EmbeddedDocument.prototype = Object.create( Document.prototype );
+EmbeddedDocument.prototype.constructor = EmbeddedDocument;
 
 /**
  * Marks the embedded doc modified.

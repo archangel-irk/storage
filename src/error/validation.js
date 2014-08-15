@@ -22,8 +22,8 @@ function ValidationError (instance) {
 /*!
  * Inherits from MongooseError.
  */
-
-ValidationError.prototype.__proto__ = StorageError.prototype;
+ValidationError.prototype = Object.create( StorageError.prototype );
+ValidationError.prototype.constructor = ValidationError;
 
 /*!
  * Module exports

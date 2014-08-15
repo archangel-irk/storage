@@ -34,7 +34,8 @@ function Mixed (path, options) {
 /*!
  * Inherits from SchemaType.
  */
-Mixed.prototype.__proto__ = SchemaType.prototype;
+Mixed.prototype = Object.create( SchemaType.prototype );
+Mixed.prototype.constructor = Mixed;
 
 /**
  * Required validator

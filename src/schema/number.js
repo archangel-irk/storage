@@ -21,7 +21,8 @@ function NumberSchema (key, options) {
 /*!
  * Inherits from SchemaType.
  */
-NumberSchema.prototype.__proto__ = SchemaType.prototype;
+NumberSchema.prototype = Object.create( SchemaType.prototype );
+NumberSchema.prototype.constructor = NumberSchema;
 
 /**
  * Required validator for number

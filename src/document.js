@@ -115,7 +115,8 @@ function Document ( data, collectionName, schema, fields, init ){
 /*!
  * Inherits from EventEmitter.
  */
-Document.prototype.__proto__ = Events.prototype;
+Document.prototype = Object.create( Events.prototype );
+Document.prototype.constructor = Document;
 
 /**
  * The documents schema.
@@ -954,14 +955,13 @@ Document.prototype.invalidate = function (path, errorMsg, value) {
 
 Document.prototype.$__reset = function reset () {
   var self = this;
-  DocumentArray || (DocumentArray = require('./types/documentarray'));
 
   this.$__.activePaths
   .map('init', 'modify', function (i) {
     return self.getValue(i);
   })
   .filter(function (val) {
-    return val && val instanceof DocumentArray && val.length;
+    return val && val.isStorageDocumentArray && val.length;
   })
   .forEach(function (array) {
     var i = array.length;

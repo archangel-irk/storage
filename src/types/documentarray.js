@@ -28,10 +28,12 @@ function StorageDocumentArray (values, path, doc) {
   // Values always have to be passed to the constructor to initialize, since
   // otherwise StorageArray#push will mark the array as modified to the parent.
   arr.push.apply(arr, values);
-  arr.__proto__ = StorageDocumentArray.prototype;
+  _.mixin( arr, StorageDocumentArray.mixin );
 
   arr.validators = [];
   arr._path = path;
+  arr.isStorageArray = true;
+  arr.isStorageDocumentArray = true;
 
   if (doc) {
     arr._parent = doc;
@@ -39,7 +41,8 @@ function StorageDocumentArray (values, path, doc) {
     arr._handlers = {
       isNew: arr.notify('isNew'),
       save: arr.notify('save')
-    }
+    };
+
     // Проброс изменения состояния в поддокумент
     doc.on('save', arr._handlers.save);
     doc.on('isNew', arr._handlers.isNew);
@@ -51,14 +54,14 @@ function StorageDocumentArray (values, path, doc) {
 /*!
  * Inherits from StorageArray
  */
-StorageDocumentArray.prototype.__proto__ = StorageArray.prototype;
+StorageDocumentArray.mixin = Object.create( StorageArray.mixin );
 
 /**
  * Overrides StorageArray#cast
  *
  * @api private
  */
-StorageDocumentArray.prototype._cast = function (value) {
+StorageDocumentArray.mixin._cast = function (value) {
   if (value instanceof this._schema.casterConstructor) {
     if (!(value.__parent && value.__parentArray)) {
       // value may have been created using array.create()
@@ -90,7 +93,7 @@ StorageDocumentArray.prototype._cast = function (value) {
  * @TODO cast to the _id based on schema for proper comparison
  * @api public
  */
-StorageDocumentArray.prototype.id = function (id) {
+StorageDocumentArray.mixin.id = function (id) {
   var casted
     , sid
     , _id;
@@ -131,7 +134,7 @@ StorageDocumentArray.prototype.id = function (id) {
  * @api public
  */
 
-StorageDocumentArray.prototype.toObject = function (options) {
+StorageDocumentArray.mixin.toObject = function (options) {
   return this.map(function (doc) {
     return doc && doc.toObject(options) || null;
   });
@@ -146,7 +149,7 @@ StorageDocumentArray.prototype.toObject = function (options) {
  * @api public
  */
 
-StorageDocumentArray.prototype.create = function (obj) {
+StorageDocumentArray.mixin.create = function (obj) {
   return new this._schema.casterConstructor(obj);
 };
 
@@ -157,7 +160,7 @@ StorageDocumentArray.prototype.create = function (obj) {
  * @return {Function}
  * @api private
  */
-StorageDocumentArray.prototype.notify = function notify (event) {
+StorageDocumentArray.mixin.notify = function notify (event) {
   var self = this;
   return function notify (val) {
     var i = self.length;

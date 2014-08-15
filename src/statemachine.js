@@ -40,7 +40,8 @@ StateMachine.ctor = function () {
     }
   };
 
-  ctor.prototype.__proto__ = StateMachine.prototype;
+  ctor.prototype = Object.create( StateMachine.prototype );
+  ctor.prototype.constructor = ctor;
 
   states.forEach(function (state) {
     // Changes the `path`'s state to `state`.

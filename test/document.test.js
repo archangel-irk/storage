@@ -34,7 +34,8 @@ function TestDocument () {
  * Inherits from Document.
  */
 
-TestDocument.prototype.__proto__ = Document.prototype;
+TestDocument.prototype = Object.create( Document.prototype );
+TestDocument.prototype.constructor = TestDocument;
 
 /**
  * Set a dummy schema to simulate compilation.

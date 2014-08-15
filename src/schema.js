@@ -118,8 +118,8 @@ function idGetter () {
 /*!
  * Inherit from EventEmitter.
  */
-
-Schema.prototype.__proto__ = Events.prototype;
+Schema.prototype = Object.create( Events.prototype );
+Schema.prototype.constructor = Schema;
 
 /**
  * Schema as flat paths

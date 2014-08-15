@@ -33,7 +33,8 @@ function TestDoc (schema) {
   /**
    * Inherits from EmbeddedDocument.
    */
-  Subdocument.prototype.__proto__ = EmbeddedDocument.prototype;
+  Subdocument.prototype = Object.create( EmbeddedDocument.prototype );
+  Subdocument.prototype.constructor = Subdocument;
 
   /**
    * Set schema.
@@ -58,8 +59,8 @@ describe('types.documentarray', function(){
     var a = new StorageDocumentArray();
 
     assert.ok(a instanceof Array);
-    assert.ok(a instanceof StorageArray);
-    assert.ok(a instanceof StorageDocumentArray);
+    assert.ok( a.isStorageArray );
+    assert.ok( a.isStorageDocumentArray );
     assert.ok(Array.isArray(a));
     assert.equal('object', typeof a);
 

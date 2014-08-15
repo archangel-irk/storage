@@ -19,7 +19,8 @@ function BooleanSchema (path, options) {
 /*!
  * Inherits from SchemaType.
  */
-BooleanSchema.prototype.__proto__ = SchemaType.prototype;
+BooleanSchema.prototype = Object.create( SchemaType.prototype );
+BooleanSchema.prototype.constructor = BooleanSchema;
 
 /**
  * Required validator

@@ -24,8 +24,8 @@ function CastError (type, value, path) {
 /*!
  * Inherits from MongooseError.
  */
-
-CastError.prototype.__proto__ = StorageError.prototype;
+CastError.prototype = Object.create( StorageError.prototype );
+CastError.prototype.constructor = CastError;
 
 /*!
  * exports
