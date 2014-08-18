@@ -1050,6 +1050,19 @@ function compile (self, tree, proto, prefix) {
   }
 }
 
+// gets descriptors for all properties of `object`
+// makes all properties non-enumerable to match previous behavior to #2211
+function getOwnPropertyDescriptors(object) {
+  var result = {};
+
+  Object.getOwnPropertyNames(object).forEach(function(key) {
+    result[key] = Object.getOwnPropertyDescriptor(object, key);
+    result[key].enumerable = false;
+  });
+
+  return result;
+}
+
 /*!
  * Defines the accessor named prop on the incoming prototype.
  * там же, поля документа сделаем наблюдаемыми
@@ -1061,12 +1074,13 @@ function define (self, prop, subprops, prototype, prefix, keys) {
   if (subprops) {
     Object.defineProperty(prototype, prop, {
         enumerable: true
+      , configurable: true
       , get: function () {
           if (!this.$__.getters)
             this.$__.getters = {};
 
           if (!this.$__.getters[path]) {
-            var nested = Object.create(this);
+            var nested = Object.create(Object.getPrototypeOf(this), getOwnPropertyDescriptors(this));
 
             // save scope for nested getters/setters
             if (!prefix) nested.$__.scope = this;
@@ -1105,6 +1119,7 @@ function define (self, prop, subprops, prototype, prefix, keys) {
   } else {
     Object.defineProperty( prototype, prop, {
         enumerable: true
+      , configurable: true
       , get: function ( ) { return this.get.call(this.$__.scope || this, path); }
       , set: function (v) { return this.set.call(this.$__.scope || this, path, v); }
     });
