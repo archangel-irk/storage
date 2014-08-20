@@ -36,7 +36,8 @@ function Collection ( name, schema, api ){
 
   // Отображение объекта documents в виде массива (для нокаута)
   this.array = [];
-  ko.track( this, ['array'] );
+  // Нужно для обновления привязок к этому свойству для knockoutjs
+  window.ko && ko.track( this, ['array'] );
 }
 
 Collection.prototype = {

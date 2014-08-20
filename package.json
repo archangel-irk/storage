@@ -19,15 +19,19 @@
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-browserify": "latest",
+    "time-grunt": "latest",
     "browserify": "latest",
+    "karma": "latest",
+    "karma-mocha": "latest",
+    "karma-chai": "latest",
+    "karma-chrome-launcher": "latest",
+    "karma-sauce-launcher": "latest",
     "mocha": "latest",
-    "should": "latest",
     "chai": "latest",
     "jsdom": "latest",
     "jquery": "latest",
     "knockout": "latest",
     "weakmap": "latest",
-    "lodash": "latest",
-    "time-grunt": "latest"
+    "lodash": "latest"
   }
 }
