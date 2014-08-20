@@ -308,7 +308,7 @@ SchemaType.prototype.get = function (fn) {
  * @api public
  */
 SchemaType.prototype.validate = function (obj, message, type) {
-  if ('function' == typeof obj || obj && 'RegExp' === obj.constructor.name) {
+  if ('function' == typeof obj || obj && 'RegExp' === utils.getFunctionName( obj.constructor )) {
     if (!message) message = errorMessages.general.default;
     if (!type) type = 'user defined';
     this.validators.push([obj, message, type]);
@@ -320,7 +320,7 @@ SchemaType.prototype.validate = function (obj, message, type) {
 
   while (i--) {
     arg = arguments[i];
-    if (!(arg && 'Object' == arg.constructor.name)) {
+    if (!(arg && 'Object' == utils.getFunctionName( arg.constructor ) )) {
       var msg = 'Invalid validator. Received (' + typeof arg + ') '
         + arg
         + '. See http://mongoosejs.com/docs/api.html#schematype_SchemaType-validate';

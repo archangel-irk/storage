@@ -52,7 +52,7 @@ Storage.prototype.createCollection = function( name, schema, api ){
     return this[ name ];
   }
 
-  if ( 'Schema' !== schema.constructor.name ){
+  if ( 'Schema' !== utils.getFunctionName( schema.constructor ) ){
     throw new TypeError('`schema` must be Schema instance');
   }
 

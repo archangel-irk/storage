@@ -266,7 +266,7 @@ function init (self, obj, doc, prefix) {
     schema = self.schema.path(path);
 
     if (!schema && _.isPlainObject( obj[ i ] ) &&
-        (!obj[i].constructor || 'Object' == obj[i].constructor.name)) {
+        (!obj[i].constructor || 'Object' == utils.getFunctionName(obj[i].constructor))) {
       // assume nested object
       if (!doc[i]) doc[i] = {};
       init(self, obj[i], doc[i], path + '.');
@@ -322,7 +322,7 @@ function init (self, obj, doc, prefix) {
  * @api public
  */
 Document.prototype.set = function (path, val, type, options) {
-  if (type && 'Object' == type.constructor.name) {
+  if (type && 'Object' == utils.getFunctionName(type.constructor)) {
     options = type;
     type = undefined;
   }
@@ -368,7 +368,7 @@ Document.prototype.set = function (path, val, type, options) {
         if (null != path[key]
             // need to know if plain object - no Buffer, ObjectId, ref, etc
             && _.isPlainObject(path[key])
-            && ( !path[key].constructor || 'Object' == path[key].constructor.name )
+            && ( !path[key].constructor || 'Object' == utils.getFunctionName(path[key].constructor) )
             && 'virtual' != pathtype
             && !( this.$__path( prefix + key ) instanceof MixedSchema )
             && !( this.schema.paths[key] && this.schema.paths[key].options.ref )
@@ -398,7 +398,7 @@ Document.prototype.set = function (path, val, type, options) {
   // doc.set('path', obj);
   var pathType = this.schema.pathType(path);
   if ('nested' == pathType && val && _.isPlainObject(val) &&
-      (!val.constructor || 'Object' == val.constructor.name)) {
+      (!val.constructor || 'Object' == utils.getFunctionName(val.constructor))) {
     if (!merge) this.setValue(path, null);
     this.set(val, path, constructing);
     return this;
@@ -559,10 +559,10 @@ Document.prototype.$__set = function ( pathToMark, path, constructing, parts, sc
       this.adapterHooks.documentSetValue.call( this, this, path, val );
 
     } else {
-      if (obj[parts[i]] && 'Object' === obj[parts[i]].constructor.name) {
+      if (obj[parts[i]] && 'Object' === utils.getFunctionName(obj[parts[i]].constructor)) {
         obj = obj[parts[i]];
 
-      } else if (obj[parts[i]] && 'EmbeddedDocument' === obj[parts[i]].constructor.name) {
+      } else if (obj[parts[i]] && 'EmbeddedDocument' === utils.getFunctionName(obj[parts[i]].constructor) ) {
         obj = obj[parts[i]];
 
       } else if (obj[parts[i]] && Array.isArray(obj[parts[i]])) {
@@ -1039,7 +1039,7 @@ function compile (self, tree, proto, prefix) {
 
     define(self
         , key
-        , (('Object' === limb.constructor.name
+        , (('Object' === utils.getFunctionName(limb.constructor)
                && Object.keys(limb).length)
                && (!limb.type || limb.type.type)
                ? limb
@@ -1565,7 +1565,7 @@ Document.prototype.toObject = function (options) {
   // When internally saving this document we always pass options,
   // bypassing the custom schema options.
   var optionsParameter = options;
-  if (!(options && 'Object' == options.constructor.name) ||
+  if (!(options && 'Object' == utils.getFunctionName(options.constructor)) ||
     (options && options._useSchemaOptions)) {
     options = this.schema.options.toObject
       ? clone(this.schema.options.toObject)
@@ -1712,7 +1712,7 @@ Document.prototype.toJSON = function (options) {
   // The second check here is to make sure that populated documents (or
   // subdocuments) use their own options for `.toJSON()` instead of their
   // parent's
-  if (!(options && 'Object' == options.constructor.name)
+  if (!(options && 'Object' == utils.getFunctionName(options.constructor))
       || ((!options || options.json) && this.schema.options.toJSON)) {
 
     options = this.schema.options.toJSON

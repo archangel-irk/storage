@@ -196,7 +196,7 @@ Schema.prototype.add = function add ( obj, prefix ) {
     }
 
     if ( _.isPlainObject(obj[key] )
-      && ( !obj[ key ].constructor || 'Object' == obj[ key ].constructor.name )
+      && ( !obj[ key ].constructor || 'Object' == utils.getFunctionName(obj[key].constructor) )
       && ( !obj[ key ].type || obj[ key ].type.type ) ){
 
       if ( Object.keys(obj[ key ]).length ) {
@@ -308,8 +308,10 @@ Schema.prototype.path = function (path, obj) {
  * @api private
  */
 Schema.interpretAsType = function (path, obj) {
-  if (obj.constructor && obj.constructor.name != 'Object')
+  var constructorName = utils.getFunctionName(obj.constructor);
+  if (constructorName != 'Object'){
     obj = { type: obj };
+  }
 
   // Get the type making sure to allow keys named "type"
   // and default to mixed if not specified.
@@ -318,7 +320,7 @@ Schema.interpretAsType = function (path, obj) {
     ? obj.type
     : {};
 
-  if ('Object' == type.constructor.name || 'mixed' == type) {
+  if ('Object' == utils.getFunctionName(type.constructor) || 'mixed' == type) {
     return new Types.Mixed(path, obj);
   }
 
@@ -335,7 +337,7 @@ Schema.interpretAsType = function (path, obj) {
     if ('string' == typeof cast) {
       cast = Types[cast.charAt(0).toUpperCase() + cast.substring(1)];
     } else if (cast && (!cast.type || cast.type.type)
-                    && 'Object' == cast.constructor.name
+                    && 'Object' == utils.getFunctionName(cast.constructor)
                     && Object.keys(cast).length) {
       return new Types.DocumentArray(path, new Schema(cast), obj);
     }
@@ -345,7 +347,9 @@ Schema.interpretAsType = function (path, obj) {
 
   var name = 'string' == typeof type
     ? type
-    : type.name;
+    // If not string, `type` is a function. Outside of IE, function.name
+    // gives you the function name. In IE, you need to compute it
+    : utils.getFunctionName(type);
 
   if (name) {
     name = name.charAt(0).toUpperCase() + name.substring(1);

@@ -318,20 +318,20 @@ describe('document', function(){
     clone = doc.toObject({ minimize: true, getters: true });
     assert.equal(undefined, clone.nested2);
     clone = doc.toObject({ minimize: false });
-    assert.equal('Object', clone.nested2.constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ));
     assert.equal(1, Object.keys(clone.nested2).length);
     clone = doc.toObject('2');
     assert.equal(undefined, clone.nested2);
 
     doc.schema.options.toObject = { minimize: false };
     clone = doc.toObject();
-    assert.equal('Object', clone.nested2.constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
     assert.equal(1, Object.keys(clone.nested2).length);
     delete doc.schema.options.toObject;
 
     doc.schema.options.minimize = false;
     clone = doc.toObject();
-    assert.equal('Object', clone.nested2.constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ));
     assert.equal(1, Object.keys(clone.nested2).length);
     doc.schema.options.minimize = true;
     clone = doc.toObject();
@@ -380,7 +380,7 @@ describe('document', function(){
     assert.equal(5, clone.nested.age);
     assert.equal(clone.nested.cool.toString(),'4c6c2d6240ced95d0e00003c');
     assert.equal('my path', clone.nested.path);
-    assert.equal('Object', clone.em[0].constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.em[0].constructor ));
 
     // applied transform when inline transform is true
     clone = doc.toObject({ x: 1, transform: true });
@@ -437,17 +437,17 @@ describe('document', function(){
     assert.equal(clone.nested.cool.toString(),'4c6c2d6240ced95d0e00003c');
     assert.equal('my path', clone.nested.path);
     assert.equal(7, clone.nested.agePlus2);
-    assert.equal('Object', clone.em[0].constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.em[0].constructor ) );
     assert.equal(0, Object.keys(clone.em[0]).length);
     delete doc.schema.options.toJSON;
     delete path.casterConstructor.prototype.toJSON;
 
     doc.schema.options.toJSON = { minimize: false };
     clone = doc.toJSON();
-    assert.equal('Object', clone.nested2.constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
     assert.equal(1, Object.keys(clone.nested2).length);
     clone = doc.toJSON('8');
-    assert.equal('Object', clone.nested2.constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
     assert.equal(1, Object.keys(clone.nested2).length);
 
     // gh-852
@@ -459,7 +459,7 @@ describe('document', function(){
     } catch (_) { err = true; }
     assert.equal(false, err);
     assert.ok(/nested2/.test(str));
-    assert.equal('Object', clone.nested2.constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
     assert.equal(1, Object.keys(clone.nested2).length);
 
     // transform
@@ -504,7 +504,7 @@ describe('document', function(){
     assert.equal(5, clone.nested.age);
     assert.equal(clone.nested.cool.toString(),'4c6c2d6240ced95d0e00003c');
     assert.equal('my path', clone.nested.path);
-    assert.equal('Object', clone.em[0].constructor.name);
+    assert.equal('Object', utils.getFunctionName( clone.em[0].constructor ) );
 
     // applied transform when inline transform is true
     clone = doc.toJSON({ x: 1, transform: true });

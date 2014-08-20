@@ -163,7 +163,7 @@ exports.clone = function clone (obj, options) {
   }
 
   if ( obj.constructor ) {
-    switch (obj.constructor.name) {
+    switch ( utils.getFunctionName( obj.constructor )) {
       case 'Object':
         return cloneObject(obj, options);
       case 'Date':
@@ -314,6 +314,15 @@ exports.getValue = function (path, obj, map) {
 
 exports.setValue = function (path, val, obj, map) {
   mpath.set(path, val, obj, '_doc', map);
+};
+
+var rFunctionName = /^function\s*([^\s(]+)/;
+
+exports.getFunctionName = function(ctor) {
+  if (ctor.name) {
+    return ctor.name;
+  }
+  return (ctor.toString().trim().match( rFunctionName ) || [])[1];
 };
 
 exports.setImmediate = (function() {
