@@ -561,7 +561,7 @@ describe('types array', function(){
           assert.equal(4, m1.x[3]);
 
           m1.x.sort(function(a,b){
-            return b > a;
+            return b - a;
           });
 
           m1.save(function (m2) {
