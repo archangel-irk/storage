@@ -27,13 +27,6 @@
     "karma-chrome-launcher": "latest",
     "karma-firefox-launcher": "latest",
     "karma-ie-launcher": "latest",
-    "karma-sauce-launcher": "latest",
-    "mocha": "latest",
-    "chai": "latest",
-    "jsdom": "latest",
-    "jquery": "latest",
-    "knockout": "latest",
-    "weakmap": "latest",
-    "lodash": "latest"
+    "karma-sauce-launcher": "latest"
   }
 }
