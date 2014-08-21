@@ -163,7 +163,7 @@ exports.clone = function clone (obj, options) {
   }
 
   if ( obj.constructor ) {
-    switch ( utils.getFunctionName( obj.constructor )) {
+    switch ( getFunctionName( obj.constructor )) {
       case 'Object':
         return cloneObject(obj, options);
       case 'Date':
@@ -318,12 +318,14 @@ exports.setValue = function (path, val, obj, map) {
 
 var rFunctionName = /^function\s*([^\s(]+)/;
 
-exports.getFunctionName = function(ctor) {
+function getFunctionName( ctor ){
   if (ctor.name) {
     return ctor.name;
   }
   return (ctor.toString().trim().match( rFunctionName ) || [])[1];
-};
+}
+
+exports.getFunctionName = getFunctionName;
 
 exports.setImmediate = (function() {
   // Для поддержки тестов (окружение node.js)

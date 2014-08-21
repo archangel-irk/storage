@@ -2,7 +2,9 @@
  * Module dependencies.
  */
 
-var error = require('./error');
+var error = require('./error')
+  , utils = require('./utils');
+
 var errorMessages = error.messages;
 var CastError = error.CastError;
 var ValidatorError = error.ValidatorError;

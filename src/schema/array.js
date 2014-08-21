@@ -13,6 +13,7 @@ var SchemaType = require('../schematype')
     }
   , StorageArray = require('../types/array')
   , Mixed = require('./mixed')
+  , utils = require('../utils')
   , EmbeddedDoc;
 
 /**
