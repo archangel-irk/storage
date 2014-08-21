@@ -22,6 +22,7 @@
     "time-grunt": "latest",
     "browserify": "latest",
     "karma": "latest",
+    "karma-coverage": "latest",
     "karma-mocha": "latest",
     "karma-chai": "latest",
     "karma-chrome-launcher": "latest",
