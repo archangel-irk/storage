@@ -1,18 +1,5 @@
-
-/**
- * Module dependencies.
- */
-
-_ = require('lodash');
-window = require("jsdom").jsdom().createWindow();
-$ = jQuery = require('jquery');
-ko = require('knockout');
-require('../lib/knockout-es5.js');
-
-var storage = window.storage = require('../storage.js')
-  , Schema = storage.Schema
+var Schema = storage.Schema
   , utils = storage.utils
-  , assert = require('assert')
   , random = utils.random;
 
 var setValue = utils.setValue
@@ -344,7 +331,7 @@ describe('types.documentarray', function(){
       assert.throws(function(){
         // has no parent array
         subdoc.invalidate('name', 'crap', 47);
-      }, /^Error: Unable to invalidate a subdocument/);
+      }, /^Unable to invalidate a subdocument/);
 
       t.validate(function (err) {
         var e = t.errors['docs.0.name'];

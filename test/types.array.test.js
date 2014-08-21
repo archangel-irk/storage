@@ -1,17 +1,5 @@
-
-/**
- * Module dependencies.
- */
-_ = require('lodash');
-window = require("jsdom").jsdom().createWindow();
-$ = jQuery = require('jquery');
-ko = require('knockout');
-require('../lib/knockout-es5.js');
-
-var storage = window.storage = require('../storage.js')
-  , Schema = storage.Schema
+var Schema = storage.Schema
   , utils = storage.utils
-  , assert = require('assert')
   , random = utils.random;
 
 var StorageArray = storage.Types.Array
