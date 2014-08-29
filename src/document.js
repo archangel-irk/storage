@@ -60,7 +60,7 @@ function Document ( data, collectionName, schema, fields, init ){
     if ( !this.schema && schema.options._id ){
       data = data || {};
 
-      if ( !data._id ){
+      if ( data._id === undefined ){
         data._id = new ObjectId();
       }
     }
