@@ -44,6 +44,10 @@ function Document ( data, collectionName, schema, fields, init ){
     collectionName = undefined;
   }
 
+  if ( utils.isObject( schema ) && !( schema instanceof Schema )) {
+    schema = new Schema( schema );
+  }
+
   // Создать пустой документ по схеме
   if ( data instanceof Schema ){
     schema = data;
