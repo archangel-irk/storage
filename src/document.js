@@ -1745,7 +1745,7 @@ Document.prototype.equals = function (doc) {
   return tid && tid.equals
     ? tid.equals(docid)
     : tid === docid;
-}
+};
 
 /**
  * Gets _id(s) used during population of the given `path`.
