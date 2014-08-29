@@ -56,7 +56,7 @@ function Document ( data, collectionName, schema, fields, init ){
   } else {
     // При создании EmbeddedDocument, в нём уже есть схема и ему не нужен _id
     schema = this.schema || schema;
-    // Сгенерировать ObjectId, если он отсутствует и его требует схема
+    // Сгенерировать ObjectId, если он отсутствует, но его требует схема
     if ( !this.schema && schema.options._id ){
       data = data || {};
 
