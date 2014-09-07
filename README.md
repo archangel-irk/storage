@@ -26,6 +26,19 @@ var user = storage.users.add({name: 'Constantine'});
 console.log( user.name );  // "Constantine"
 ```
 
+Validation
+```javascript
+user.name = undefined;
+
+user.validate(function( err ){
+  if ( err ) {
+    console.log( err ); // ValidationError object
+  }
+});
+```
+
+Validation sync coming soon
+
 ## Building from sources
 1. **Clone the repo from GitHub**
 
