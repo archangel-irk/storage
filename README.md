@@ -7,6 +7,24 @@ Use mongoose-like schema and validation on browser.
 <script src="storage.js"></script>
 ```
 ## Usage
+Create Schema
+```javascript
+var User = new Schema('User', {
+  name: { type: String, required: true }
+});
+```
+
+Create Collection
+```javascript
+storage.createCollection('users', User );
+```
+
+Create Document
+```javascript
+var user = storage.users.add({name: 'Constantine'});
+
+console.log( user.name );  // "Constantine"
+```
 
 ## Building from sources
 1. **Clone the repo from GitHub**
