@@ -24,7 +24,7 @@ var start = require('./common')
 
 function TestDocument () {
   Document.apply(this, arguments);
-};
+}
 
 /**
  * Inherits from Document.
