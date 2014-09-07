@@ -56,8 +56,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      './bin/mongoose.js',
-      './test/browser/*.js'
+      './vendor/jquery-2.1.1.js',
+      './vendor/lodash.js',
+      './storage.js',
+      './test/*.js'
     ],
 
     // test results reporter to use
@@ -90,8 +92,8 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      testName: 'Mongoose ' + Date.now()
-    },
+      testName: 'Storage ' + Date.now()
+    }
   });
 };
 
