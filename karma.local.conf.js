@@ -12,8 +12,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      './lib/jquery-2.1.1.js',
-      './lib/lodash.js',
+      './vendor/jquery-2.1.1.js',
+      './vendor/lodash.js',
       './storage.js',
       './test/*.js'
     ],

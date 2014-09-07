@@ -11,19 +11,19 @@ module.exports = function (grunt) {
   grunt.initConfig({
     //pkg: grunt.file.readJSON('package.json'),
     watch: {
-      files: ['src/**/*.js'],
+      files: ['lib/**/*.js'],
       tasks: ['browserify']
     },
 
     browserify: {
       main: {
         options: {
-          bundleOptions: {
+          browserifyOptions: {
             debug: true,
             standalone: 'storage'
           }
         },
-        src: 'src/index.js',
+        src: 'lib/index.js',
         dest: 'storage.js'
       }
     }
