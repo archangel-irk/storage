@@ -213,6 +213,14 @@ var thing = things.add();
 thing.set('iAmNotInTheSchema', true);
 console.log( thing.toObject() ); // Object {iAmNotInTheSchema: true, _id: ObjectId}
 ```
+This value can be overridden at the model instance level by passing a second boolean argument:
+```javascript
+var things = storage.createCollection('Thing');
+var thing = things.add(doc, true);  // enables strict mode
+var thing = things.add(doc, false); // disables strict mode
+```
+The `strict` option may also be set to `"throw"` which will cause errors to be produced instead of dropping the bad data.
+
 *NOTE: do not set to false unless you have good reason.*
 
 *NOTE: Any key/val set on the instance that does not exist in your schema is always ignored, regardless of schema option.*
@@ -223,6 +231,37 @@ var thing = things.add();
 thing.iAmNotInTheSchema = true;
 console.log( thing.iAmNotInTheSchema ); // true
 console.log( thing.toObject() ); // Object {_id: ObjectId}
+```
+
+#### option: toJSON
+Exactly the same as the toObject option but only applies when the documents `toJSON` method is called.
+```javascript
+var schema = new Schema({ name: String });
+schema.path('name').get(function (v) {
+  return v + ' is my name';
+});
+schema.set('toJSON', { getters: true, virtuals: false });
+var persons = storage.createCollection('Person', schema);
+var person = persons.add({ name: 'Max Headroom' });
+console.log( person.toObject() ); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max Headroom' }
+console.log( person.toJSON() ); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max Headroom is my name' }
+// since we know toJSON is called whenever a js object is stringified:
+console.log(JSON.stringify( person )); // { "_id": "504e0cd7dd992d9be2f20b6f", "name": "Max Headroom is my name" }
+```
+
+#### option: toObject
+Documents have a toObject method which converts the mongoose document into a plain javascript object. This method accepts a few options. Instead of applying these options on a per-document basis we may declare the options here and have it applied to all of this schemas documents by default.
+
+To have all virtuals show up in your `console.log` output, set the `toObject` option to `{ getters: true }`:
+```javascript
+var schema = new Schema({ name: String });
+schema.path('name').get(function (v) {
+  return v + ' is my name';
+});
+schema.set('toObject', { getters: true });
+var persons = storage.createCollection('Person', schema);
+var person = persons.add({ name: 'Max Headroom' });
+console.log( person.toObject() ); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max Headroom is my name' }
 ```
 
 ## Building from sources
