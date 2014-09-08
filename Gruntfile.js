@@ -16,7 +16,7 @@ module.exports = function (grunt) {
     },
 
     browserify: {
-      main: {
+      dev: {
         options: {
           browserifyOptions: {
             debug: true,
@@ -24,14 +24,32 @@ module.exports = function (grunt) {
           }
         },
         src: 'lib/index.js',
+        dest: 'storage.debug.js'
+      },
+      dist: {
+        options: {
+          browserifyOptions: {
+            standalone: 'storage'
+          }
+        },
+        src: 'lib/index.js',
         dest: 'storage.js'
+      }
+    },
+
+    uglify: {
+      main: {
+        files: {
+          'storage.min.js': ['storage.js']
+        }
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('default', ['browserify'] );
-  grunt.registerTask('dev', ['browserify', 'watch'] );
+  grunt.registerTask('default', ['browserify', 'uglify'] );
+  grunt.registerTask('dev', ['browserify:dev', 'watch'] );
 };

@@ -1,6 +1,7 @@
 # Storage
 
-Use mongoose-like schema and validation on browser.
+Use mongoose-like schema validation, collections and documents on browser.
+
 
 ## Installation
 ```html
