@@ -458,13 +458,17 @@ Document.prototype.set = function (path, val, type, options) {
             && !(this.$__path(prefix + key) instanceof MixedSchema)
             && !(this.schema.paths[key] && this.schema.paths[key].options.ref)
           ) {
+
           this.set(path[key], prefix + key, constructing);
+
         } else if (strict) {
           if ('real' === pathtype || 'virtual' === pathtype) {
             this.set(prefix + key, path[key], constructing);
+
           } else if ('throw' == strict) {
             throw new Error("Field `" + key + "` is not in schema.");
           }
+
         } else if (undefined !== path[key]) {
           this.set(prefix + key, path[key], constructing);
         }
