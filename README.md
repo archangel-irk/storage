@@ -4,7 +4,12 @@ Use mongoose-like schema validation, collections and documents on browser.
 
 
 ## Installation
+Dependencies:
+* jquery for deferred
+* lodash
 ```html
+<script src="jquery.js"></script>
+<script src="lodash.js"></script>
 <script src="storage.js"></script>
 ```
 ## Usage
