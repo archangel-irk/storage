@@ -5,13 +5,15 @@ Use mongoose-like schema validation, collections and documents on browser.
 
 ## Installation
 Dependencies:
-* jquery for deferred
-* lodash
-```html
+* jquery for deferred  
+* lodash  
+
+```
 <script src="jquery.js"></script>
 <script src="lodash.js"></script>
 <script src="storage.js"></script>
 ```
+
 ## Usage
 ### Defining your schema
 Everything in Storage starts with a Schema. Each schema maps to a Storage collection and defines the shape of the documents within that collection.
