@@ -8,7 +8,7 @@ Dependencies:
 * jquery for deferred  
 * lodash  
 
-```
+```html
 <script src="jquery.js"></script>
 <script src="lodash.js"></script>
 <script src="storage.js"></script>
