@@ -7,6 +7,7 @@ var EventEmitter = require('events').EventEmitter
   , MongooseError = require('./error')
   , MixedSchema = require('./schema/mixed')
   , Schema = require('./schema')
+  , ObjectId = require('./types/objectid')
   , ValidatorError = require('./schematype').ValidatorError
   , utils = require('./utils')
   , clone = utils.clone
@@ -33,19 +34,7 @@ var EventEmitter = require('events').EventEmitter
  * @api private
  */
 
-function Document (obj, fields, skipId, skipInit) {
-  if (!skipInit) {
-    this.initConstructor(obj, fields, skipId);
-  }
-}
-
-/*!
- * Inherit from EventEmitter.
- */
-Document.prototype = Object.create( EventEmitter.prototype );
-Document.prototype.constructor = Document;
-
-Document.prototype.initConstructor = function(obj, fields, skipId) {
+function Document (obj, fields, skipId) {
   this.$__ = new InternalCache;
   this.isNew = true;
   this.errors = undefined;
@@ -73,8 +62,13 @@ Document.prototype.initConstructor = function(obj, fields, skipId) {
   }
 
   this.$__registerHooksFromSchema();
+}
 
-};
+/*!
+ * Inherit from EventEmitter.
+ */
+Document.prototype = Object.create( EventEmitter.prototype );
+Document.prototype.constructor = Document;
 
 /**
  * The documents schema.
@@ -215,7 +209,7 @@ Document.prototype.$__buildDoc = function (obj, fields, skipId) {
         doc_ = doc_[piece] || (doc_[piece] = {});
       }
     }
-  };
+  }
 
   return doc;
 };
@@ -302,7 +296,7 @@ function init (self, obj, doc, prefix) {
       self.$__.activePaths.init(path);
     }
   }
-};
+}
 
 /**
  * Stores the current values of the shard keys.
@@ -458,17 +452,13 @@ Document.prototype.set = function (path, val, type, options) {
             && !(this.$__path(prefix + key) instanceof MixedSchema)
             && !(this.schema.paths[key] && this.schema.paths[key].options.ref)
           ) {
-
           this.set(path[key], prefix + key, constructing);
-
         } else if (strict) {
           if ('real' === pathtype || 'virtual' === pathtype) {
             this.set(prefix + key, path[key], constructing);
-
           } else if ('throw' == strict) {
             throw new Error("Field `" + key + "` is not in schema.");
           }
-
         } else if (undefined !== path[key]) {
           this.set(prefix + key, path[key], constructing);
         }
@@ -618,6 +608,7 @@ Document.prototype.$__set = function (
   Embedded = Embedded || require('./types/embedded');
 
   var shouldModify = this.$__shouldModify.apply(this, arguments);
+  var _this = this;
 
   if (shouldModify) {
     this.markModified(pathToMark, val);
@@ -626,6 +617,14 @@ Document.prototype.$__set = function (
     MongooseArray || (MongooseArray = require('./types/array'));
     if (val && val.isMongooseArray) {
       val._registerAtomic('$set', val);
+
+      // Small hack for gh-1638: if we're overwriting the entire array, ignore
+      // paths that were modified before the array overwrite
+      this.$__.activePaths.forEach(function(modifiedPath) {
+        if (modifiedPath.indexOf(path) === 0 && modifiedPath !== path) {
+          _this.$__.activePaths.ignore(modifiedPath);
+        }
+      });
     }
   }
 
@@ -1034,7 +1033,12 @@ Document.prototype.invalidate = function (path, err, val) {
   }
 
   if (!err || 'string' === typeof err) {
-    err = new ValidatorError(path, err, 'user defined', val)
+    err = new ValidatorError({
+      path: path,
+      message: err,
+      type: 'user defined',
+      value: val
+    });
   }
 
   if (this.$__.validationError == err) return;
@@ -1241,7 +1245,7 @@ function define (prop, subprops, prototype, prefix, keys) {
       , set: function (v) { return this.set.call(this.$__.scope || this, path, v); }
     });
   }
-};
+}
 
 /**
  * Assigns/compiles `schema` into this documents prototype.
@@ -1255,7 +1259,7 @@ function define (prop, subprops, prototype, prefix, keys) {
 Document.prototype.$__setSchema = function (schema) {
   compile(schema.tree, this);
   this.schema = schema;
-}
+};
 
 
 /**
@@ -1772,7 +1776,7 @@ Document.prototype.equals = function (doc) {
   return tid && tid.equals
     ? tid.equals(docid)
     : tid === docid;
-}
+};
 
 /**
  * Populates document references, executing the `callback` when complete.

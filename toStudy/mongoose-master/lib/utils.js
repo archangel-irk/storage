@@ -229,7 +229,7 @@ exports.clone = function clone (obj, options) {
   }
 
   if (obj.constructor) {
-    switch (obj.constructor.name) {
+    switch (exports.getFunctionName(obj.constructor)) {
       case 'Object':
         return cloneObject(obj, options);
       case 'Date':
@@ -434,7 +434,7 @@ exports.isMongooseObject = function (v) {
   return v instanceof Document ||
          (v && v.isMongooseArray) ||
          (v && v.isMongooseBuffer);
-}
+};
 var isMongooseObject = exports.isMongooseObject;
 
 /*!
@@ -456,7 +456,7 @@ exports.expires = function expires (object) {
   }
   object.expireAfterSeconds = when;
   delete object.expires;
-}
+};
 
 /*!
  * Converts arguments to ReadPrefs the driver
@@ -492,7 +492,7 @@ exports.readPref = function readPref (pref, tags) {
   }
 
   return new ReadPref(pref, tags);
-}
+};
 
 /*!
  * Populate options constructor

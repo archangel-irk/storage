@@ -2,10 +2,7 @@
  * Module dependencies.
  */
 
-var start = require('./common')
-  , mongoose = start.mongoose
-  , assert = require('assert')
-  , Schema = mongoose.Schema
+var Schema = mongoose.Schema
   , Document = mongoose.Document
   , SchemaType = mongoose.SchemaType
   , VirtualType = mongoose.VirtualType
@@ -15,8 +12,7 @@ var start = require('./common')
   , Mixed = SchemaTypes.Mixed
   , DocumentObjectId = mongoose.Types.ObjectId
   , MongooseArray = mongoose.Types.Array
-  , vm = require('vm')
-  , random = require('../lib/utils').random
+  , random = mongoose.utils.random;
 
 describe('schema', function(){
   describe('validation', function(){
@@ -46,7 +42,7 @@ describe('schema', function(){
       }, /Invalid validator/);
 
       done();
-    })
+    });
 
     it('string enum', function(done){
       var Test = new Schema({
@@ -56,7 +52,7 @@ describe('schema', function(){
 
       assert.ok(Test.path('complex') instanceof SchemaTypes.String);
       assert.deepEqual(Test.path('complex').enumValues,['a', 'b', 'c', null]);
-      assert.equal(Test.path('complex').validators.length, 1)
+      assert.equal(Test.path('complex').validators.length, 1);
 
       Test.path('complex').enum('d', 'e');
 
@@ -101,7 +97,7 @@ describe('schema', function(){
       });
 
       done();
-    })
+    });
 
     it('string regexp', function(done){
       var Test = new Schema({
@@ -140,7 +136,7 @@ describe('schema', function(){
         assert.ok(err instanceof ValidatorError);
       });
       done();
-    })
+    });
 
     it('number min and max', function(done){
       var Tobi = new Schema({
@@ -272,7 +268,7 @@ describe('schema', function(){
       });
 
       done();
-    })
+    });
 
       it('date required', function(done){
         var Loki = new Schema({
@@ -378,8 +374,8 @@ describe('schema', function(){
             assert.ifError(err);
           });
           done();
-      })
-    })
+      });
+    });
 
     describe('async', function(){
       it('works', function(done){
@@ -391,7 +387,7 @@ describe('schema', function(){
             fn(value === true);
             if (2 === executed) done();
           }, 5);
-        };
+        }
 
         var Animal = new Schema({
             ferret: { type: Boolean, validate: validator }
@@ -415,7 +411,7 @@ describe('schema', function(){
             fn(value === true);
             if (2 === executed) done();
           }, 5);
-        };
+        }
 
         var Animal = new Schema({
           ferret: {
@@ -427,48 +423,6 @@ describe('schema', function(){
               },
               {
                 'validator': validator,
-                'msg': 'validator2'
-              }
-            ]
-          }
-        });
-
-        Animal.path('ferret').doValidate(true, function(err){
-          assert.ifError(err);
-        });
-      });
-
-      it('multiple sequence', function(done) {
-        var validator1Executed = false
-          ,validator2Executed = false;
-
-        function validator1 (value, fn) {
-          setTimeout(function(){
-            validator1Executed = true;
-            assert.ok(!validator2Executed);
-            fn(value === true);
-          }, 5);
-        };
-
-        function validator2 (value, fn) {
-          setTimeout(function(){
-            validator2Executed  = true;
-            assert.ok(validator1Executed);
-            fn(value === true);
-            done();
-          }, 5);
-        };
-
-        var Animal = new Schema({
-          ferret: {
-            type: Boolean,
-            validate: [
-              {
-                'validator': validator1,
-                'msg': 'validator1'
-              },
-              {
-                'validator': validator2,
                 'msg': 'validator2'
               }
             ]
@@ -489,7 +443,7 @@ describe('schema', function(){
             called = true;
             fn(true);
           }, 5);
-        };
+        }
 
         var Animal = new Schema({
             ferret: { type: Boolean, validate: validator }
@@ -500,8 +454,8 @@ describe('schema', function(){
           assert.equal(true, called);
           done();
         }, { a: 'b' });
-      })
-    })
+      });
+    });
 
     describe('messages', function(){
       describe('are customizable', function(){
@@ -519,9 +473,7 @@ describe('schema', function(){
             , numMax1: { type: Number, max: [20, 'hey, {PATH} ({VALUE}) is greater than {MAX}'] }
           });
 
-          var A = mongoose.model('schema-validation-messages-'+random(), schema);
-
-          var a = new A;
+          var a = new mongoose.Document({}, schema);
           a.validate(function (err) {
             assert.equal('Path `requiredString1` is required.', err.errors.requiredString1);
             assert.equal('oops, requiredString2 is missing. required', err.errors.requiredString2);
@@ -550,49 +502,27 @@ describe('schema', function(){
               a.numMin0 = a.numMax0 = a.numMin1 = a.numMax1 = 15;
               a.validate(done);
             });
-          })
-        })
+          });
+        });
 
-        it('for custom validators', function(done) {
-          var validate = function() {
+        it('for custom validators', function(done){
+          function validate () {
             return false;
-          };
+          }
           var validator = [validate, '{PATH} failed validation ({VALUE})'];
 
           var schema = new Schema({ x: { type: [], validate: validator }});
-          var M = mongoose.model('custom-validator-'+random(), schema);
 
-          var m = new M({ x: [3,4,5,6] });
+          var doc = new mongoose.Document({ x: [3,4,5,6] }, schema);
 
-          m.validate(function (err) {
+          doc.validate(function (err) {
             assert.equal('x failed validation (3,4,5,6)', String(err.errors.x));
             assert.equal('user defined', err.errors.x.kind);
             done();
           });
         });
-
-        it('supports custom properties (gh-2132)', function(done) {
-          var schema = new Schema({
-            x: {
-              type: String,
-              validate: [{
-                validator: function() { return false; },
-                msg: 'Error code {ERRORCODE}',
-                errorCode: 25
-              }]
-            }
-          });
-          var M = mongoose.model('gh-2132', schema, 'gh-2132');
-
-          var m = new M({ x: 'a' });
-          m.validate(function(err) {
-            assert.equal('Error code 25', err.errors.x.toString());
-            assert.equal(25, err.errors.x.properties.errorCode);
-            done();
-          });
-        });
-      })
-    })
+      });
+    });
 
     describe('types', function(){
       describe('are customizable', function(){
@@ -603,16 +533,15 @@ describe('schema', function(){
           var validator = [validate, '{PATH} failed validation ({VALUE})', 'customType'];
 
           var schema = new Schema({ x: { type: [], validate: validator }});
-          var M = mongoose.model('custom-validator-'+random(), schema);
 
-          var m = new M({ x: [3,4,5,6] });
+          var doc = new mongoose.Document({ x: [3,4,5,6] }, schema);
 
-          m.validate(function (err) {
+          doc.validate(function (err) {
             assert.equal('x failed validation (3,4,5,6)', String(err.errors.x));
             assert.equal('customType', err.errors.x.kind);
             done();
           })
-        })
+        });
 
         it('for many custom validators', function(done){
           function validate () {
@@ -620,19 +549,18 @@ describe('schema', function(){
           }
           var validator = [
               { validator: validate, msg: '{PATH} failed validation ({VALUE})', type: 'customType'}
-          ]
+          ];
           var schema = new Schema({ x: { type: [], validate: validator }});
-          var M = mongoose.model('custom-validator-'+random(), schema);
 
-          var m = new M({ x: [3,4,5,6] });
+          var doc = new mongoose.Document({ x: [3,4,5,6] }, schema);
 
-          m.validate(function (err) {
+          doc.validate(function (err) {
             assert.equal('x failed validation (3,4,5,6)', String(err.errors.x));
             assert.equal('customType', err.errors.x.kind);
             done();
-          })
-        })
-      })
-    })
+          });
+        });
+      });
+    });
   });
 });
