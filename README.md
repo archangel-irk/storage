@@ -310,4 +310,3 @@ MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.op
 
 ## Todo
 * assert.ifError(err) -> move to .fail(function( err ){});
-* resolve problem with isNew.
