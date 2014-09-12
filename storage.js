@@ -6965,7 +6965,6 @@ function ObjectId(id) {
   if((id instanceof ObjectId)) return id;
 
   this._bsontype = 'ObjectId';
-  var __id = null;
   var valid = ObjectId.isValid(id);
 
   // Throw an error if it's not a valid setup
@@ -7063,14 +7062,6 @@ ObjectId.prototype.toString = function() {
 };
 
 /**
- * Converts to a string representation of this Id.
- *
- * @return {String} return the 24 byte hex string representation.
- * @ignore
- */
-ObjectId.prototype.inspect = ObjectId.prototype.toString;
-
-/**
  * Converts to its JSON representation.
  *
  * @return {String} return the 24 byte hex string representation.
@@ -7094,7 +7085,7 @@ ObjectId.prototype.equals = function equals (otherID) {
     : ObjectId.createFromHexString(otherID).id;
 
   return this.id === id;
-}
+};
 
 /**
  * Returns the generation date (accurate up to the second) that this ID was generated.
@@ -7106,7 +7097,7 @@ ObjectId.prototype.getTimestamp = function() {
   var timestamp = new Date();
   timestamp.setTime(Math.floor(BinaryParser.decodeInt(this.id.substring(0,4), 32, true, true)) * 1000);
   return timestamp;
-}
+};
 
 /**
  * @ignore
