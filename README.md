@@ -4,9 +4,16 @@ Use mongoose-like schema validation, collections and documents on browser.
 
 
 ## Installation
+Dependencies:
+* jquery for deferred  
+* lodash  
+
 ```html
+<script src="jquery.js"></script>
+<script src="lodash.js"></script>
 <script src="storage.js"></script>
 ```
+
 ## Usage
 ### Defining your schema
 Everything in Storage starts with a Schema. Each schema maps to a Storage collection and defines the shape of the documents within that collection.
@@ -303,4 +310,3 @@ MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.op
 
 ## Todo
 * assert.ifError(err) -> move to .fail(function( err ){});
-* resolve problem with isNew.
