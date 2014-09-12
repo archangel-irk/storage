@@ -14,7 +14,7 @@ module.exports = function(config) {
     files: [
       './vendor/jquery-2.1.1.js',
       './vendor/lodash.js',
-      './storage.js',
+      './storage.debug.js',
       './test/*.js'
     ],
 

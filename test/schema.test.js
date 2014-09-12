@@ -982,11 +982,9 @@ describe('schema', function(){
         var s = Some.add({ obj : ele.toObject() });
         s.save(function ( s ) {
           var ss = Some.findOne({ id : s.id });
-
-          assert.ok( ss.obj );
-
           var ssObject = ss.toObject({depopulate: 1});
-          assert.equal(ssObject.obj.id, ele.id);
+
+          assert.equal( ssObject.obj.toString(), ele.id );
 
           done();
         });
