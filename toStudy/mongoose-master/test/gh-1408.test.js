@@ -32,7 +32,7 @@ describe('documents should not be converted to _id (gh-1408)', function(){
 
     var BrandSchema = new Schema({
         settings: {
-          preferences: [PreferenceSchema],
+          preferences: [PreferenceSchema]
         }
     });
 
@@ -47,7 +47,7 @@ describe('documents should not be converted to _id (gh-1408)', function(){
            { preference: 'no_orders', value: '' }
          ]
         }
-    })
+    });
 
     a.save(function (err, a) {
       if (err) return done(err);
@@ -66,7 +66,7 @@ describe('documents should not be converted to _id (gh-1408)', function(){
                { preference: 'no_orders', value: false }
             ]
           }
-        }
+        };
 
         doc.set('settings', newData.settings, { merge: true });
         doc.markModified('settings'); // <== this caused the bug
@@ -80,7 +80,7 @@ describe('documents should not be converted to _id (gh-1408)', function(){
             doc.settings.preferences.forEach(function (pref, i) {
               assert.equal(pref.preference, newData.settings.preferences[i].preference);
               assert.equal(pref.value, newData.settings.preferences[i].value);
-            })
+            });
 
             done();
           })
@@ -88,4 +88,4 @@ describe('documents should not be converted to _id (gh-1408)', function(){
       })
     })
   })
-})
+});
