@@ -1,6 +1,8 @@
 # Storage
 
-Use mongoose-like schema validation, collections and documents on browser.
+Use mongoose-like schema validation, collections and documents on browser.  
+
+The library provides the most complete compatibility with [mongoose](http://mongoosejs.com/)  ([github](https://github.com/LearnBoost/mongoose)).
 
 
 ## Installation
