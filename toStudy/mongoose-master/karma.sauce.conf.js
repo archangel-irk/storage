@@ -45,6 +45,10 @@ module.exports = function(config) {
     }*/
   };
 
+  var date = Date.now();
+
+  process.env.TRAVIS_JOB_ID = "build " + date;
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -91,9 +95,9 @@ module.exports = function(config) {
 
     sauceLabs: {
       "testName": "Storage",
-      "build": "build " + Date.now(),
-      "passed": true,
-      "public": "public"
+      "build": "build " + date,
+      "public": "public",
+      "passed": true
     }
   });
 };
