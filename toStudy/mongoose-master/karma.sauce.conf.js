@@ -90,8 +90,8 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      testName: 'Mongoose ' + Date.now()
-    },
+      testName: 'Storage ' + Date.now()
+    }
   });
 };
 
