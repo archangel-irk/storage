@@ -10,3 +10,7 @@ env:
 
 addons:
   sauce_connect: true
+
+install:
+  - npm install -g grunt-cli
+  - npm install
