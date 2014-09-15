@@ -94,7 +94,7 @@ module.exports = function(config) {
     sauceLabs: {
       "testName": "Storage",
       "build": process.env.TRAVIS_JOB_ID,
-      "public": "public",
+      "public": "public restricted",
       "passed": true
     }
   });
