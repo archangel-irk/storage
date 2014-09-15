@@ -92,9 +92,9 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      testName: Storage,
+      testName: 'Storage',
       build: process.env.TRAVIS_JOB_ID,
-      'public': 'public',
+      public: 'public',
       passed: true
     }
   });
