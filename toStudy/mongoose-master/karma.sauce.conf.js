@@ -91,7 +91,7 @@ module.exports = function(config) {
 
     sauceLabs: {
       testName: 'Storage ' + Date.now(),
-      'public': 'team',
+      'public': 'public',
       'passed': true
     }
   });
