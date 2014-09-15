@@ -45,10 +45,6 @@ module.exports = function(config) {
     }*/
   };
 
-  var date = Date.now();
-
-  process.env.TRAVIS_JOB_ID = "build " + date;
-
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -94,8 +90,7 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      "testName": "Storage",
-      "build": "build " + date,
+      "testName": "Storage " + Date.now(),
       "public": "public",
       "passed": true
     }
