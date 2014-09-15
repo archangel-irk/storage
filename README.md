@@ -4,6 +4,10 @@ Use mongoose-like schema validation, collections and documents on browser.
 
 The library provides the most complete compatibility with [mongoose](http://mongoosejs.com/)  ([github](https://github.com/LearnBoost/mongoose)).
 
+[![Build Status](https://travis-ci.org/archangel-irk/storage.svg?branch=master)](https://travis-ci.org/archangel-irk/storage)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/archangel_irk)](https://saucelabs.com/u/archangel_irk)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/archangel_irk.svg)](https://saucelabs.com/u/archangel_irk)
 
 ## Installation
 Dependencies:
