@@ -9,6 +9,8 @@ The library provides the most complete compatibility with [mongoose](http://mong
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/archangel_irk.svg)](https://saucelabs.com/u/archangel_irk)
 
+[![Dependency Status](https://david-dm.org/archangel-irk/storage.png)](https://david-dm.org/archangel-irk/storage) [![devDependency Status](https://david-dm.org/archangel-irk/storage/dev-status.png)](https://david-dm.org/archangel-irk/storage#info=devDependencies)
+
 ## Installation
 Dependencies:
 * jquery for deferred  
