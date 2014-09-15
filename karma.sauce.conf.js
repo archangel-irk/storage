@@ -93,7 +93,7 @@ module.exports = function(config) {
 
     sauceLabs: {
       "testName": "Storage",
-      "build": "build " + Date.now(),
+      "build": process.env.TRAVIS_JOB_ID,
       "public": "public",
       "passed": true
     }
