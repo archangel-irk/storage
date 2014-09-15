@@ -9,7 +9,7 @@
     "url": "https://github.com/archangel-irk/storage.git"
   },
   "scripts": {
-    "test": "grunt && karma start karma.sauce.conf.js",
+    "test": "grunt && ./node_modules/karma/bin/karma start karma.sauce.conf.js",
     "build": "browserify lib/ --standalone storage > storage.js -d"
   },
   "devDependencies": {
