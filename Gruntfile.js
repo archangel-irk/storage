@@ -16,6 +16,7 @@ module.exports = function (grunt) {
     },
 
     browserify: {
+      //browserify lib/ --standalone storage > storage.js -d
       dev: {
         options: {
           browserifyOptions: {
@@ -26,6 +27,7 @@ module.exports = function (grunt) {
         src: 'lib/index.js',
         dest: 'storage.debug.js'
       },
+      // browserify lib/ --standalone storage > storage.js
       dist: {
         options: {
           browserifyOptions: {
