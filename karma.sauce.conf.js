@@ -22,7 +22,7 @@ module.exports = function(config) {
       browserName: 'internet explorer',
       platform: 'Windows 7',
       version: '9'
-    },
+    }
     /*sl_ie_10: {
       base: 'SauceLabs',
       browserName: 'internet explorer',
@@ -92,7 +92,10 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      testName: 'Storage ' + Date.now()
+      "testName": "Storage",
+      "build": "build " + Date.now(),
+      "public": "public",
+      "passed": true
     }
   });
 };

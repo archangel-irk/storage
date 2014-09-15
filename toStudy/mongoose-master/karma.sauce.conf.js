@@ -28,7 +28,7 @@ module.exports = function(config) {
       browserName: 'internet explorer',
       platform: 'Windows 7',
       version: '10'
-    }
+    },
     /*sl_ie_11: {
       base: 'SauceLabs',
       browserName: 'internet explorer',
@@ -82,7 +82,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: Object.keys( customLaunchers ),
+    browsers: Object.keys(customLaunchers),
 
 
     // Continuous Integration mode
@@ -90,10 +90,7 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      "testName": "Storage " + Date.now(),
-      "public": "public",
-      "passed": true
-    }
+      testName: 'Mongoose ' + Date.now()
+    },
   });
 };
-
