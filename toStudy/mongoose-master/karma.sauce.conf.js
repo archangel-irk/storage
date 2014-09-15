@@ -90,7 +90,9 @@ module.exports = function(config) {
     singleRun: true,
 
     sauceLabs: {
-      testName: 'Storage ' + Date.now()
+      testName: 'Storage ' + Date.now(),
+      'public': 'team',
+      'passed': true
     }
   });
 };
