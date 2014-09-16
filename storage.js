@@ -4281,8 +4281,8 @@ function DocumentArray (key, schema, options) {
   }
 
   // apply statics
-  for (var i in schema.statics) {
-    EmbeddedDocument[i] = schema.statics[i];
+  for (var j in schema.statics) {
+    EmbeddedDocument[j] = schema.statics[j];
   }
 
   EmbeddedDocument.options = options;
@@ -4335,7 +4335,7 @@ DocumentArray.prototype.doValidate = function (array, fn, scope) {
         continue;
       }
 
-      ;(function (i) {
+      !(function (i) {
         doc.validate(function (err) {
           if (err && !error) {
             // rewrite the key
@@ -4354,6 +4354,7 @@ DocumentArray.prototype.doValidate = function (array, fn, scope) {
  *
  * @param {Object} value
  * @param {Document} doc that triggers the casting
+ * @param {Boolean} init flag
  * @api private
  */
 DocumentArray.prototype.cast = function (value, doc, init, prev) {
@@ -4525,8 +4526,8 @@ Mixed.prototype.checkRequired = function (val) {
  * @param {Object} value to cast
  * @api private
  */
-Mixed.prototype.cast = function (val) {
-  return val;
+Mixed.prototype.cast = function (value) {
+  return value;
 };
 
 /*!
@@ -4686,7 +4687,7 @@ NumberSchema.prototype.cast = function ( value ) {
     if (null === val) return val;
     if ('' === val) return null;
     if ('string' == typeof val) val = Number(val);
-    if (val instanceof Number) return val
+    if (val instanceof Number) return val;
     if ('number' == typeof val) return val;
     if (val.toString && !Array.isArray(val) &&
         val.toString() == Number(val)) {
@@ -5418,7 +5419,7 @@ SchemaType.prototype.get = function (fn) {
  *     Product.on('error', handleError);
  *
  * @param {RegExp|Function|Object} obj validator
- * @param {String} [errorMsg] optional error message
+ * @param {String} [message] optional error message
  * @return {SchemaType} this
  * @api public
  */
@@ -7043,7 +7044,7 @@ exports.pluralize = function (str) {
     if (found[0]) return str.replace(found[0][0], found[0][1]);
   }
   return str;
-}
+};
 
 /*!
  * Determines if `a` and `b` are deep equal.
