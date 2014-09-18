@@ -69,13 +69,18 @@ ko.bindingHandlers.validate = {
 };
 
 var User = new Schema('User', {
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    obj: {
+        prop: { type: String }
+    }
 });
 storage.createCollection('users', User );
 
-var user = storage.users.add();
+var user = storage.users.add({obj:{prop:'sdf'}});
 
 //? user.validate();
+
+window.user = user;
 
 userObservable = ko.es5.getAllObservablesForObject( user );
 
