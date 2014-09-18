@@ -409,7 +409,7 @@ Collection.prototype = {
 
 module.exports = Collection;
 
-},{"./document":3,"./schema":13}],3:[function(require,module,exports){
+},{"./document":3,"./schema":14}],3:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -477,8 +477,7 @@ function Document ( data, collectionName, schema, fields, init ){
   }
 
   if ( !schema ){
-    //todo: throw new mongoose.Error.MissingSchemaError(name);
-    throw new TypeError('Нельзя создавать документ без схемы');
+    throw new StorageError.MissingSchemaError();
   }
 
   // Создать документ с флагом init
@@ -2288,7 +2287,7 @@ Document.prototype.empty = function(){
 Document.ValidationError = ValidationError;
 module.exports = Document;
 
-},{"./error":4,"./events":9,"./internal":11,"./schema":13,"./schema/mixed":19,"./schematype":23,"./types/documentarray":26,"./types/embedded":27,"./types/objectid":29,"./utils":30}],4:[function(require,module,exports){
+},{"./error":4,"./events":10,"./internal":12,"./schema":14,"./schema/mixed":20,"./schematype":24,"./types/documentarray":27,"./types/embedded":28,"./types/objectid":30,"./utils":31}],4:[function(require,module,exports){
 //todo: портировать все ошибки!!!
 /**
  * StorageError constructor
@@ -2340,10 +2339,10 @@ StorageError.ValidatorError = require('./error/validator');
 //todo:
 //StorageError.VersionError = require('./error/version');
 //StorageError.OverwriteModelError = require('./error/overwriteModel');
-//StorageError.MissingSchemaError = require('./error/missingSchema');
+StorageError.MissingSchemaError = require('./error/missingSchema');
 //StorageError.DivergentArrayError = require('./error/divergentArray');
 
-},{"./error/cast":5,"./error/messages":6,"./error/validation":7,"./error/validator":8}],5:[function(require,module,exports){
+},{"./error/cast":5,"./error/messages":6,"./error/missingSchema":7,"./error/validation":8,"./error/validator":9}],5:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -2355,7 +2354,8 @@ var StorageError = require('../error.js');
  *
  * @param {String} type
  * @param {String} value
- * @inherits MongooseError
+ * @param {String} path
+ * @inherits StorageError
  * @api private
  */
 
@@ -2419,6 +2419,39 @@ msg.String.match = "Path `{PATH}` is invalid ({VALUE}).";
 
 
 },{}],7:[function(require,module,exports){
+/*!
+ * Module dependencies.
+ */
+
+var StorageError = require('../error.js');
+
+/*!
+ * MissingSchema Error constructor.
+ *
+ * @inherits MongooseError
+ */
+
+function MissingSchemaError(){
+  var msg = 'Schema hasn\'t been registered for document.\n'
+    + 'Use mongoose.Document(name, schema)';
+  StorageError.call(this, msg);
+
+  this.name = 'MissingSchemaError';
+}
+
+/*!
+ * Inherits from MongooseError.
+ */
+
+MissingSchemaError.prototype = Object.create(StorageError.prototype);
+MissingSchemaError.prototype.constructor = StorageError;
+
+/*!
+ * exports
+ */
+
+module.exports = MissingSchemaError;
+},{"../error.js":4}],8:[function(require,module,exports){
 
 /*!
  * Module requirements
@@ -2452,7 +2485,7 @@ ValidationError.prototype.constructor = ValidationError;
 
 module.exports = ValidationError;
 
-},{"../error.js":4}],8:[function(require,module,exports){
+},{"../error.js":4}],9:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -2500,7 +2533,7 @@ ValidatorError.prototype.constructor = ValidatorError;
 
 module.exports = ValidatorError;
 
-},{"../error.js":4}],9:[function(require,module,exports){
+},{"../error.js":4}],10:[function(require,module,exports){
 // Backbone.Events
 // ---------------
 
@@ -2666,7 +2699,7 @@ _.each(listenMethods, function(implementation, method) {
 
 module.exports = Events;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Хранилище документов по схемам
  * вдохновлён mongoose 3.8.4 (исправлены баги по 3.8.15)
@@ -2898,7 +2931,7 @@ Storage.prototype.setAdapter = function( adapterHooks ){
 
 module.exports = new Storage;
 
-},{"./collection":2,"./document":3,"./error":4,"./schema":13,"./schematype":23,"./statemachine":24,"./types":28,"./utils":30,"./virtualtype":31}],11:[function(require,module,exports){
+},{"./collection":2,"./document":3,"./error":4,"./schema":14,"./schematype":24,"./statemachine":25,"./types":29,"./utils":31,"./virtualtype":32}],12:[function(require,module,exports){
 // Машина состояний используется для пометки, в каком состоянии находятся поле
 // Например: если поле имеет состояние default - значит его значением является значение по умолчанию
 // Примечание: для массивов в общем случае это означает пустой массив
@@ -2935,7 +2968,7 @@ function InternalCache () {
   this.fullPath = undefined;
 }
 
-},{"./statemachine":24}],12:[function(require,module,exports){
+},{"./statemachine":25}],13:[function(require,module,exports){
 /**
  * Returns the value of object `o` at the given `path`.
  *
@@ -3151,7 +3184,7 @@ exports.set = function (path, val, o, special, map, _copying) {
 function K (v) {
   return v;
 }
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -3967,7 +4000,7 @@ Schema.schemas = schemas = {};
 Types = Schema.Types;
 var ObjectId = Schema.ObjectId = Types.ObjectId;
 
-},{"./events":9,"./schema/index":18,"./utils":30,"./virtualtype":31}],14:[function(require,module,exports){
+},{"./events":10,"./schema/index":19,"./utils":31,"./virtualtype":32}],15:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -4117,7 +4150,7 @@ SchemaArray.prototype.cast = function ( value, doc, init ) {
 
 module.exports = SchemaArray;
 
-},{"../schematype":23,"../types/array":25,"../types/embedded":27,"../utils":30,"./boolean":15,"./date":16,"./mixed":19,"./number":20,"./objectid":21,"./string":22}],15:[function(require,module,exports){
+},{"../schematype":24,"../types/array":26,"../types/embedded":28,"../utils":31,"./boolean":16,"./date":17,"./mixed":20,"./number":21,"./objectid":22,"./string":23}],16:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -4171,7 +4204,7 @@ BooleanSchema.prototype.cast = function (value) {
 
 module.exports = BooleanSchema;
 
-},{"../schematype":23}],16:[function(require,module,exports){
+},{"../schematype":24}],17:[function(require,module,exports){
 /*!
  * Module requirements.
  */
@@ -4243,7 +4276,7 @@ DateSchema.prototype.cast = function (value) {
 
 module.exports = DateSchema;
 
-},{"../schematype":23}],17:[function(require,module,exports){
+},{"../schematype":24}],18:[function(require,module,exports){
 
 /*!
  * Module dependencies.
@@ -4281,8 +4314,8 @@ function DocumentArray (key, schema, options) {
   }
 
   // apply statics
-  for (var i in schema.statics) {
-    EmbeddedDocument[i] = schema.statics[i];
+  for (var j in schema.statics) {
+    EmbeddedDocument[j] = schema.statics[j];
   }
 
   EmbeddedDocument.options = options;
@@ -4335,7 +4368,7 @@ DocumentArray.prototype.doValidate = function (array, fn, scope) {
         continue;
       }
 
-      ;(function (i) {
+      !(function (i) {
         doc.validate(function (err) {
           if (err && !error) {
             // rewrite the key
@@ -4354,6 +4387,7 @@ DocumentArray.prototype.doValidate = function (array, fn, scope) {
  *
  * @param {Object} value
  * @param {Document} doc that triggers the casting
+ * @param {Boolean} init flag
  * @api private
  */
 DocumentArray.prototype.cast = function (value, doc, init, prev) {
@@ -4440,7 +4474,7 @@ function scopePaths (array, fields, init) {
 
 module.exports = DocumentArray;
 
-},{"../document":3,"../schematype":23,"../types/documentarray":26,"../types/embedded":27,"./array":14}],18:[function(require,module,exports){
+},{"../document":3,"../schematype":24,"../types/documentarray":27,"../types/embedded":28,"./array":15}],19:[function(require,module,exports){
 
 /*!
  * Module exports.
@@ -4468,7 +4502,7 @@ exports.Oid = exports.ObjectId;
 exports.Object = exports.Mixed;
 exports.Bool = exports.Boolean;
 
-},{"./array":14,"./boolean":15,"./date":16,"./documentarray":17,"./mixed":19,"./number":20,"./objectid":21,"./string":22}],19:[function(require,module,exports){
+},{"./array":15,"./boolean":16,"./date":17,"./documentarray":18,"./mixed":20,"./number":21,"./objectid":22,"./string":23}],20:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -4525,8 +4559,8 @@ Mixed.prototype.checkRequired = function (val) {
  * @param {Object} value to cast
  * @api private
  */
-Mixed.prototype.cast = function (val) {
-  return val;
+Mixed.prototype.cast = function (value) {
+  return value;
 };
 
 /*!
@@ -4535,7 +4569,7 @@ Mixed.prototype.cast = function (val) {
 
 module.exports = Mixed;
 
-},{"../schematype":23}],20:[function(require,module,exports){
+},{"../schematype":24}],21:[function(require,module,exports){
 /*!
  * Module requirements.
  */
@@ -4686,7 +4720,7 @@ NumberSchema.prototype.cast = function ( value ) {
     if (null === val) return val;
     if ('' === val) return null;
     if ('string' == typeof val) val = Number(val);
-    if (val instanceof Number) return val
+    if (val instanceof Number) return val;
     if ('number' == typeof val) return val;
     if (val.toString && !Array.isArray(val) &&
         val.toString() == Number(val)) {
@@ -4703,7 +4737,7 @@ NumberSchema.prototype.cast = function ( value ) {
 
 module.exports = NumberSchema;
 
-},{"../error":4,"../schematype":23}],21:[function(require,module,exports){
+},{"../error":4,"../schematype":24}],22:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -4846,7 +4880,7 @@ function resetId (v) {
 
 module.exports = ObjectId;
 
-},{"../schematype":23,"../types/objectid":29,"../utils":30,"./../document":3}],22:[function(require,module,exports){
+},{"../schematype":24,"../types/objectid":30,"../utils":31,"./../document":3}],23:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -5110,7 +5144,7 @@ StringSchema.prototype.cast = function ( value ) {
 
 module.exports = StringSchema;
 
-},{"../error":4,"../schematype":23}],23:[function(require,module,exports){
+},{"../error":4,"../schematype":24}],24:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -5418,7 +5452,7 @@ SchemaType.prototype.get = function (fn) {
  *     Product.on('error', handleError);
  *
  * @param {RegExp|Function|Object} obj validator
- * @param {String} [errorMsg] optional error message
+ * @param {String} [message] optional error message
  * @return {SchemaType} this
  * @api public
  */
@@ -5675,7 +5709,7 @@ SchemaType.CastError = CastError;
 
 SchemaType.ValidatorError = ValidatorError;
 
-},{"./error":4,"./utils":30}],24:[function(require,module,exports){
+},{"./error":4,"./utils":31}],25:[function(require,module,exports){
 /*!
  * StateMachine represents a minimal `interface` for the
  * constructors it builds via StateMachine.ctor(...).
@@ -5850,7 +5884,7 @@ StateMachine.prototype.map = function map () {
 };
 
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 //TODO: почистить код
 
 /*!
@@ -6262,7 +6296,7 @@ StorageArray.mixin.remove = StorageArray.mixin.pull;
 
 module.exports = StorageArray;
 
-},{"../document":3,"../utils":30,"./embedded":27,"./objectid":29}],26:[function(require,module,exports){
+},{"../document":3,"../utils":31,"./embedded":28,"./objectid":30}],27:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -6442,7 +6476,7 @@ StorageDocumentArray.mixin.notify = function notify (event) {
 
 module.exports = StorageDocumentArray;
 
-},{"../document":3,"../schema/objectid":21,"../utils":30,"./array":25,"./objectid":29}],27:[function(require,module,exports){
+},{"../document":3,"../schema/objectid":22,"../utils":31,"./array":26,"./objectid":30}],28:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -6668,7 +6702,7 @@ EmbeddedDocument.prototype.parentArray = function () {
 
 module.exports = EmbeddedDocument;
 
-},{"../document":3}],28:[function(require,module,exports){
+},{"../document":3}],29:[function(require,module,exports){
 
 /*!
  * Module exports.
@@ -6681,7 +6715,7 @@ exports.Embedded = require('./embedded');
 exports.DocumentArray = require('./documentarray');
 exports.ObjectId = require('./objectid');
 
-},{"./array":25,"./documentarray":26,"./embedded":27,"./objectid":29}],29:[function(require,module,exports){
+},{"./array":26,"./documentarray":27,"./embedded":28,"./objectid":30}],30:[function(require,module,exports){
 (function (process){
 /**
  * Module dependencies.
@@ -6946,7 +6980,7 @@ Object.defineProperty(ObjectId.prototype, "generationTime", {
 module.exports = ObjectId;
 module.exports.ObjectId = ObjectId;
 }).call(this,require('_process'))
-},{"../binary_parser":1,"_process":32}],30:[function(require,module,exports){
+},{"../binary_parser":1,"_process":33}],31:[function(require,module,exports){
 (function (process,global){
 /*!
  * Module dependencies.
@@ -7043,7 +7077,7 @@ exports.pluralize = function (str) {
     if (found[0]) return str.replace(found[0][0], found[0][1]);
   }
   return str;
-}
+};
 
 /*!
  * Determines if `a` and `b` are deep equal.
@@ -7312,7 +7346,7 @@ exports.setImmediate = (function() {
 
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./document":3,"./mpath":12,"./types/objectid":29,"_process":32}],31:[function(require,module,exports){
+},{"./document":3,"./mpath":13,"./types/objectid":30,"_process":33}],32:[function(require,module,exports){
 
 /**
  * VirtualType constructor
@@ -7417,7 +7451,7 @@ VirtualType.prototype.applySetters = function (value, scope) {
 
 module.exports = VirtualType;
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -7482,5 +7516,5 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}]},{},[10])(10)
+},{}]},{},[11])(11)
 });

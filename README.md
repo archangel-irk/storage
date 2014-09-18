@@ -1,13 +1,8 @@
-# Storage
+# Storage [![Build Status](https://travis-ci.org/archangel-irk/storage.svg?branch=master)](https://travis-ci.org/archangel-irk/storage) [![Sauce Test Status](https://saucelabs.com/buildstatus/archangel_irk)](https://saucelabs.com/u/archangel_irk) [![Code Climate](https://codeclimate.com/github/archangel-irk/storage/badges/gpa.svg)](https://codeclimate.com/github/archangel-irk/storage) !['coverage'](http://img.shields.io/badge/coverage-≈80%25-brightgreen.svg)
 
 Use mongoose-like schema validation, collections and documents on browser.  
 
 The library provides the most complete compatibility with [mongoose](http://mongoosejs.com/)  ([github](https://github.com/LearnBoost/mongoose)).
-
-[![Build Status](https://travis-ci.org/archangel-irk/storage.svg?branch=master)](https://travis-ci.org/archangel-irk/storage)
-[![Sauce Test Status](https://saucelabs.com/buildstatus/archangel_irk)](https://saucelabs.com/u/archangel_irk)
-[![Code Climate](https://codeclimate.com/github/archangel-irk/storage/badges/gpa.svg)](https://codeclimate.com/github/archangel-irk/storage)
-[![Test Coverage](https://codeclimate.com/github/archangel-irk/storage/badges/coverage.svg)](https://codeclimate.com/github/archangel-irk/storage)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/archangel_irk.svg)](https://saucelabs.com/u/archangel_irk)
 
