@@ -274,6 +274,16 @@ var person = persons.add({ name: 'Max Headroom' });
 console.log( person.toObject() ); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max Headroom is my name' }
 ```
 
+## Storage has Schema Inheritance via Discriminator functionality:
+```javascript
+var PersonSchema = new Schema('Person', {
+  name: String,
+  createdAt: Date
+});
+
+var BossSchema = new Schema('Boss', PersonSchema, { department: String });
+ ```
+
 ## Building from sources
 1. **Clone the repo from GitHub**
 
@@ -312,4 +322,5 @@ Also you can see the code coverage in `./coverage/`.
 MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
 
 ## Todo
+* tests and docs for schema inheritance (discriminator)
 * assert.ifError(err) -> move to .fail(function( err ){});
