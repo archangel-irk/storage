@@ -153,7 +153,7 @@ schema.set(option, value);
 ```
 Valid options:
 
-* [id](#option: id)
+* id
 * _id
 * strict
 * minimize
