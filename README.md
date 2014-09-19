@@ -142,7 +142,7 @@ console.log(bad.name.last);  // Bad
 Virtual property setters are applied before other validation. So the example above would still work even if the `first` and `last` name fields were required.
 
 ### Schema options
-`Schema`s have a few configurable options which can be passed to the constructor or `set` directly:
+`Schema`'s have a few configurable options which can be passed to the constructor or `set` directly:
 ```javascript
 new Schema(<name>, {..}, <options>);
 
@@ -153,7 +153,7 @@ schema.set(option, value);
 ```
 Valid options:
 
-* id
+* [id](#option: id)
 * _id
 * strict
 * minimize
