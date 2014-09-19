@@ -1547,7 +1547,8 @@ function define (self, prop, subprops, prototype, prefix, keys) {
     });
   }
 
-  self.adapterHooks.documentDefineProperty.call( self, self, path, prototype );
+  self.adapterHooks.documentDefineProperty.call( self, self, prototype, prop, prefix, path );
+  //self.adapterHooks.documentDefineProperty.call( self, self, path, prototype );
 }
 
 /**
@@ -3049,13 +3050,13 @@ exports.get = function (path, o, special, map) {
   }
 
   return map(obj);
-}
+};
 
 /**
  * Sets the `val` at the given `path` of object `o`.
  *
  * @param {String} path
- * @param {Anything} val
+ * @param {*} val
  * @param {Object} o
  * @param {String} [special] When this property name is present on any object in the path, walking will continue on the value of this property.
  * @param {Function} [map] Optional function which is passed each individual value before setting it. The value returned from `map` is used in the original values place.
@@ -3092,7 +3093,7 @@ exports.set = function (path, val, o, special, map, _copying) {
   // current array.
   var copy = _copying || /\$/.test(path)
     , obj = o
-    , part
+    , part;
 
   for (var i = 0, len = parts.length - 1; i < len; ++i) {
     part = parts[i];
@@ -3175,7 +3176,7 @@ exports.set = function (path, val, o, special, map, _copying) {
       obj[part] = map(val);
     }
   }
-}
+};
 
 /*!
  * Returns the value passed to it.
@@ -5635,7 +5636,7 @@ SchemaType.prototype.applyGetters = function( value, scope ){
 /**
  * Performs a validation of `value` using the validators declared for this SchemaType.
  *
- * @param {any} value
+ * @param {*} value
  * @param {Function} callback
  * @param {Object} scope
  * @api private
@@ -5939,7 +5940,7 @@ StorageArray.mixin = {
   /**
    * Casts a member based on this arrays schema.
    *
-   * @param {any} value
+   * @param {*} value
    * @return value the casted value
    * @api private
    */
@@ -6082,7 +6083,7 @@ StorageArray.mixin = {
    *     doc.subdocs.push({ _id: 4815162342 })
    *     doc.subdocs.pull(4815162342); // works
    *
-   * @param {any} [args...]
+   * @param {*} arguments
    * @see mongodb http://www.mongodb.org/display/DOCS/Updating/#Updating-%24pull
    * @api public
    */
@@ -6177,7 +6178,7 @@ StorageArray.mixin = {
    *     console.log(doc.array) // [2,3,4,5]
    *     console.log(added)     // [5]
    *
-   * @param {any} [args...]
+   * @param {*} arguments
    * @return {Array} the values that were added
    * @api public
    */
@@ -6991,6 +6992,8 @@ var ObjectId = require('./types/objectid')
   , StorageArray
   , Document;
 
+exports.mpath = mpath;
+
 /**
  * Pluralization rules.
  *
@@ -7085,8 +7088,8 @@ exports.pluralize = function (str) {
  * Modified from node/lib/assert.js
  * Modified from mongoose/utils.js
  *
- * @param {any} a a value to compare to `b`
- * @param {any} b a value to compare to `a`
+ * @param {*} a a value to compare to `b`
+ * @param {*} b a value to compare to `a`
  * @return {Boolean}
  * @api private
  */
@@ -7265,7 +7268,7 @@ exports.random = function () {
  *
  * This is for compatibility with libs like Date.js which do foolish things to Natives.
  *
- * @param {any} v
+ * @param {*} v
  * @api private
  */
 exports.isStorageObject = function ( v ) {
@@ -7416,7 +7419,7 @@ VirtualType.prototype.set = function (fn) {
  *
  * @param {Object} value
  * @param {Object} scope
- * @return {any} the value after applying all getters
+ * @return {*} the value after applying all getters
  * @api public
  */
 
@@ -7433,7 +7436,7 @@ VirtualType.prototype.applyGetters = function (value, scope) {
  *
  * @param {Object} value
  * @param {Object} scope
- * @return {any} the value after applying all setters
+ * @return {*} the value after applying all setters
  * @api public
  */
 

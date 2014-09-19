@@ -5,14 +5,12 @@
  * Если подойдёт и односторонняя привязка из html в js,
  * то (предположительно) можно обойтись без адаптера
  *
- * User: Constantine Melnikov
- * Email: ka.melnikov@gmail.com
- * Created on 13.08.14
+ * ko.getObservable( doc, 'location.city') - так можно получать observable
  */
 'use strict';
 !function () {
   storage.setAdapter({
-    documentDefineProperty: function( doc, path, prototype ){
+    documentDefineProperty: function( doc, prototype, prop, prefix, path ){
       // Поддержка Knockout
       var allObservablesForObject = ko.es5.getAllObservablesForObject( doc, true ),
         schema = prototype.schema || prototype.constructor.schema,
@@ -21,7 +19,7 @@
           : ko.observable();
 
       // Поддержка Knockout.Validation
-      var validators = schema.path(path) && schema.path(path).validators;
+      /*var validators = schema.path(path) && schema.path(path).validators;
       if(validators && validators.length){
         var i = validators.length;
         while(i--){
@@ -37,7 +35,7 @@
             }
           })
         }
-      }
+      }*/
 
       // Поддержка Knockout
       allObservablesForObject[ path ] = observable;
@@ -50,20 +48,42 @@
 
     documentSetInitialValue: function( doc, path, value ){
       var observable = ko.getObservable( doc, path );
+
+      // Заставить геттер сработать и создать observable
+      if ( observable == null ){
+        storage.utils.mpath.get( path, doc );
+        observable = ko.getObservable( doc, path );
+      }
+
       // Установить начальное значение
       observable && observable( value );
     },
 
+    /**
+     * observable у свойств вложенных объектов будет null до первого обращения
+     * @param doc
+     * @param path
+     */
     documentGetValue: function( doc, path ){
       var observable = ko.getObservable( doc, path );
+
+      // Заставить геттер сработать и создать observable
+      if ( observable == null ){
+        storage.utils.mpath.get( path, doc );
+        observable = ko.getObservable( doc, path );
+      }
+
       observable && observable();
     },
 
     documentSetValue: function( doc, path, value ){
       var observable = ko.getObservable( doc, path );
 
-      //TODO: Иногда observable === null, понять почему так порисходит и исправить это
-      //console.log( path, observable );
+      // Заставить геттер сработать и создать observable
+      if ( observable == null ){
+        storage.utils.mpath.get( path, doc );
+        observable = ko.getObservable( doc, path );
+      }
 
       // Обновим observable (чтобы работали привязки)
       observable && observable( value );
