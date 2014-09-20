@@ -139,9 +139,9 @@ describe('utils', function(){
     done();
   });
 
-  it('deepEquals on MongooseDocumentArray works', function (done) {
+  it('deepEquals on StorageDocumentArray works', function (done) {
     var A = new Schema({ a: String })
-      , C = storage.createCollection('deepEqualsOnMongooseDocArray', new Schema({
+      , C = storage.createCollection('deepEqualsOnStorageDocArray', new Schema({
             a1: [A]
           , a2: [A]
         }));

@@ -2324,7 +2324,7 @@ module.exports = StorageError;
 /**
  * The default built-in validator error messages.
  *
- * @see Error.messages #error_messages_MongooseError-messages
+ * @see Error.messages #error_messages_StorageError-messages
  * @api public
  */
 
@@ -2369,7 +2369,7 @@ function CastError (type, value, path) {
 }
 
 /*!
- * Inherits from MongooseError.
+ * Inherits from StorageError.
  */
 CastError.prototype = Object.create( StorageError.prototype );
 CastError.prototype.constructor = CastError;
@@ -2400,7 +2400,7 @@ module.exports = CastError;
  * Click the "show code" link below to see all defaults.
  *
  * @property messages
- * @receiver MongooseError
+ * @receiver StorageError
  * @api public
  */
 
@@ -2429,7 +2429,7 @@ var StorageError = require('../error.js');
 /*!
  * MissingSchema Error constructor.
  *
- * @inherits MongooseError
+ * @inherits StorageError
  */
 
 function MissingSchemaError(){
@@ -2441,7 +2441,7 @@ function MissingSchemaError(){
 }
 
 /*!
- * Inherits from MongooseError.
+ * Inherits from StorageError.
  */
 
 MissingSchemaError.prototype = Object.create(StorageError.prototype);
@@ -2465,7 +2465,7 @@ var StorageError = require('../error.js');
  *
  * @api private
  * @param {Document} instance
- * @inherits MongooseError
+ * @inherits StorageError
  */
 
 function ValidationError (instance) {
@@ -2475,7 +2475,7 @@ function ValidationError (instance) {
 }
 
 /*!
- * Inherits from MongooseError.
+ * Inherits from StorageError.
  */
 ValidationError.prototype = Object.create( StorageError.prototype );
 ValidationError.prototype.constructor = ValidationError;
@@ -2500,7 +2500,7 @@ var errorMessages = StorageError.messages;
  * @param {String} path
  * @param {String} msg
  * @param {String|Number|any} val
- * @inherits MongooseError
+ * @inherits StorageError
  * @api private
  */
 
@@ -2523,7 +2523,7 @@ ValidatorError.prototype.toString = function () {
 }
 
 /*!
- * Inherits from MongooseError
+ * Inherits from StorageError
  */
 ValidatorError.prototype = Object.create( StorageError.prototype );
 ValidatorError.prototype.constructor = ValidatorError;
@@ -2702,10 +2702,10 @@ module.exports = Events;
 
 },{}],11:[function(require,module,exports){
 /**
- * Хранилище документов по схемам
- * вдохновлён mongoose 3.8.4 (исправлены баги по 3.8.15)
+ * Storage documents using schema
+ * inspired by mongoose 3.8.4 (fixed bugs for 3.8.15)
  *
- * Реализации хранилища
+ * Storage implementation
  * http://docs.meteor.com/#selectors
  * https://github.com/meteor/meteor/tree/master/packages/minimongo
  *
@@ -2740,7 +2740,7 @@ function Storage () {
 }
 
 /**
- * Создать коллекцию и получить её.
+ * Create a collection and get it
  *
  * @example
  *
@@ -2765,7 +2765,7 @@ Storage.prototype.createCollection = function( name, schema, api ){
 };
 
 /**
- * Получить название коллекций в виде массива строк.
+ * To obtain the names of the collections in an array
  *
  * @returns {Array.<string>} An array containing all collections in the storage.
  */
@@ -2774,7 +2774,7 @@ Storage.prototype.getCollectionNames = function(){
 };
 
 /**
- * The Mongoose Collection constructor
+ * The Storage Collection constructor
  *
  * @method Collection
  * @api public
@@ -2807,7 +2807,7 @@ Storage.prototype.Collection = Collection;
 Storage.prototype.Schema = Schema;
 
 /**
- * The Mongoose [SchemaType](#schematype_SchemaType) constructor
+ * The Storage [SchemaType](#schematype_SchemaType) constructor
  *
  * @method SchemaType
  * @api public
@@ -2816,11 +2816,11 @@ Storage.prototype.Schema = Schema;
 Storage.prototype.SchemaType = SchemaType;
 
 /**
- * The various Mongoose SchemaTypes.
+ * The various Storage SchemaTypes.
  *
  * ####Note:
  *
- * _Alias of mongoose.Schema.Types for backwards compatibility._
+ * _Alias of storage.Schema.Types for backwards compatibility._
  *
  * @property SchemaTypes
  * @see Schema.SchemaTypes #schema_Schema.Types
@@ -2830,7 +2830,7 @@ Storage.prototype.SchemaType = SchemaType;
 Storage.prototype.SchemaTypes = Schema.Types;
 
 /**
- * The Mongoose [VirtualType](#virtualtype_VirtualType) constructor
+ * The Storage [VirtualType](#virtualtype_VirtualType) constructor
  *
  * @method VirtualType
  * @api public
@@ -2839,12 +2839,11 @@ Storage.prototype.SchemaTypes = Schema.Types;
 Storage.prototype.VirtualType = VirtualType;
 
 /**
- * The various Mongoose Types.
+ * The various Storage Types.
  *
  * ####Example:
  *
- *     var mongoose = require('mongoose');
- *     var array = mongoose.Types.Array;
+ *     var array = storage.Types.Array;
  *
  * ####Types:
  *
@@ -2855,7 +2854,7 @@ Storage.prototype.VirtualType = VirtualType;
  *
  * Using this exposed access to the `ObjectId` type, we can construct ids on demand.
  *
- *     var ObjectId = mongoose.Types.ObjectId;
+ *     var ObjectId = storage.Types.ObjectId;
  *     var id1 = new ObjectId;
  *
  * @property Types
@@ -2865,7 +2864,7 @@ Storage.prototype.VirtualType = VirtualType;
 Storage.prototype.Types = Types;
 
 /**
- * The Mongoose [Document](#document-js) constructor.
+ * The Storage [Document](#document-js) constructor.
  *
  * @method Document
  * @api public
@@ -2874,7 +2873,7 @@ Storage.prototype.Types = Types;
 Storage.prototype.Document = Document;
 
 /**
- * The [MongooseError](#error_MongooseError) constructor.
+ * The [StorageError](#error_StorageError) constructor.
  *
  * @method Error
  * @api public
@@ -3962,7 +3961,7 @@ window.Schema = Schema;
 // require down here because of reference issues
 
 /**
- * The various built-in Mongoose Schema Types.
+ * The various built-in Storage Schema Types.
  *
  * ####Example:
  *
@@ -4635,7 +4634,7 @@ NumberSchema.prototype.checkRequired = function ( value ) {
  * @param {Number} value minimum number
  * @param {String} [message] optional custom error message
  * @return {SchemaType} this
- * @see Customized Error Messages #error_messages_MongooseError-messages
+ * @see Customized Error Messages #error_messages_StorageError-messages
  * @api public
  */
 NumberSchema.prototype.min = function (value, message) {
@@ -4683,7 +4682,7 @@ NumberSchema.prototype.min = function (value, message) {
  * @param {Number} value maximum number
  * @param {String} [message] optional custom error message
  * @return {SchemaType} this
- * @see Customized Error Messages #error_messages_MongooseError-messages
+ * @see Customized Error Messages #error_messages_StorageError-messages
  * @api public
  */
 NumberSchema.prototype.max = function (value, message) {
@@ -4940,7 +4939,7 @@ StringSchema.prototype.constructor = StringSchema;
  *
  * @param {String|Object} [args...] enumeration values
  * @return {SchemaType} this
- * @see Customized Error Messages #error_messages_MongooseError-messages
+ * @see Customized Error Messages #error_messages_StorageError-messages
  * @api public
  */
 StringSchema.prototype.enum = function () {
@@ -5082,7 +5081,7 @@ StringSchema.prototype.trim = function () {
  * @param {RegExp} regExp regular expression to test against
  * @param {String} [message] optional custom error message
  * @return {SchemaType} this
- * @see Customized Error Messages #error_messages_MongooseError-messages
+ * @see Customized Error Messages #error_messages_StorageError-messages
  * @api public
  */
 StringSchema.prototype.match = function match (regExp, message) {
@@ -5258,7 +5257,7 @@ SchemaType.prototype.default = function (val) {
  *
  * Suppose you are implementing user registration for a website. Users provide an email and password, which gets saved to mongodb. The email is a string that you will want to normalize to lower case, in order to avoid one email having more than one account -- e.g., otherwise, avenue@q.com can be registered for 2 accounts via avenue@q.com and AvEnUe@Q.CoM.
  *
- * You can set up email lower case normalization easily via a Mongoose setter.
+ * You can set up email lower case normalization easily via a Storage setter.
  *
  *     function toLower (v) {
  *       return v.toLowerCase();
@@ -5389,7 +5388,7 @@ SchemaType.prototype.get = function (fn) {
  *
  * Validators always receive the value to validate as their first argument and must return `Boolean`. Returning `false` means validation failed.
  *
- * The error message argument is optional. If not passed, the [default generic error message template](#error_messages_MongooseError-messages) will be used.
+ * The error message argument is optional. If not passed, the [default generic error message template](#error_messages_StorageError-messages) will be used.
  *
  * ####Examples:
  *
@@ -5419,7 +5418,7 @@ SchemaType.prototype.get = function (fn) {
  *
  * ####Error message templates:
  *
- * From the examples above, you may have noticed that error messages support baseic templating. There are a few other template keywords besides `{PATH}` and `{VALUE}` too. To find out more, details are available [here](#error_messages_MongooseError-messages)
+ * From the examples above, you may have noticed that error messages support baseic templating. There are a few other template keywords besides `{PATH}` and `{VALUE}` too. To find out more, details are available [here](#error_messages_StorageError-messages)
  *
  * ####Asynchronous validation:
  *
@@ -5504,7 +5503,7 @@ SchemaType.prototype.validate = function (obj, message, type) {
  * @param {Boolean} required enable/disable the validator
  * @param {String} [message] optional custom error message
  * @return {SchemaType} this
- * @see Customized Error Messages #error_messages_MongooseError-messages
+ * @see Customized Error Messages #error_messages_StorageError-messages
  * @api public
  */
 SchemaType.prototype.required = function (required, message) {
@@ -6028,7 +6027,7 @@ StorageArray.mixin = {
    *
    * _marks the entire array as modified which will pass the entire thing to $set potentially overwritting any changes that happen between when you retrieved the object and when you save it._
    *
-   * @see StorageArray#$pop #types_array_MongooseArray-%24pop
+   * @see StorageArray#$pop #types_array_StorageArray-%24pop
    * @api public
    */
   pop: function () {
@@ -6076,7 +6075,7 @@ StorageArray.mixin = {
    *     doc.subdocs.push({ _id: 4815162342 })
    *     doc.subdocs.pull({ _id: 4815162342 }) // removed
    *
-   * Or we may passing the _id directly and let mongoose take care of it.
+   * Or we may passing the _id directly and let storage take care of it.
    *
    *     doc.subdocs.push({ _id: 4815162342 })
    *     doc.subdocs.pull(4815162342); // works
@@ -6218,9 +6217,9 @@ StorageArray.mixin = {
    * ####Example:
    *
    *     // given documents based on the following
-   *     var Doc = mongoose.model('Doc', new Schema({ array: [Number] }));
+   *     var docs = storage.createCollection('Doc', new Schema({ array: [Number] }));
    *
-   *     var doc = new Doc({ array: [2,3,4] })
+   *     var doc = docs.add({ array: [2,3,4] })
    *
    *     console.log(doc.array) // [2,3,4]
    *
@@ -6279,9 +6278,9 @@ StorageArray.mixin = {
 };
 
 /**
- * Alias of [pull](#types_array_MongooseArray-pull)
+ * Alias of [pull](#types_array_StorageArray-pull)
  *
- * @see StorageArray#pull #types_array_MongooseArray-pull
+ * @see StorageArray#pull #types_array_StorageArray-pull
  * @see mongodb http://www.mongodb.org/display/DOCS/Updating/#Updating-%24pull
  * @api public
  * @memberOf StorageArray
@@ -6486,7 +6485,7 @@ var Document = require('../document');
  * EmbeddedDocument constructor.
  *
  * @param {Object} data js object returned from the db
- * @param {MongooseDocumentArray} parentArr the parent array of this document
+ * @param {StorageDocumentArray} parentArr the parent array of this document
  * @inherits Document
  * @api private
  */
@@ -6571,7 +6570,7 @@ EmbeddedDocument.prototype.remove = function (fn) {
   if (!this.willRemove) {
     _id = this._doc._id;
     if (!_id) {
-      throw new Error('For your own good, Mongoose does not know ' +
+      throw new Error('For your own good, Storage does not know ' +
                       'how to remove an EmbeddedDocument that has no _id');
     }
     this.__parentArray.pull({ _id: _id });

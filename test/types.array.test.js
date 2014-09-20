@@ -992,7 +992,7 @@ describe('types array', function(){
     });
   });
 
-  describe('removing from an array atomically using MongooseArray#remove', function(){
+  describe('removing from an array atomically using StorageArray#remove', function(){
     var B;
 
     before(function(done){
