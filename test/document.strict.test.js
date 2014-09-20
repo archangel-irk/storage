@@ -12,10 +12,7 @@ var SchemaType = storage.SchemaType
   , ObjectId = Schema.Types.ObjectId
   , DocumentObjectId = storage.Types.ObjectId
   , DocumentArray = storage.Types.DocumentArray
-  , EmbeddedDocument = storage.Types.Embedded
-  , MongooseNumber = storage.Types.Number
-  , MongooseArray = storage.Types.Array
-  , MongooseError = storage.Error;
+  , EmbeddedDocument = storage.Types.Embedded;
 
 describe('document: strict mode:', function(){
   it('should work', function(done){
