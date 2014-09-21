@@ -6,6 +6,10 @@ The library provides the most complete compatibility with [mongoose](http://mong
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/archangel_irk.svg)](https://saucelabs.com/u/archangel_irk)
 
+## Differences from mongoose
+
+coming soon
+
 ## Installation
 Dependencies:
 * jquery for deferred  
