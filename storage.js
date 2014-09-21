@@ -6689,7 +6689,7 @@ exports.ObjectId = require('./objectid');
  * Module dependencies.
  * @ignore
  */
-var BinaryParser = require('../binary_parser').BinaryParser;
+var BinaryParser = require('../binaryparser').BinaryParser;
 
 /**
  * Machine id.
@@ -6948,7 +6948,7 @@ Object.defineProperty(ObjectId.prototype, "generationTime", {
 module.exports = ObjectId;
 module.exports.ObjectId = ObjectId;
 }).call(this,require('_process'))
-},{"../binary_parser":1,"_process":33}],31:[function(require,module,exports){
+},{"../binaryparser":1,"_process":33}],31:[function(require,module,exports){
 (function (process,global){
 /*!
  * Module dependencies.
