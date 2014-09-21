@@ -51,7 +51,7 @@ The permitted SchemaTypes are
 * String
 * Number
 * Date
-* Buffer **(coming soon)**
+* Buffer
 * Boolean
 * Mixed
 * ObjectId
