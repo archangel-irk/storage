@@ -14,7 +14,7 @@ module.exports = function(config) {
     files: [
       './vendor/jquery-2.1.1.js',
       './vendor/lodash.js',
-      './storage.debug.js',
+      './storage.js',
       './test/*.js'
     ],
 
@@ -22,7 +22,7 @@ module.exports = function(config) {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      './storage.debug.js': ['coverage']
+      './storage.js': ['coverage']
     },
 
     // optionally, configure the reporter

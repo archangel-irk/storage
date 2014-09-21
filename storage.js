@@ -4324,6 +4324,7 @@ var SchemaType = require('../schematype')
       , Number: require('./number')
       , String: require('./string')
       , ObjectId: require('./objectid')
+      , Buffer: require('./buffer')
     }
   , StorageArray = require('../types/array')
   , Mixed = require('./mixed')
@@ -4461,7 +4462,7 @@ SchemaArray.prototype.cast = function ( value, doc, init ) {
 
 module.exports = SchemaArray;
 
-},{"../schematype":26,"../types/array":28,"../types/embedded":31,"../utils":34,"./boolean":17,"./date":19,"./mixed":22,"./number":23,"./objectid":24,"./string":25}],17:[function(require,module,exports){
+},{"../schematype":26,"../types/array":28,"../types/embedded":31,"../utils":34,"./boolean":17,"./buffer":18,"./date":19,"./mixed":22,"./number":23,"./objectid":24,"./string":25}],17:[function(require,module,exports){
 /*!
  * Module dependencies.
  */
@@ -4589,7 +4590,7 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
     // setting a populated path
     if (Buffer.isBuffer(value)) {
       return value;
-    } else if (!utils.isObject(value)) {
+    } else if (!_.isObject(value)) {
       throw new CastError('buffer', value, this.path);
     }
 
@@ -4632,51 +4633,6 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
   }
 
   throw new CastError('buffer', value, this.path);
-};
-
-/*!
- * ignore
- */
-function handleSingle (val) {
-  return this.castForQuery(val);
-}
-
-function handleArray (val) {
-  var self = this;
-  return val.map( function (m) {
-    return self.castForQuery(m);
-  });
-}
-
-SchemaBuffer.prototype.$conditionalHandlers = {
-    '$ne' : handleSingle
-  , '$in' : handleArray
-  , '$nin': handleArray
-  , '$gt' : handleSingle
-  , '$lt' : handleSingle
-  , '$gte': handleSingle
-  , '$lte': handleSingle
-};
-
-/**
- * Casts contents for queries.
- *
- * @param {String} $conditional
- * @param {any} [value]
- * @api private
- */
-
-SchemaBuffer.prototype.castForQuery = function ($conditional, val) {
-  var handler;
-  if (arguments.length === 2) {
-    handler = this.$conditionalHandlers[$conditional];
-    if (!handler)
-      throw new Error("Can't use " + $conditional + " with Buffer.");
-    return handler.call(this, val);
-  } else {
-    val = $conditional;
-    return this.cast(val).toObject();
-  }
 };
 
 /*!
@@ -6392,7 +6348,6 @@ var utils = require('../utils');
  * @param {Document} doc parent document
  * @api private
  * @inherits Array
- * @see http://bit.ly/f6CnZU
  */
 function StorageArray (values, path, doc) {
   var arr = [];

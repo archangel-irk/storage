@@ -108,8 +108,8 @@ describe('schema', function(){
       , alive2    : "boolean"
       , extra     : "mixed"
       , obj       : "object"
-      //, buf       : "buffer"
-      //, Buf       : "Buffer"
+      , buf       : "buffer"
+      , Buf       : "Buffer"
     });
 
     assert.ok(Ferret1.path('name') instanceof SchemaTypes.String);
@@ -124,8 +124,8 @@ describe('schema', function(){
     assert.ok(Ferret1.path('alive2') instanceof SchemaTypes.Boolean);
     assert.ok(Ferret1.path('extra') instanceof SchemaTypes.Mixed);
     assert.ok(Ferret1.path('obj') instanceof SchemaTypes.Mixed);
-    //assert.ok(Ferret1.path('buf') instanceof SchemaTypes.Buffer);
-    //assert.ok(Ferret1.path('Buf') instanceof SchemaTypes.Buffer);
+    assert.ok(Ferret1.path('buf') instanceof SchemaTypes.Buffer);
+    assert.ok(Ferret1.path('Buf') instanceof SchemaTypes.Buffer);
     done();
   });
 
@@ -302,7 +302,7 @@ describe('schema', function(){
         , dates       : [Date]
         , numbers     : [Number]
         , strings     : [String]
-        //, buffers     : [Buffer]
+        , buffers     : [Buffer]
         , nocast      : []
         , mixed       : [Mixed]
       });
@@ -330,10 +330,10 @@ describe('schema', function(){
       assert.equal(typeof strings[1], 'string');
       assert.equal('123', strings[1]);
 
-      //var buffers = Loki.path('buffers').cast(['\0\0\0', new Buffer("abc")]);
+      var buffers = Loki.path('buffers').cast(['\0\0\0', new Buffer("abc")]);
 
-      //assert.ok(buffers[0] instanceof Buffer);
-      //assert.ok(buffers[1] instanceof Buffer);
+      assert.ok(Buffer.isBuffer( buffers[0] ));
+      assert.ok(Buffer.isBuffer( buffers[1] ));
 
       var nocasts = Loki.path('nocast').cast(['test', 123]);
 
@@ -950,18 +950,18 @@ describe('schema', function(){
         , b: Array
         , c: [Date]
         , d: { type: 'Boolean' }
-        //, e: [{ a: String, b: [{ type: { type: Buffer }, x: Number }] }]
+        , e: [{ a: String, b: [{ type: { type: Buffer }, x: Number }] }]
       };
 
       new Schema(schema);
 
-      assert.equal(5, Object.keys(schema).length);
+      assert.equal(6, Object.keys(schema).length);
       assert.deepEqual([{ type: Schema.ObjectId, ref: 'something' }], schema.ids);
       assert.deepEqual({ type: Array }, schema.a);
       assert.deepEqual(Array, schema.b);
       assert.deepEqual([Date], schema.c);
       assert.deepEqual({ type: 'Boolean' }, schema.d);
-      //assert.deepEqual([{ a: String, b: [{ type: { type: Buffer }, x: Number }] }], schema.e);
+      assert.deepEqual([{ a: String, b: [{ type: { type: Buffer }, x: Number }] }], schema.e);
 
       done();
     });
