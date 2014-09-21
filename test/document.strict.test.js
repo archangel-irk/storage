@@ -47,7 +47,6 @@ describe('document: strict mode:', function(){
 
     // instance override
     var instance = Lax.add({content: 'sample', rouge: 'data'}, true);
-    console.log( instance.$__.strictMode );
     assert.ok(instance.$__.strictMode);
     instance = instance.toObject();
     assert.equal('sample', instance.content);
