@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+  - '0.10'
+
+install:
+  - npm install -g grunt-cli karma-cli
+  - npm install
+
+env:
+  global:
+    - secure: KbLndOKI79BiKkbKPkG8PL4O9Em++o+j86RWEzBxYTLI3o9VY+qduYt3AhJZ7A5B66tdp8MBDtNxTefAhylinilCzvIML8C1u4xqlxp5Il1DnClNBHQG/LWx0QgQ/2XlBMsZZJnMzOE5W4/yUZ2Ft04lYP5Wd3dV3NomSBgRiT8=
+    - secure: N8KaqjQujFdAhJ+Pvdb4VIVBW/nNZ5yH21lvDacpRpxKnn0ce6UNH7txOFPJEWxm2xs2MYLSUoycECEkfPIKrMkl5TEihbt5pdoMQplsU0+QbSPRiAkZH5/OpbknzFIQt9OKwYwlQl2zpvYYRuHb0S9xWCF4CiLL2sGrIPJyWnk=
+
+notifications:
+  email:
+    on_success: never

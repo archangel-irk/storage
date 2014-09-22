@@ -1,0 +1,34 @@
+{
+  "name": "storage.js",
+  "version": "0.0.1",
+  "description": "storage.js",
+  "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
+  "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/archangel-irk/storage.git"
+  },
+  "scripts": {
+    "test": "grunt && karma start karma.sauce.conf.js",
+    "build": "grunt"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-nodeunit": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-browserify": "latest",
+    "time-grunt": "latest",
+    "browserify": "latest",
+    "karma": "latest",
+    "karma-coverage": "latest",
+    "karma-mocha": "latest",
+    "karma-chai": "latest",
+    "karma-chrome-launcher": "latest",
+    "karma-firefox-launcher": "latest",
+    "karma-ie-launcher": "latest",
+    "karma-sauce-launcher": "latest",
+    "dox": "latest"
+  }
+}
