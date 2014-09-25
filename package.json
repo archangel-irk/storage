@@ -29,6 +29,8 @@
     "karma-firefox-launcher": "latest",
     "karma-ie-launcher": "latest",
     "karma-sauce-launcher": "latest",
-    "dox": "latest"
+    "dox": "latest",
+    "highlight.js": "latest",
+    "jade": "latest"
   }
 }

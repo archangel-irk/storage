@@ -1,76 +1,10 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Storage by archangel-irk</title>
-  </head>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Mongoose ODM v0.0.1</title><link href="http://fonts.googleapis.com/css?family=Anonymous+Pro:400,700|Droid+Sans+Mono|Open+Sans:400,700|Linden+Hill|Quattrocento:400,700|News+Cycle:400,700|Antic+Slab|Cabin+Condensed:400,700" rel="stylesheet" type="text/css"><link href="docs/css/default.css" rel="stylesheet"><link href="docs/css/style.css" rel="stylesheet"></head><body><a id="forkbanner" href="http://github.com/learnboost/mongoose"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a><div id="wrap" class="homepage"><div id="header"><h1><a href="https://github.com/learnboost/mongoose" target="blank"><div class="mongoose">Mongoose</div></a></h1></div><p class="tagline">Elegant <a href="http://www.mongodb.org/" target="blank">MongoDB</a> object modeling for <a href="http://nodejs.org/" target="blank">Node.js</a></p><div id="links"><ul><li><a href="docs/guide.html">Read the Docs</a></li><li><a href="http://plugins.mongoosejs.com">Discover Plugins</a></li></ul></div><div id="follow"><ul><li><iframe src="http://ghbtns.com/github-btn.html?user=learnboost&amp;amp;repo=mongoose&amp;amp;type=watch&amp;amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px" class="github-btn"></iframe></li><li id="version"><span>Version 0.0.1</span></li><li><iframe src="http://ghbtns.com/github-btn.html?user=learnboost&amp;amp;repo=mongoose&amp;amp;type=fork&amp;amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px" class="github-btn"></iframe></li></ul></div><div id="inner"><div id="what"><p class="what">Let's face it, <strong>writing MongoDB validation, casting and business logic boilerplate is a drag</strong>. That's why we wrote Mongoose. </p></div><div id="example"><pre><code class="javascript"><span class="hljs-keyword">var</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>);\nmongoose.connect(<span class="hljs-string">'mongodb://localhost/test'</span>);\n\n<span class="hljs-keyword">var</span> Cat = mongoose.model(<span class="hljs-string">'Cat'</span>, { name: <span class="hljs-built_in">String</span> });\n\n<span class="hljs-keyword">var</span> kitty = <span class="hljs-keyword">new</span> Cat({ name: <span class="hljs-string">'Zildjian'</span> });\nkitty.save(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span> </span>{\n  <span class="hljs-keyword">if</span> (err) <span class="hljs-comment">// ...</span>\n  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'meow'</span>);\n});</code></pre></div><p class="what">Mongoose provides a straight-forward, schema-based solution to modeling your application data and includes built-in type casting, validation, query building, business logic hooks and more, out of the box.</p><div id="getstarted"><h2>Getting Started</h2><ul><li><a href="docs/index.html">quick start guide</a></li></ul></div><div id="support"><h2>Support</h2><ul><li><a href="http://stackoverflow.com/questions/tagged/mongoose">Stack Overflow</a></li><li><a href="https://github.com/learnboost/mongoose/issues/">bug reports</a></li><li><a href="http://groups.google.com/group/mongoose-orm">help forum</a></li><li><a href="http://www.mongodb.org/display/DOCS/Technical+Support">MongoDB</a></li><li>irc: #mongoosejs on freenode</li></ul></div><div id="announcements"><h2>News</h2><ul><li><a href="https://twitter.com/mongoosejs">@mongoosejs</a></li><li><a href="http://groups.google.com/group/mongoose-orm">Google Group</a></li></ul></div><div id="changelog"><h2>Changelog</h2><ul><li><a href="https://github.com/learnboost/mongoose/blob/master/History.md">Changelog</a></li></ul></div><div id="unstable"><h2>Unstable</h2><ul><li><span>The latest <em>unstable </em>release is version . </span><a href="https://github.com/LearnBoost/mongoose/wiki/Development-%28unstable%29-branch-details">What is an unstable release?</a></li></ul></div><div id="production"><h2>Production
+ <a href="http://mongoosejs.tumblr.com/" target="_blank" title="More production examples">View More</a></h2><ul><li><a href="http://storify.com/" alt="Storify"><img src="docs/images/apps/h_storify.jpg" alt="Storify"></a></li><li><a href="https://learnboost.com/" alt="LearnBoost"><img src="docs/images/apps/h_learnboost.png" alt="LearnBoost"></a></li><li><a href="http://geekli.st" alt="GeekList"><img src="docs/images/apps/h_geeklist.png" alt="GeekList"></a></li><li><a href="http://yourquestions.mcdonalds.ca/" alt="McDonalds"><img id="mcds" src="docs/images/apps/h_mcds.png" alt="McDonalds"></a></li><li><a href="http://www.shoejitsu.com/" alt="ShoeJitsu"><img src="docs/images/apps/h_shoejitsu.png" alt="ShoeJitsu"></a></li><li><a href="https://bozuko.com/" alt="Bozuko"><img src="docs/images/apps/h_bozuko.jpg" alt="Bozuko"></a></li></ul></div></div></div><p id="footer">Licensed under MIT. Copyright 2011 <a href="http://learnboost.com">LearnBoost</a>.</p><script>document.body.className = 'load';</script><script>var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1122274-9']);
+_gaq.push(['_trackPageview', location.pathname + location.search + location.hash]);
 
-  <body>
-    <div id="container">
-      <div class="inner">
-
-        <header>
-          <h1>Storage</h1>
-          <h2>Mongoose-like schema validation, collections and documents on browser (client-side)</h2>
-        </header>
-
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/archangel-irk/storage/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/archangel-irk/storage/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/archangel-irk/storage" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
-
-        <footer>
-          Storage is maintained by <a href="https://github.com/archangel-irk">archangel-irk</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
-    </div>
-  </body>
-</html>
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></body></html>
