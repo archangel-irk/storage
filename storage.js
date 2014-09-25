@@ -991,13 +991,15 @@ Document.prototype.init = function ( data ) {
 
   //todo: сдесь всё изменится, смотреть коммент метода this.populated
   // handle docs with populated paths
-  /*if ( doc._id && opts && opts.populated && opts.populated.length ) {
+  /*!
+  if ( doc._id && opts && opts.populated && opts.populated.length ) {
     var id = String( doc._id );
     for (var i = 0; i < opts.populated.length; ++i) {
       var item = opts.populated[ i ];
       this.populated( item.path, item._docs[id], item );
     }
-  }*/
+  }
+  */
 
   init( this, data, this._doc );
 
@@ -1277,7 +1279,8 @@ Document.prototype.$__shouldModify = function (
 
   // Когда мы устанавливаем такое же значение как default
   // Не понятно зачем мангуст его обновлял
-  /*if (!constructing &&
+  /*!
+  if (!constructing &&
       null != val &&
       path in this.$__.activePaths.states.default &&
       utils.deepEqual(val, schema.getDefault(this, constructing)) ) {
@@ -1287,7 +1290,8 @@ Document.prototype.$__shouldModify = function (
     // a path with a default was $unset on the server
     // and the user is setting it to the same value again
     return true;
-  }*/
+  }
+  */
 
   return false;
 };
@@ -2170,38 +2174,6 @@ Document.prototype.save = function ( done ) {
   return finalPromise;
 };
 
-/*function all (promiseOfArr) {
-  var pRet = new Promise;
-  this.then(promiseOfArr).then(
-    function (promiseArr) {
-      var count = 0;
-      var ret = [];
-      var errSentinel;
-      if (!promiseArr.length) pRet.resolve();
-      promiseArr.forEach(function (promise, index) {
-        if (errSentinel) return;
-        count++;
-        promise.then(
-          function (val) {
-            if (errSentinel) return;
-            ret[index] = val;
-            --count;
-            if (count == 0) pRet.fulfill(ret);
-          },
-          function (err) {
-            if (errSentinel) return;
-            errSentinel = err;
-            pRet.reject(err);
-          }
-        );
-      });
-      return pRet;
-    }
-    , pRet.reject.bind(pRet)
-  );
-  return pRet;
-}*/
-
 
 /**
  * Converts this document into a plain javascript object, ready for storage in MongoDB.
@@ -2874,25 +2846,31 @@ ValidatorError.prototype.constructor = ValidatorError;
 module.exports = ValidatorError;
 
 },{"../error.js":5}],11:[function(require,module,exports){
-// Backbone.Events
-// ---------------
+/**
+ *
+ * Backbone.Events
 
-// A module that can be mixed in to *any object* in order to provide it with
-// custom events. You may bind with `on` or remove with `off` callback
-// functions to an event; `trigger`-ing an event fires all callbacks in
-// succession.
-//
-//     var object = {};
-//     _.extend(object, Events.prototype);
-//     object.on('expand', function(){ alert('expanded'); });
-//     object.trigger('expand');
-//
+ * A module that can be mixed in to *any object* in order to provide it with
+ * custom events. You may bind with `on` or remove with `off` callback
+ * functions to an event; `trigger`-ing an event fires all callbacks in
+ * succession.
+ *
+ * var object = {};
+ * _.extend(object, Events.prototype);
+ * object.on('expand', function(){ alert('expanded'); });
+ * object.trigger('expand');
+ */
 function Events() {}
 
 Events.prototype = {
-
-  // Bind an event to a `callback` function. Passing `"all"` will bind
-  // the callback to all events fired.
+  /**
+   * Bind an event to a `callback` function. Passing `"all"` will bind
+   * the callback to all events fired.
+   * @param name
+   * @param callback
+   * @param context
+   * @returns {Events}
+   */
   on: function(name, callback, context) {
     if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
     this._events || (this._events = {});
@@ -2901,8 +2879,15 @@ Events.prototype = {
     return this;
   },
 
-  // Bind an event to only be triggered a single time. After the first time
-  // the callback is invoked, it will be removed.
+  /**
+   * Bind an event to only be triggered a single time. After the first time
+   * the callback is invoked, it will be removed.
+   *
+   * @param name
+   * @param callback
+   * @param context
+   * @returns {Events}
+   */
   once: function(name, callback, context) {
     if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
     var self = this;
@@ -2914,10 +2899,17 @@ Events.prototype = {
     return this.on(name, once, context);
   },
 
-  // Remove one or many callbacks. If `context` is null, removes all
-  // callbacks with that function. If `callback` is null, removes all
-  // callbacks for the event. If `name` is null, removes all bound
-  // callbacks for all events.
+  /**
+   * Remove one or many callbacks. If `context` is null, removes all
+   * callbacks with that function. If `callback` is null, removes all
+   * callbacks for the event. If `name` is null, removes all bound
+   * callbacks for all events.
+   *
+   * @param name
+   * @param callback
+   * @param context
+   * @returns {Events}
+   */
   off: function(name, callback, context) {
     var retain, ev, events, names, i, l, j, k;
     if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
@@ -2946,10 +2938,15 @@ Events.prototype = {
     return this;
   },
 
-  // Trigger one or many events, firing all bound callbacks. Callbacks are
-  // passed the same arguments as `trigger` is, apart from the event name
-  // (unless you're listening on `"all"`, which will cause your callback to
-  // receive the true name of the event as the first argument).
+  /**
+   * Trigger one or many events, firing all bound callbacks. Callbacks are
+   * passed the same arguments as `trigger` is, apart from the event name
+   * (unless you're listening on `"all"`, which will cause your callback to
+   * receive the true name of the event as the first argument).
+   *
+   * @param name
+   * @returns {Events}
+   */
   trigger: function(name) {
     if (!this._events) return this;
     var args = Array.prototype.slice.call(arguments, 1);
@@ -2961,8 +2958,15 @@ Events.prototype = {
     return this;
   },
 
-  // Tell this object to stop listening to either specific events ... or
-  // to every object it's currently listening to.
+  /**
+   * Tell this object to stop listening to either specific events ... or
+   * to every object it's currently listening to.
+   *
+   * @param obj
+   * @param name
+   * @param callback
+   * @returns {Events}
+   */
   stopListening: function(obj, name, callback) {
     var listeningTo = this._listeningTo;
     if (!listeningTo) return this;
@@ -2981,9 +2985,17 @@ Events.prototype = {
 // Regular expression used to split event strings.
 var eventSplitter = /\s+/;
 
-// Implement fancy features of the Events API such as multiple event
-// names `"change blur"` and jQuery-style event maps `{change: action}`
-// in terms of the existing API.
+/**
+ * Implement fancy features of the Events API such as multiple event
+ * names `"change blur"` and jQuery-style event maps `{change: action}`
+ * in terms of the existing API.
+ *
+ * @param obj
+ * @param action
+ * @param name
+ * @param rest
+ * @returns {boolean}
+ */
 var eventsApi = function(obj, action, name, rest) {
   if (!name) return true;
 
@@ -3007,9 +3019,14 @@ var eventsApi = function(obj, action, name, rest) {
   return true;
 };
 
-// A difficult-to-believe, but optimized internal dispatch function for
-// triggering events. Tries to keep the usual cases speedy (most internal
-// Backbone events have 3 arguments).
+/**
+ * A difficult-to-believe, but optimized internal dispatch function for
+ * triggering events. Tries to keep the usual cases speedy (most internal
+ * Backbone events have 3 arguments).
+ *
+ * @param events
+ * @param args
+ */
 var triggerEvents = function(events, args) {
   var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
   switch (args.length) {
@@ -3041,7 +3058,7 @@ module.exports = Events;
 
 },{}],12:[function(require,module,exports){
 (function (Buffer){
-/**
+/*!
  * Storage documents using schema
  * inspired by mongoose 3.8.4 (fixed bugs for 3.8.15)
  *
@@ -3057,14 +3074,14 @@ module.exports = Events;
 /*!
  * Module dependencies.
  */
-
 var Collection = require('./collection')
   , Schema = require('./schema')
   , SchemaType = require('./schematype')
   , VirtualType = require('./virtualtype')
   , Types = require('./types')
   , Document = require('./document')
-  , utils = require('./utils');
+  , utils = require('./utils')
+  , pkg = require('../package.json');
 
 
 /**
@@ -3119,7 +3136,6 @@ Storage.prototype.getCollectionNames = function(){
  * @method Collection
  * @api public
  */
-
 Storage.prototype.Collection = Collection;
 
 /**
@@ -3128,22 +3144,19 @@ Storage.prototype.Collection = Collection;
  * @property version
  * @api public
  */
-//todo:
-//Storage.prototype.version = pkg.version;
+Storage.prototype.version = pkg.version;
 
 /**
  * The Storage [Schema](#schema_Schema) constructor
  *
  * ####Example:
  *
- *     var mongoose = require('mongoose');
- *     var Schema = mongoose.Schema;
+ *     var Schema = storage.Schema;
  *     var CatSchema = new Schema(..);
  *
  * @method Schema
  * @api public
  */
-
 Storage.prototype.Schema = Schema;
 
 /**
@@ -3152,7 +3165,6 @@ Storage.prototype.Schema = Schema;
  * @method SchemaType
  * @api public
  */
-
 Storage.prototype.SchemaType = SchemaType;
 
 /**
@@ -3166,7 +3178,6 @@ Storage.prototype.SchemaType = SchemaType;
  * @see Schema.SchemaTypes #schema_Schema.Types
  * @api public
  */
-
 Storage.prototype.SchemaTypes = Schema.Types;
 
 /**
@@ -3175,7 +3186,6 @@ Storage.prototype.SchemaTypes = Schema.Types;
  * @method VirtualType
  * @api public
  */
-
 Storage.prototype.VirtualType = VirtualType;
 
 /**
@@ -3188,6 +3198,7 @@ Storage.prototype.VirtualType = VirtualType;
  * ####Types:
  *
  * - [ObjectId](#types-objectid-js)
+ * - [Buffer](#types-buffer-js)
  * - [SubDocument](#types-embedded-js)
  * - [Array](#types-array-js)
  * - [DocumentArray](#types-documentarray-js)
@@ -3200,7 +3211,6 @@ Storage.prototype.VirtualType = VirtualType;
  * @property Types
  * @api public
  */
-
 Storage.prototype.Types = Types;
 
 /**
@@ -3209,7 +3219,6 @@ Storage.prototype.Types = Types;
  * @method Document
  * @api public
  */
-
 Storage.prototype.Document = Document;
 
 /**
@@ -3218,7 +3227,6 @@ Storage.prototype.Document = Document;
  * @method Error
  * @api public
  */
-
 Storage.prototype.Error = require('./error');
 
 
@@ -3238,13 +3246,12 @@ Storage.prototype.setAdapter = function( adapterHooks ){
  *
  * @api public
  */
-
 module.exports = new Storage;
 
 window.Buffer = Buffer;
 
 }).call(this,require("buffer").Buffer)
-},{"./collection":3,"./document":4,"./error":5,"./schema":15,"./schematype":26,"./statemachine":27,"./types":32,"./utils":34,"./virtualtype":35,"buffer":36}],13:[function(require,module,exports){
+},{"../package.json":41,"./collection":3,"./document":4,"./error":5,"./schema":15,"./schematype":26,"./statemachine":27,"./types":32,"./utils":34,"./virtualtype":35,"buffer":36}],13:[function(require,module,exports){
 // Машина состояний используется для пометки, в каком состоянии находятся поле
 // Например: если поле имеет состояние default - значит его значением является значение по умолчанию
 // Примечание: для массивов в общем случае это означает пустой массив
@@ -7654,7 +7661,7 @@ ObjectId.isValid = function isValid(id) {
   }
 };
 
-/**
+/*!
  * @ignore
  */
 Object.defineProperty(ObjectId.prototype, "generationTime", {
@@ -9509,5 +9516,42 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
+},{}],41:[function(require,module,exports){
+module.exports={
+  "name": "storage.js",
+  "version": "0.0.1",
+  "description": "storage.js",
+  "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
+  "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/archangel-irk/storage.git"
+  },
+  "scripts": {
+    "test": "grunt && karma start karma.sauce.conf.js",
+    "build": "grunt"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-nodeunit": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-browserify": "latest",
+    "time-grunt": "latest",
+    "browserify": "latest",
+    "karma": "latest",
+    "karma-coverage": "latest",
+    "karma-mocha": "latest",
+    "karma-chai": "latest",
+    "karma-chrome-launcher": "latest",
+    "karma-firefox-launcher": "latest",
+    "karma-ie-launcher": "latest",
+    "karma-sauce-launcher": "latest",
+    "dox": "latest",
+    "highlight.js": "latest",
+    "jade": "latest"
+  }
+}
 },{}]},{},[12])(12)
 });
