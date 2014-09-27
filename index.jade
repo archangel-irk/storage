@@ -186,8 +186,6 @@ html(lang='en')
                     ul
                       each tag in stat.params
                         li
-                          - if (!tag.name)
-                            - // console.log(tag)
                           code= tag.name
                           if tag.types && tag.types.length
                             span.types
@@ -265,8 +263,8 @@ html(lang='en')
                 hr(class= property.isPrivate ? 'private' : '')
     script.
       document.body.className = 'load';
-    script(src="/docs/js/zepto.min.js")
-    script(src="/docs/js/cookies.min.js")
+    script(src="docs/js/zepto.min.js")
+    script(src="docs/js/cookies.min.js")
     script.
       $(".module").on("click", ".showcode", function (e) {
         $(this).closest(".item").find(".sourcecode").first().toggle();
@@ -287,4 +285,4 @@ html(lang='en')
             _gaq.push(['_trackEvent', 'anchor', 'click', this.hash])
           }
         })
-      })()
+      })();

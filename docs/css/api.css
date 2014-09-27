@@ -1,5 +1,5 @@
 body {
-  background: #d8e2d8 url(/docs/images/square_bg.png) fixed;
+  background: #d8e2d8 url(../images/square_bg.png) fixed;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
