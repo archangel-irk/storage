@@ -15,9 +15,6 @@ $(DOCFILE): $(DOCS)
 	@echo "\n### $(patsubst lib//%,lib/%, $^)" >> $(DOCFILE)
 	./node_modules/dox/bin/dox < $^ >> $(DOCFILE)
 
-site:
-	node website.js && node static.js
-
 ghpages:
 	git checkout gh-pages
 
@@ -28,7 +25,7 @@ docclean:
 	rm -f ./docs/*.{1,html,json}
 	rm -f ./docs/source/_docs
 
-.PHONY: ghpages site docs docclean gendocs docs_from_master
+.PHONY: ghpages docs docclean gendocs docs_from_master
 
 browser:
 	./node_modules/browserify/bin/cmd.js -o ./bin/mongoose.js lib/browser.js

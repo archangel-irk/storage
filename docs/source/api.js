@@ -39,8 +39,15 @@ function parse (docs) {
     var constructor = null;
 
     json.forEach(function (comment) {
-      if (comment.description)
+      if (comment.description) {
+        /*comment.description.full.replace(/&#39;/g, "'");
+        comment.description.summary.replace(/&#39;/g, "'");
+        comment.description.body.replace(/&#39;/g, "'");*/
+
+        //todo: разобраться с &#39;
+
         highlight(comment.description);
+      }
 
       var prop = false;
       comment.params = [];
