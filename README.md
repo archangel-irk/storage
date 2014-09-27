@@ -6,6 +6,9 @@ The library provides the most complete compatibility with [mongoose](http://mong
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/archangel_irk.svg)](https://saucelabs.com/u/archangel_irk)
 
+## Documentation
+[API reference](http://archangel-irk.github.io/storage/)
+
 ## Differences from mongoose
 
 coming soon
