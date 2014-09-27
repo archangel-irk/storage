@@ -40,11 +40,9 @@ function parse (docs) {
 
     json.forEach(function (comment) {
       if (comment.description) {
-        /*comment.description.full.replace(/&#39;/g, "'");
-        comment.description.summary.replace(/&#39;/g, "'");
-        comment.description.body.replace(/&#39;/g, "'");*/
-
-        //todo: разобраться с &#39;
+        comment.description.full = comment.description.full.replace(/&#39;/g, "'");
+        comment.description.summary = comment.description.summary.replace(/&#39;/g, "'");
+        comment.description.body = comment.description.body.replace(/&#39;/gmi, "\'");
 
         highlight(comment.description);
       }
