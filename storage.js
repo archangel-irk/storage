@@ -578,7 +578,14 @@ Collection.prototype = {
       }
 
       var newDoc = new Document( doc, this.name, schema, fields, init );
+      //todo: тут нужна проверка на существование id (может стоит смотреть в схеме опцию id)
+      /*if ( !newDoc._id ){
+        throw new TypeError('Для помещения в коллекцию необходимо, чтобы у документа был _id');
+      }*/
+
       id = newDoc._id.toString();
+      // Поместить документ в коллекцию
+      this.documents[ id ] = newDoc;
     }
 
     // Для одиночных документов тоже нужно  вызвать storageHasMutated
@@ -739,6 +746,23 @@ Collection.prototype = {
   storageHasMutated: function(){
     // Обновим массив документов (специальное отображение для перебора нокаутом)
     this.array = _.toArray( this.documents );
+  },
+
+  /**
+   * Обновить ссылку на документ в поле documents
+   *
+   * @param {Document} doc
+   */
+  updateIdLink: function( doc ){
+    var id = doc._id.toString();
+    var oldId = _.findKey( this.documents, { _id: doc._id });
+
+    if ( !oldId ){
+      throw new TypeError('Не найден документ для обновления ссылки по этому _id: ' + id );
+    }
+
+    delete this.documents[ oldId ];
+    this.documents[ id ] = doc;
   }
 };
 
@@ -837,15 +861,10 @@ function Document ( data, collectionName, schema, fields, init ){
   }
 
   this.schema = schema;
-  this.collection = window.storage[ collectionName ];
-  this.collectionName = collectionName;
 
-  if ( this.collection ){
-    if ( data == null || !data._id ){
-      throw new TypeError('Для помещения в коллекцию необходимо, чтобы у документа был _id');
-    }
-    // Поместить документ в коллекцию
-    this.collection.documents[ data._id ] = this;
+  if ( collectionName ){
+    this.collection = window.storage[ collectionName ];
+    this.collectionName = collectionName;
   }
 
   var required = schema.requiredPaths();
@@ -2539,7 +2558,6 @@ Document.prototype.$__fullPath = function (path) {
  * Удалить документ и вернуть коллекцию.
  *
  * @example
- * storage.collection.document.remove();
  * document.remove();
  *
  * @see Collection.remove
