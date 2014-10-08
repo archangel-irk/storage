@@ -79,7 +79,6 @@ Model.prototype.collection;
 
 Model.prototype.modelName;
 
-
 Model.prototype.$__handleSave = function $__handleSave() {
   var self = this;
   var innerPromise = new Promise;
@@ -90,7 +89,18 @@ Model.prototype.$__handleSave = function $__handleSave() {
 
   if (this.isNew) {
     // send entire doc
-    var obj = this.toObject({ depopulate: 1 });
+    var schemaOptions = utils.clone(this.schema.options);
+    schemaOptions.toObject = schemaOptions.toObject || {};
+
+    var toObjectOptions = {};
+
+    if (schemaOptions.toObject.retainKeyOrder) {
+      toObjectOptions.retainKeyOrder = schemaOptions.toObject.retainKeyOrder;
+    }
+
+    toObjectOptions.depopulate = 1;
+
+    var obj = this.toObject(toObjectOptions);
 
     if (!utils.object.hasOwnProperty(obj || {}, '_id')) {
       // documents must have an _id else mongoose won't know
@@ -174,7 +184,7 @@ Model.prototype.$__handleSave = function $__handleSave() {
  *     })
  *
  * @param {function(err, product, Number)} [fn] optional callback
- * @return {Promise} Promise
+ * @retu {Promise} Promise
  * @api public
  * @see middleware http://mongoosejs.com/docs/middleware.html
  */
@@ -685,7 +695,7 @@ Model.discriminator = function discriminator (name, schema) {
   }
 
   // merges base schema into new discriminator schema and sets new type field.
-  (function mergeSchemas(schema, baseSchema) {
+  (function(schema, baseSchema) {
     utils.merge(schema, baseSchema);
 
     var obj = {};
@@ -698,7 +708,7 @@ Model.discriminator = function discriminator (name, schema) {
     }
 
       // throws error if options are invalid
-    (function validateOptions(a, b) {
+    (function(a, b) {
       a = utils.clone(a);
       b = utils.clone(b);
       delete a.toJSON;
@@ -807,12 +817,12 @@ Model.ensureIndexes = function ensureIndexes (cb) {
   var self = this
     , safe = self.schema.options.safe
 
-  function done (err) {
+  var done = function(err) {
     self.emit('index', err);
     promise.resolve(err);
   }
 
-  function create () {
+  var create = function() {
     var index = indexes.shift();
     if (!index) return done();
 
@@ -1555,10 +1565,31 @@ Model.create = function create (doc, fn) {
   var promise = new Promise(cb);
   retPromise.then(function (docs) {
     promise.fulfill.apply(promise, docs);
-  }, cb);
+  }, promise.reject.bind(promise));
 
   p1.fulfill();
   return promise;
+};
+
+/**
+ * Shortcut for creating a new Document from existing raw data, pre-saved in the DB.
+ * The document returned has no paths marked as modified initially.
+ *
+ * ####Example:
+ *
+ *     // hydrate previous data into a Mongoose document
+ *     var mongooseCandy = Candy.hydrate({ _id: '54108337212ffb6d459f854c', type: 'jelly bean' });
+ *
+ * @param {Object} obj
+ * @return {Document}
+ * @api public
+ */
+
+Model.hydrate = function (obj) {
+  var doc = this(obj);
+  doc.$__reset();
+  doc.isNew = false;
+  return doc;
 };
 
 /**
@@ -2128,8 +2159,9 @@ function populate (model, docs, options, cb) {
   var ret;
   var found = 0;
   var isDocument;
+  var numDocuments = docs.length;
 
-  for (i = 0; i < docs.length; ++i) {
+  for (i = 0; i < numDocuments; ++i) {
     ret = undefined;
     doc = docs[i];
     id = String(utils.getValue("_id", doc));
@@ -2197,7 +2229,7 @@ function populate (model, docs, options, cb) {
   // document, not apply in the aggregate
   if (options.options && options.options.limit) {
     assignmentOpts.originalLimit = options.options.limit;
-    options.options.limit = options.options.limit * docs.length;
+    options.options.limit = options.options.limit * numDocuments;
   }
 
   Model.find(match, select, options.options, function (err, vals) {
@@ -2306,13 +2338,14 @@ function valueFilter (val, assignmentOpts) {
   if (Array.isArray(val)) {
     // find logic
     var ret = [];
-    for (var i = 0; i < val.length; ++i) {
+    var numValues = val.length;
+    for (var i = 0; i < numValues; ++i) {
       var subdoc = val[i];
       if (!isDoc(subdoc)) continue;
       maybeRemoveId(subdoc, assignmentOpts);
       ret.push(subdoc);
       if (assignmentOpts.originalLimit &&
-          i + 1 >= assignmentOpts.originalLimit) {
+          ret.length >= assignmentOpts.originalLimit) {
         break;
       }
     }
@@ -2563,12 +2596,35 @@ Model.compile = function compile (name, schema, collectionName, connection, base
   );
 
   // apply methods
+  for (var i in schema.methods) {
+    if (typeof schema.methods[i] === 'function') {
+      model.prototype[i] = schema.methods[i];
+    } else {
+      (function(_i) {
+        Object.defineProperty(model.prototype, _i, {
+          get: function() {
+            var h = {};
+            for (var k in schema.methods[_i]) {
+              h[k] = schema.methods[_i][k].bind(this);
+            }
+            return h;
+          }
+        });
+      })(i);
+    }
+  }
+
   for (var i in schema.methods)
     model.prototype[i] = schema.methods[i];
 
   // apply statics
-  for (var i in schema.statics)
-    model[i] = schema.statics[i];
+  for (var i in schema.statics) {
+    // use defineProperty so that static props can't be overwritten
+    Object.defineProperty(model, i, {
+      value: schema.statics[i],
+      writable: false
+    });
+  }
 
   model.schema = model.prototype.schema;
   model.options = model.prototype.options;

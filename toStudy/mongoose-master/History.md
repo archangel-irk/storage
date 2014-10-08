@@ -1,3 +1,16 @@
+3.9.3 / 2014-10-01
+=================
+ * added; support for virtuals that return objects #2294
+ * added; ability to manually hydrate POJOs into mongoose objects #2292
+ * added; setDefaultsOnInsert and runValidator options for update() #860
+
+3.8.17 / 2014-09-29
+==================
+ * fixed; use schema options retainKeyOrder in save() #2274
+ * fixed; fix skip in populate when limit is set #2252
+ * fixed; fix stack overflow when passing MongooseArray to findAndModify #2214
+ * fixed; optimize .length usage in populate #2289
+
 3.9.2 / 2014-09-08
 ==================
  * added; test coverage for browser component #2255

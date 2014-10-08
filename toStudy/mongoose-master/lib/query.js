@@ -7,6 +7,7 @@ var util = require('util');
 var events = require('events');
 var mongo = require('mongodb');
 
+var updateValidators = require('./services/updateValidators');
 var utils = require('./utils');
 var Promise = require('./promise');
 var helpers = require('./queryhelpers');
@@ -14,6 +15,7 @@ var Types = require('./schema/index');
 var Document = require('./document');
 var QueryStream = require('./querystream');
 var cast = require('./cast');
+var ValidationError = require('./error/validation.js');
 
 /**
  * Query constructor used for building queries.
@@ -136,11 +138,11 @@ Query.use$geoWithin = mquery.use$geoWithin;
  */
 
 Query.prototype.toConstructor = function toConstructor () {
-  function CustomQuery (criteria, options) {
+  var CustomQuery = function(criteria, options) {
     if (!(this instanceof CustomQuery))
       return new CustomQuery(criteria, options);
     Query.call(this, criteria, options || null);
-  }
+  };
 
   util.inherits(CustomQuery, Query);
 
@@ -1002,9 +1004,8 @@ Query.prototype.find = function (conditions, callback) {
   var options = this._mongooseOptions;
   var self = this;
 
-  return Query.base.find.call(this, {}, cb);
 
-  function cb(err, docs) {
+  var cb = function(err, docs) {
     if (err) return promise.error(err);
 
     if (0 === docs.length) {
@@ -1025,7 +1026,9 @@ Query.prototype.find = function (conditions, callback) {
         ? promise.complete(docs)
         : completeMany(self.model, docs, fields, self, pop, promise);
     });
-  }
+  };
+
+  return Query.base.find.call(this, {}, cb);
 }
 
 /*!
@@ -1142,7 +1145,7 @@ Query.prototype.findOne = function (conditions, fields, options, callback) {
   var self = this;
 
   // don't pass in the conditions because we already merged them in
-  Query.base.findOne.call(this, {}, function cb (err, doc) {
+  Query.base.findOne.call(this, {}, function(err, doc) {
     if (err) return promise.error(err);
     if (!doc) return promise.complete(null);
 
@@ -1153,7 +1156,7 @@ Query.prototype.findOne = function (conditions, fields, options, callback) {
     }
 
     var pop = helpers.preparePopulationOptionsMQ(self, options);
-    self.model.populate(doc, pop, function (err, doc) {
+    self.model.populate(doc, pop, function(err, doc) {
       if (err) return promise.error(err);
 
       return true === options.lean
@@ -1558,8 +1561,7 @@ Query.prototype._findAndModify = function (type, callback) {
 
   if (opts.sort) convertSortToArray(opts);
 
-  this._collection.findAndModify(castedQuery, castedDoc, opts, utils.tick(cb));
-  function cb (err, doc) {
+  var cb = function(err, doc) {
     if (err) return promise.error(err);
 
     if (!doc || (utils.isObject(doc) && Object.keys(doc).length === 0)) {
@@ -1580,10 +1582,31 @@ Query.prototype._findAndModify = function (type, callback) {
         ? promise.complete(doc)
         : completeOne(self.model, doc, fields, self, pop, promise);
     });
-  }
+  };
+
+  this._collection.findAndModify(castedQuery, castedDoc, opts, utils.tick(cb));
 
   return promise;
 }
+
+/**
+ * Override mquery.prototype._mergeUpdate to handle mongoose objects in
+ * updates.
+ *
+ * @param {Object} doc
+ * @api private
+ */
+
+Query.prototype._mergeUpdate = function(doc) {
+  if (!this._update) this._update = {};
+  if (doc instanceof Query) {
+    if (doc._update) {
+      utils.mergeClone(this._update, doc._update);
+    }
+  } else {
+    utils.mergeClone(this._update, doc);
+  }
+};
 
 /*!
  * The mongodb driver 1.3.23 only supports the nested array sort
@@ -1745,8 +1768,22 @@ Query.prototype.update = function (conditions, doc, options, callback) {
     }
   }
 
+  var schema = this.model.schema;
+  var doValidate = updateValidators(this, schema, castedDoc, options);
+
   if (!castedDoc) {
     callback && callback(null, 0);
+    return this;
+  }
+
+  if (options && options.runValidators && callback) {
+    var _this = this;
+    doValidate(function(err) {
+      if (err) {
+        return callback(err);
+      }
+      Query.base.update.call(_this, castedQuery, castedDoc, options, callback);
+    });
     return this;
   }
 
@@ -2225,45 +2262,7 @@ Query.prototype._applyPaths = function applyPaths () {
     , excluded = []
     , seen = [];
 
-  analyzeSchema(this.model.schema);
-
-  switch (exclude) {
-    case true:
-      excluded.length && this.select('-' + excluded.join(' -'));
-      break;
-    case false:
-      selected.length && this.select(selected.join(' '));
-      break;
-    case undefined:
-      // user didn't specify fields, implies returning all fields.
-      // only need to apply excluded fields
-      excluded.length && this.select('-' + excluded.join(' -'));
-      break;
-  }
-
-  return seen = excluded = selected = keys = fields = null;
-
-  function analyzeSchema (schema, prefix) {
-    prefix || (prefix = '');
-
-    // avoid recursion
-    if (~seen.indexOf(schema)) return;
-    seen.push(schema);
-
-    schema.eachPath(function (path, type) {
-      if (prefix) path = prefix + '.' + path;
-
-      analyzePath(path, type);
-
-      // array of subdocs?
-      if (type.schema) {
-        analyzeSchema(type.schema, path);
-      }
-
-    });
-  }
-
-  function analyzePath (path, type) {
+  var analyzePath = function(path, type) {
     if ('boolean' != typeof type.selected) return;
 
     var plusPath = '+' + path;
@@ -2285,7 +2284,45 @@ Query.prototype._applyPaths = function applyPaths () {
     if (~excluded.indexOf(root)) return;
 
     ;(type.selected ? selected : excluded).push(path);
+  };
+  
+  var analyzeSchema = function(schema, prefix) {
+    prefix || (prefix = '');
+
+    // avoid recursion
+    if (~seen.indexOf(schema)) return;
+    seen.push(schema);
+
+    schema.eachPath(function (path, type) {
+      if (prefix) path = prefix + '.' + path;
+
+      analyzePath(path, type);
+
+      // array of subdocs?
+      if (type.schema) {
+        analyzeSchema(type.schema, path);
+      }
+
+    });
+  };
+  
+  analyzeSchema(this.model.schema);
+
+  switch (exclude) {
+    case true:
+      excluded.length && this.select('-' + excluded.join(' -'));
+      break;
+    case false:
+      selected.length && this.select(selected.join(' '));
+      break;
+    case undefined:
+      // user didn't specify fields, implies returning all fields.
+      // only need to apply excluded fields
+      excluded.length && this.select('-' + excluded.join(' -'));
+      break;
   }
+
+  return seen = excluded = selected = keys = fields = null;
 }
 
 /**
