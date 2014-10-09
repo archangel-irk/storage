@@ -4864,7 +4864,7 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
   if (!Array.isArray(value)) {
     return this.cast([value], doc, init, prev);
   }
-  
+
   // Если два массива одинаковые - не надо перезаписывать
   if ( prev && _.isEqual( value, prev.toObject() ) ){
     return prev;
@@ -4921,6 +4921,7 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
  * @param {DocumentArray} prev
  */
 function restorePopulatedFields ( subdoc, schemaTree, value, prev ) {
+  var props;
   _.forEach( schemaTree, function( prop, key ){
     var curVal;
 
