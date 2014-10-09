@@ -4751,7 +4751,8 @@ var SchemaType = require('../schematype')
   , ArrayType = require('./array')
   , StorageDocumentArray = require('../types/documentarray')
   , Subdocument = require('../types/embedded')
-  , Document = require('../document');
+  , Document = require('../document')
+  , oid = require('../types/objectid');
 
 /**
  * SubdocsArray SchemaType constructor
@@ -4863,6 +4864,11 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
   if (!Array.isArray(value)) {
     return this.cast([value], doc, init, prev);
   }
+  
+  // Если два массива одинаковые - не надо перезаписывать
+  if ( prev && _.isEqual( value, prev.toObject() ) ){
+    return prev;
+  }
 
   if (!(value.isStorageDocumentArray)) {
     value = new StorageDocumentArray(value, this.path, doc);
@@ -4892,6 +4898,8 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
           subdoc.set(value[i]);
         } else {
           subdoc = new this.casterConstructor(value[i], value);
+
+          restorePopulatedFields( subdoc, this.schema.tree, value[i], prev );
         }
 
         // if set() is hooked it will have no return value
@@ -4903,6 +4911,38 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
 
   return value;
 };
+
+/*!
+ * Restore population
+ *
+ * @param {*} subdoc
+ * @param {Object} schemaTree
+ * @param {*} value
+ * @param {DocumentArray} prev
+ */
+function restorePopulatedFields ( subdoc, schemaTree, value, prev ) {
+  _.forEach( schemaTree, function( prop, key ){
+    var curVal;
+
+    if ( prop.ref ){
+      props = {};
+      curVal = value[ key ];
+
+      if ( curVal && oid.isValid( curVal ) ){
+
+        _.forEach( prev, function( prevDoc ){
+          var prevDocProp = prevDoc[ key ];
+
+          if ( prevDocProp instanceof Document ){
+            if ( prevDocProp._id.equals( curVal ) ){
+              subdoc[ key ] = prevDocProp;
+            }
+          }
+        });
+      }
+    }
+  });
+}
 
 /*!
  * Scopes paths selected in a query to this array.
@@ -4939,7 +4979,7 @@ function scopePaths (array, fields, init) {
 
 module.exports = DocumentArray;
 
-},{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"./array":16}],21:[function(require,module,exports){
+},{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"../types/objectid":33,"./array":16}],21:[function(require,module,exports){
 
 /*!
  * Module exports.
