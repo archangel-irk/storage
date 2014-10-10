@@ -7,8 +7,10 @@ before_script:
   - npm install -g grunt-cli karma-cli codeclimate-test-reporter
   - npm install
 
-after_script:
-  - codeclimate < test/coverage/**/lcov.info
+#after_script:
+#  - codeclimate < test/coverage/**/lcov.info
+
+after_success: cat test/coverage/**/lcov.info | codeclimate
 
 env:
   global:
