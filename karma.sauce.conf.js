@@ -90,17 +90,12 @@ module.exports = function(config) {
 
     logLevel: config.LOG_INFO,
 
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
     // Use these custom launchers for starting browsers on Sauce
     customLaunchers: customLaunchers,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: Object.keys(customLaunchers),
-
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
