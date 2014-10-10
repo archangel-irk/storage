@@ -6,6 +6,9 @@ node_js:
 before_script:
   - npm install -g codeclimate-test-reporter
 
+after_script:
+  - codeclimate < test/coverage/**/lcov.info
+
 install:
   - npm install -g grunt-cli karma-cli
   - npm install
@@ -19,6 +22,3 @@ env:
 notifications:
   email:
     on_success: never
-
-after_success:
-  - codeclimate < test/coverage/**/lcov.info

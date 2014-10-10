@@ -1,5 +1,7 @@
 .DS_Store
+.DS_Store?
 .idea/
+coverage/
 
 # Node.js
 npm-debug.log
