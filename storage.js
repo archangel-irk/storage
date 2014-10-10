@@ -5377,7 +5377,7 @@ ObjectId.prototype.cast = function ( value, doc, init, priorVal ) {
     }
 
     // init doc
-    var doc = new Document( value, undefined, storage.schemas[ schema ], undefined, true );
+    doc = new Document( value, undefined, storage.schemas[ schema ], undefined, true );
     doc.$__.wasPopulated = true;
 
     return doc;
