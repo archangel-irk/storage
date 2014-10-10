@@ -19,8 +19,6 @@
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-browserify": "latest",
-    "time-grunt": "latest",
-    "browserify": "latest",
     "karma": "latest",
     "karma-coverage": "latest",
     "karma-mocha": "latest",
@@ -29,6 +27,8 @@
     "karma-firefox-launcher": "latest",
     "karma-ie-launcher": "latest",
     "karma-sauce-launcher": "latest",
+    "time-grunt": "latest",
+    "browserify": "latest",
     "dox": "latest",
     "highlight.js": "latest",
     "jade": "latest"

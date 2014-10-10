@@ -12,9 +12,9 @@ after_script:
 
 env:
   global:
-    - CODECLIMATE_REPO_TOKEN: 115fed46fec53d6aa1e3e7d02c326d51f8c3652a041f159ca9be4c505d027ab4
     - secure: KbLndOKI79BiKkbKPkG8PL4O9Em++o+j86RWEzBxYTLI3o9VY+qduYt3AhJZ7A5B66tdp8MBDtNxTefAhylinilCzvIML8C1u4xqlxp5Il1DnClNBHQG/LWx0QgQ/2XlBMsZZJnMzOE5W4/yUZ2Ft04lYP5Wd3dV3NomSBgRiT8=
     - secure: N8KaqjQujFdAhJ+Pvdb4VIVBW/nNZ5yH21lvDacpRpxKnn0ce6UNH7txOFPJEWxm2xs2MYLSUoycECEkfPIKrMkl5TEihbt5pdoMQplsU0+QbSPRiAkZH5/OpbknzFIQt9OKwYwlQl2zpvYYRuHb0S9xWCF4CiLL2sGrIPJyWnk=
+    - secure: E2uqQ5YavQ6d6rHlQlpVF0fKCvmDWDxuFcaRUTikpbWzABz4htfn0oTngzZuRqJYJQQrATl79UxdzOQo83CyT+99bJhje/inoQ1KSL3Orc27pZR8I/SC8VYyvqd3I9v3OhTY7d5uNpPIZCoyPaaGp+/JWo1Xrc4G8NRVD9NNFkI=
 
 notifications:
   email:
