@@ -10,7 +10,8 @@ var Schema = storage.Schema
 
 var Document = storage.Document
   , StateMachine = storage.StateMachine
-  , ObjectId = storage.ObjectId;
+  , ObjectId = storage.ObjectId
+  , StorageBuffer = storage.Types.Buffer;
 
 /**
  * Setup.
@@ -160,6 +161,24 @@ describe('utils', function(){
 
     d2.set(d1.toObject());
     assert.ok(utils.deepEqual(d1.a1, d2.a1));
+    done();
+  });
+
+    // gh-688
+  it('deepEquals with MongooseBuffer', function (done) {
+    var str = 'this is the day';
+    var a = new StorageBuffer(str);
+    var b = new StorageBuffer(str);
+    var c = new Buffer(str);
+    var d = new Buffer('this is the way');
+    var e = new Buffer('other length');
+
+    assert.ok(utils.deepEqual(a, b));
+    assert.ok(utils.deepEqual(a, c));
+    assert.ok(!utils.deepEqual(a, d));
+    assert.ok(!utils.deepEqual(a, e));
+    assert.ok(!utils.deepEqual(a, []));
+    assert.ok(!utils.deepEqual([], a));
     done();
   });
 

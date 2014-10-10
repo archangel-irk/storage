@@ -4752,7 +4752,8 @@ var SchemaType = require('../schematype')
   , StorageDocumentArray = require('../types/documentarray')
   , Subdocument = require('../types/embedded')
   , Document = require('../document')
-  , oid = require('../types/objectid');
+  , oid = require('../types/objectid')
+  , utils = require('../utils');
 
 /**
  * SubdocsArray SchemaType constructor
@@ -4851,9 +4852,10 @@ DocumentArray.prototype.doValidate = function (array, fn, scope) {
 /**
  * Casts contents
  *
- * @param {Object} value
+ * @param {*} value
  * @param {Document} doc that triggers the casting
  * @param {Boolean} init flag
+ * @param {DocumentArray} prev
  * @api private
  */
 DocumentArray.prototype.cast = function (value, doc, init, prev) {
@@ -4865,8 +4867,8 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
     return this.cast([value], doc, init, prev);
   }
 
-  // Если два массива одинаковые - не надо перезаписывать
-  if ( prev && _.isEqual( value, prev.toObject() ) ){
+  // Если два массива примерно одинаковые - не надо перезаписывать
+  if ( prev && approximatelyEqual( value, prev ) ){
     return prev;
   }
 
@@ -4911,6 +4913,33 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
 
   return value;
 };
+
+/*!
+ * Приблизительное сравнение двух массивов
+ *
+ * Это нужно для populated полей - их мы преобразовываем в id.
+ * Так же в сравнении не участвует id существующих Embedded документов,
+ * Если на сервере _id: false, а на клиенте по умолчанию есть _id.
+ *
+ * @param value
+ * @param prev
+ * @returns {*}
+ */
+function approximatelyEqual ( value, prev ) {
+  prev = prev.toObject({depopulate: 1});
+
+  // Не сравнивать по subdoc _id
+  var i = value.length;
+  if ( i === prev.length ){
+    _.forEach( value, function( subdoc, i ){
+      if ( !subdoc._id ){
+        delete prev[ i ]._id
+      }
+    });
+  }
+
+  return utils.deepEqual( value, prev );
+}
 
 /*!
  * Restore population
@@ -4980,7 +5009,7 @@ function scopePaths (array, fields, init) {
 
 module.exports = DocumentArray;
 
-},{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"../types/objectid":33,"./array":16}],21:[function(require,module,exports){
+},{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"../types/objectid":33,"../utils":34,"./array":16}],21:[function(require,module,exports){
 
 /*!
  * Module exports.
@@ -5306,19 +5335,22 @@ ObjectId.prototype.checkRequired = function ( value ) {
 /**
  * Casts to ObjectId
  *
- * @param {Object} value
+ * @param {ObjectId|String} value
+ * @param {Document} doc
+ * @param {Boolean} init
+ * @param {ObjectId|Document} priorVal
  * @api private
  */
-ObjectId.prototype.cast = function ( value ) {
+ObjectId.prototype.cast = function ( value, doc, init, priorVal ) {
+  // lazy load
+  Document || (Document = require('./../document'));
+
   if ( SchemaType._isRef( this, value ) ) {
     // wait! we may need to cast this to a document
 
     if (null == value) {
       return value;
     }
-
-    // lazy load
-    Document || (Document = require('./../document'));
 
     if (value instanceof Document) {
       value.$__.wasPopulated = true;
@@ -5352,6 +5384,13 @@ ObjectId.prototype.cast = function ( value ) {
   }
 
   if (value === null) return value;
+
+  // Предотвратить depopulate
+  if ( priorVal instanceof Document ){
+    if ( priorVal._id && priorVal._id.equals( value ) ){
+      return priorVal;
+    }
+  }
 
   if (value instanceof oid)
     return value;
@@ -6074,9 +6113,10 @@ SchemaType.prototype.getDefault = function (scope, init) {
 /**
  * Applies setters
  *
- * @param {Object} value
+ * @param {*} value
  * @param {Object} scope
  * @param {Boolean} init
+ * @param {*} priorVal
  * @api private
  */
 
@@ -7745,7 +7785,7 @@ module.exports = ObjectId;
 module.exports.ObjectId = ObjectId;
 }).call(this,require('_process'))
 },{"../binaryparser":2,"_process":40}],34:[function(require,module,exports){
-(function (process,global){
+(function (process,global,Buffer){
 /*!
  * Module dependencies.
  */
@@ -7857,6 +7897,19 @@ exports.pluralize = function (str) {
  * @api private
  */
 exports.deepEqual = function deepEqual (a, b) {
+  if (a instanceof ObjectId && b instanceof ObjectId) {
+    return a.toString() === b.toString();
+  }
+
+  // Handle StorageNumbers
+  if (a instanceof Number && b instanceof Number) {
+    return a.valueOf() === b.valueOf();
+  }
+
+  if (Buffer.isBuffer(a)) {
+    return a.equals(b);
+  }
+
   if (isStorageObject(a)) a = a.toObject();
   if (isStorageObject(b)) b = b.toObject();
 
@@ -7927,6 +7980,10 @@ exports.clone = function clone (obj, options) {
   }
 
   if ( obj instanceof ObjectId ) {
+    if ( options.depopulate ){
+      return obj.toString();
+    }
+
     return new ObjectId( obj.id );
   }
 
@@ -8111,8 +8168,8 @@ exports.setImmediate = (function() {
 }());
 
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./document":4,"./mpath":14,"./types/objectid":33,"_process":40}],35:[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
+},{"./document":4,"./mpath":14,"./types/objectid":33,"_process":40,"buffer":36}],35:[function(require,module,exports){
 
 /**
  * VirtualType constructor
