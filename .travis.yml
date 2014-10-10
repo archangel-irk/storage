@@ -10,7 +10,12 @@ before_script:
 #after_script:
 #  - codeclimate < test/coverage/**/lcov.info
 
-after_success: cat test/coverage/**/lcov.info | codeclimate
+after_success:
+  - cat test/coverage/**/lcov.info | codeclimate
+
+addons:
+  code_climate:
+    repo_token: 115fed46fec53d6aa1e3e7d02c326d51f8c3652a041f159ca9be4c505d027ab4
 
 env:
   global:
@@ -20,7 +25,3 @@ env:
 notifications:
   email:
     on_success: never
-
-addons:
-  code_climate:
-    repo_token: 115fed46fec53d6aa1e3e7d02c326d51f8c3652a041f159ca9be4c505d027ab4
