@@ -323,7 +323,7 @@ and run:
 
 	karma start karma.local.conf.js
 
-Also you can see the code coverage in `./coverage/`.
+Also you can see the code coverage in `./test/coverage/`.
 
 ## License
 MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)

@@ -9666,6 +9666,7 @@ module.exports={
     "karma-firefox-launcher": "latest",
     "karma-ie-launcher": "latest",
     "karma-sauce-launcher": "latest",
+    "codeclimate-test-reporter": "latest",
     "dox": "latest",
     "highlight.js": "latest",
     "jade": "latest"
