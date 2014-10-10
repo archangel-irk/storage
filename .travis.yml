@@ -10,6 +10,7 @@ before_script:
 
 after_script:
   - codeclimate < test/coverage/**/lcov.info
+#  - grunt coveralls
 
 env:
   global:
