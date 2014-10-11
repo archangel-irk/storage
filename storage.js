@@ -3084,8 +3084,6 @@ module.exports = Events;
  * http://docs.meteor.com/#selectors
  * https://github.com/meteor/meteor/tree/master/packages/minimongo
  *
- * browserify lib/ --standalone storage > storage.js -d
- *
  * проследить за багом gh-1638 (3.8.16)
  */
 
