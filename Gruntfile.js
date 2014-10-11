@@ -103,6 +103,13 @@ module.exports = function (grunt) {
           //'sauce_ie_11'
         ]
       }
+    },
+
+    coveralls: {
+      options: {
+        coverage_dir: 'test/coverage',
+        recursive: true
+      }
     }
   });
 
@@ -110,6 +117,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   grunt.registerTask('default', [
     'build',
