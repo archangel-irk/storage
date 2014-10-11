@@ -9646,27 +9646,28 @@ module.exports={
     "url": "https://github.com/archangel-irk/storage.git"
   },
   "scripts": {
-    "test": "grunt && karma start karma.sauce.conf.js",
-    "build": "grunt"
+    "test": "grunt test"
   },
   "devDependencies": {
     "grunt": "latest",
     "grunt-contrib-jshint": "latest",
-    "grunt-contrib-nodeunit": "latest",
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-browserify": "latest",
-    "time-grunt": "latest",
-    "browserify": "latest",
+    "grunt-karma": "latest",
+    "grunt-karma-coveralls": "latest",
     "karma": "latest",
     "karma-coverage": "latest",
     "karma-mocha": "latest",
     "karma-chai": "latest",
+    "karma-phantomjs-launcher": "latest",
     "karma-chrome-launcher": "latest",
     "karma-firefox-launcher": "latest",
     "karma-ie-launcher": "latest",
+    "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
-    "codeclimate-test-reporter": "latest",
+    "time-grunt": "latest",
+    "browserify": "latest",
     "dox": "latest",
     "highlight.js": "latest",
     "jade": "latest"
