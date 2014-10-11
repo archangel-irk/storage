@@ -8,7 +8,7 @@ before_script:
   - npm install -g codeclimate-test-reporter
 
 script:
-- grunt build
+- grunt travis
 
 after_script:
   - codeclimate < test/coverage/**/lcov.info

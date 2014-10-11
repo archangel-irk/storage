@@ -112,25 +112,29 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('default', [
-    //'lint',
-    //'complexity',
-    'browserify',
-    'uglify',
+    'build',
     'test'
   ]);
-  grunt.registerTask('dev', [
-    'browserify:dev',
-    'watch'
-  ]);
-  grunt.registerTask('test', [
-    'karma:local'
-  ]);
+
   grunt.registerTask('build', [
     //'lint',
     //'complexity',
     'browserify',
-    'uglify',
-    //'karma:phantom',
+    'uglify'
+  ]);
+
+  grunt.registerTask('dev', [
+    'browserify:dev',
+    'watch'
+  ]);
+
+  grunt.registerTask('test', [
+    'karma:local'
+  ]);
+
+  grunt.registerTask('travis', [
+    'build',
+    'karma:phantom',
     'karma:sauce'
   ]);
 };
