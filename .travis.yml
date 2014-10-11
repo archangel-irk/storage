@@ -5,8 +5,10 @@ node_js:
 
 before_script:
   - npm install -g grunt-cli
-  - npm install -g karma-cli
   - npm install -g codeclimate-test-reporter
+
+script:
+- grunt build
 
 after_script:
   - codeclimate < test/coverage/**/lcov.info

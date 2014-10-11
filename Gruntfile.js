@@ -51,11 +51,7 @@ module.exports = function (grunt) {
       options: {
         configFile: 'karma.conf.js'
       },
-      local: {
-        browsers: [
-          'Chrome'
-        ]
-      },
+      local: {},
       phantom: {
         browsers: [
           'PhantomJS'
@@ -105,8 +101,7 @@ module.exports = function (grunt) {
           'sauce_ie_9',
           //'sauce_ie_10',
           //'sauce_ie_11'
-        ],
-        captureTimeout: 120000
+        ]
       }
     }
   });
@@ -116,7 +111,26 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['browserify', 'uglify'] );
-  grunt.registerTask('dev', ['browserify:dev', 'watch'] );
-  grunt.registerTask('test', ['karma:local'] );
+  grunt.registerTask('default', [
+    //'lint',
+    //'complexity',
+    'browserify',
+    'uglify',
+    'test'
+  ]);
+  grunt.registerTask('dev', [
+    'browserify:dev',
+    'watch'
+  ]);
+  grunt.registerTask('test', [
+    'karma:local'
+  ]);
+  grunt.registerTask('build', [
+    //'lint',
+    //'complexity',
+    'browserify',
+    'uglify',
+    //'karma:phantom',
+    'karma:sauce'
+  ]);
 };
