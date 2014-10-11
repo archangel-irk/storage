@@ -45,13 +45,78 @@ module.exports = function (grunt) {
           'storage.min.js': ['storage.js']
         }
       }
+    },
+
+    karma: {
+      options: {
+        configFile: 'karma.conf.js'
+      },
+      local: {
+        browsers: [
+          'Chrome'
+        ]
+      },
+      phantom: {
+        browsers: [
+          'PhantomJS'
+        ],
+        preprocessors: {
+          // source files, that you wanna generate coverage for
+          // do not include tests or libraries
+          // (these files will be instrumented by Istanbul)
+          './storage.js': ['coverage']
+        },
+        // coverage reporter generates the coverage
+        reporters: [
+          'dots',
+          'coverage'
+        ],
+        // optionally, configure the reporter
+        coverageReporter: {
+          type: 'lcovonly',
+          dir: 'test/coverage'
+        }
+      },
+      coverage: {
+        preprocessors: {
+          './storage.js': ['coverage']
+        },
+        reporters: [
+          'dots',
+          'coverage'
+        ],
+        coverageReporter: {
+          type: 'html',
+          dir: 'test/coverage'
+        }
+      },
+      sauce: {
+        reporters: [
+          'dots',
+          'saucelabs'
+        ],
+        browsers: [
+          'sauce_chrome',
+          //'sauce_chrome_linux',
+          //'sauce_firefox',
+          //'sauce_firefox_linux',
+          //'sauce_safari',
+          //'sauce_ie_8',
+          'sauce_ie_9',
+          //'sauce_ie_10',
+          //'sauce_ie_11'
+        ],
+        captureTimeout: 120000
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browserify');
+
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('default', ['browserify', 'uglify'] );
   grunt.registerTask('dev', ['browserify:dev', 'watch'] );
+  grunt.registerTask('test', ['karma:local'] );
 };
