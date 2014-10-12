@@ -93,14 +93,14 @@ module.exports = function (grunt) {
         ],
         browsers: [
           'sauce_chrome',
-          //'sauce_chrome_linux',
-          //'sauce_firefox',
-          //'sauce_firefox_linux',
-          //'sauce_safari',
+          'sauce_chrome_linux',
+          'sauce_firefox',
+          'sauce_firefox_linux',
+          'sauce_safari',
           //'sauce_ie_8',
           'sauce_ie_9',
-          //'sauce_ie_10',
-          //'sauce_ie_11'
+          'sauce_ie_10',
+          'sauce_ie_11'
         ]
       }
     },
