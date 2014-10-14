@@ -1,9 +1,4 @@
-/**
- * User: Constantine Melnikov
- * Email: ka.melnikov@gmail.com
- * Date: 12.12.13
- * Time: 0:31
- */
+
 'use strict';
 module.exports = function (grunt) {
   require('time-grunt')(grunt);
@@ -44,6 +39,24 @@ module.exports = function (grunt) {
         files: {
           'storage.min.js': ['storage.js']
         }
+      }
+    },
+
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
+      lib: {
+        src: [
+          'lib/**/*.js'
+        ]
+      },
+      tests: {
+        src: [
+          'test/*.js',
+          'Gruntfile.js',
+          'karma.conf.js'
+        ]
       }
     },
 
@@ -114,6 +127,7 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-karma');
@@ -122,6 +136,10 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'build',
     'test'
+  ]);
+
+  grunt.registerTask('lint', [
+    'jshint'
   ]);
 
   grunt.registerTask('build', [

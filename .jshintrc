@@ -1,0 +1,32 @@
+{
+  "strict": true,
+  "curly": true,
+  "forin": true,
+  "immed": true,
+  "latedef": "nofunc",
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "quotmark": "single",
+  "undef": true,
+  "validthis": true,
+  "maxparams": 3,
+  "maxdepth": 2,
+  "maxcomplexity": 5,
+  "globals": {
+    "define": true,
+    "require": false,
+    "module": false,
+    "setTimeout": false,
+    "jQuery": false,
+    "describe": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "it": false,
+    "runs": false,
+    "waitsFor": false,
+    "expect": false,
+    "__karma__": false
+  }
+}
