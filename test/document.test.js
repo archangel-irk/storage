@@ -1189,13 +1189,23 @@ describe('document', function(){
     });
   });
 
-  it.only('Create a document without collection', function(done) {
+  it('Create a document without collection', function(done) {
     var userSchema = new Schema('User', {
       name: { type: String, required: true }
     });
     var user = storage.Document({name: 'Constantine'}, userSchema );
 
-    assert.equal('Constantine', user.name);
+    assert.equal('Constantine', user.name );
+    done();
+  });
+
+  it('Create a empty document without collection', function(done) {
+    var userSchema = new Schema('User', {
+      name: { type: String, required: true }
+    });
+    var user = storage.Document( userSchema );
+
+    assert.equal( undefined, user.name );
     done();
   });
 });
