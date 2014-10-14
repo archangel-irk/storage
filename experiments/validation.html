@@ -89,6 +89,18 @@ window.vm = {
     formErrors: ko.validation.group( userObservable )
 };
 
+
+/*ko.validation.rules.pattern.message = 'Invalid.';
+ko.validation.configure({
+  registerExtenders: true,
+  messagesOnModified: true,
+  insertMessages: true,
+  parseInputAttributes: true,
+  messageTemplate: null
+});
+
+widget.formErrors = ko.validation.group( widget.account );*/
+
 ko.applyBindings( vm );
 
 //ko.es5.getAllObservablesForObject( account, true );

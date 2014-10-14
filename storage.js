@@ -830,7 +830,7 @@ function Document ( data, collectionName, schema, fields, init ){
     // При создании EmbeddedDocument, в нём уже есть схема и ему не нужен _id
     schema = this.schema || schema;
     // Сгенерировать ObjectId, если он отсутствует, но его требует схема
-    if ( !this.schema && schema.options._id ){
+    if ( schema && !this.schema && schema.options._id ){
       data = data || {};
 
       if ( data._id === undefined ){
@@ -2763,7 +2763,7 @@ var StorageError = require('../error.js');
 
 function MissingSchemaError(){
   var msg = 'Schema hasn\'t been registered for document.\n'
-    + 'Use storage.Document(name, schema)';
+    + 'Use storage.Document(data, schema)';
   StorageError.call(this, msg);
 
   this.name = 'MissingSchemaError';
