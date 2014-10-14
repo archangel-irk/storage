@@ -93,6 +93,16 @@ var user = storage.Document({name: 'Constantine'}, userSchema );
 console.log( user.name );  // "Constantine"
 ```
 
+### Create an empty document without collection
+```javascript
+var userSchema = new Schema('User', {
+   name: { type: String, required: true }
+});
+var user = storage.Document( userSchema );
+
+console.log( user.name );  // undefined
+```
+
 ### Validation
 ```javascript
 user.name = undefined;
