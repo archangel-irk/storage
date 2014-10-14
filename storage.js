@@ -803,6 +803,10 @@ var Events = require('./events')
  * @constructor
  */
 function Document ( data, collectionName, schema, fields, init ){
+  if ( !(this instanceof Document) ) {
+    return new Document( data, collectionName, schema, fields, init );
+  }
+
   this.$__ = new InternalCache;
   this.isNew = true;
 
@@ -811,6 +815,11 @@ function Document ( data, collectionName, schema, fields, init ){
   if ( 'boolean' === typeof data ){
     init = data;
     data = null;
+  }
+
+  if ( collectionName instanceof Schema ){
+    schema = collectionName;
+    collectionName = undefined;
   }
 
   if ( _.isObject( schema ) && !( schema instanceof Schema )) {
@@ -3566,8 +3575,9 @@ var Events = require('./events')
  * @api public
  */
 function Schema ( name, baseSchema, obj, options ) {
-  if ( !(this instanceof Schema) )
+  if ( !(this instanceof Schema) ) {
     return new Schema( name, baseSchema, obj, options );
+  }
 
   // Если это именованая схема
   if ( typeof name === 'string' ){
