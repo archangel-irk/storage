@@ -1199,7 +1199,7 @@ describe('document', function(){
     done();
   });
 
-  it('Create a empty document without collection', function(done) {
+  it('Create an empty document without collection', function(done) {
     var userSchema = new Schema('User', {
       name: { type: String, required: true }
     });
@@ -1208,4 +1208,7 @@ describe('document', function(){
     assert.equal( undefined, user.name );
     done();
   });
+
+  //todo: test for new storage.Document( storage.schemas.User );
+  //todo: test for new storage.users.add();
 });
