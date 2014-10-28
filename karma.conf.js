@@ -1,5 +1,5 @@
 module.exports = function (config) {
-  "use strict";
+  'use strict';
 
   config.set({
     // list of files / patterns to load in the browser
@@ -54,51 +54,51 @@ module.exports = function (config) {
 
     customLaunchers: {
       sauce_chrome: {
-        base: "SauceLabs",
-        browserName: "chrome",
-        platform: "Windows 7"
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        platform: 'Windows 7'
       },
       sauce_chrome_linux: {
-        base: "SauceLabs",
-        browserName: "chrome"
+        base: 'SauceLabs',
+        browserName: 'chrome'
       },
       sauce_firefox: {
-        base: "SauceLabs",
-        browserName: "firefox",
-        platform: "Windows 7"
+        base: 'SauceLabs',
+        browserName: 'firefox',
+        platform: 'Windows 7'
       },
       sauce_firefox_linux: {
-        base: "SauceLabs",
-        browserName: "firefox"
+        base: 'SauceLabs',
+        browserName: 'firefox'
       },
       sauce_safari: {
-        base: "SauceLabs",
-        browserName: "safari",
-        platform: "OS X 10.9"
+        base: 'SauceLabs',
+        browserName: 'safari',
+        platform: 'OS X 10.9'
       },
       sauce_ie_8: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows XP",
-        version: "8"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows XP',
+        version: '8'
       },
       sauce_ie_9: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows 7",
-        version: "9"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 7',
+        version: '9'
       },
       sauce_ie_10: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows 7",
-        version: "10"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 7',
+        version: '10'
       },
       sauce_ie_11: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows 8.1",
-        version: "11"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 8.1',
+        version: '11'
       }
     }
   });
