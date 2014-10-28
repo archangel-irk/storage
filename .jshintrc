@@ -1,7 +1,7 @@
 {
   "bitwise": true,
   "camelcase": true,
-  "curly": true,
+  "eqeqeq": true,
   "forin": true,
   "freeze": true,
   "immed": true,
@@ -32,6 +32,7 @@
   "browserify": true,
 
   "globals": {
+    "$": false,
     "jQuery": false,
     "_": false
   }

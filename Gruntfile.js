@@ -65,7 +65,11 @@ module.exports = function (grunt) {
       options: {
         configFile: 'karma.conf.js'
       },
-      local: {},
+      local: {
+        browsers: [
+          'Chrome'
+        ]
+      },
       phantom: {
         browsers: [
           'PhantomJS'
@@ -156,6 +160,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test', [
+    'build',
     'karma:local'
   ]);
 

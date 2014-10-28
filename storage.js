@@ -33,23 +33,23 @@ function Binary(buffer, subType) {
 
   if(buffer != null && !(buffer instanceof Number)) {
     // Only accept Buffer, Uint8Array or Arrays
-    if(typeof buffer == 'string') {
+    if(typeof buffer === 'string') {
       // Different ways of writing the length of the string for the different types
-      if(typeof Buffer != 'undefined') {
+      if(typeof Buffer !== 'undefined') {
         this.buffer = new Buffer(buffer);
-      } else if(typeof Uint8Array != 'undefined' || (Object.prototype.toString.call(buffer) == '[object Array]')) {
+      } else if(typeof Uint8Array !== 'undefined' || (Object.prototype.toString.call(buffer) === '[object Array]')) {
         this.buffer = writeStringToArray(buffer);
       } else {
-        throw new Error("only String, Buffer, Uint8Array or Array accepted");
+        throw new Error('only String, Buffer, Uint8Array or Array accepted');
       }
     } else {
       this.buffer = buffer;
     }
     this.position = buffer.length;
   } else {
-    if(typeof Buffer != 'undefined') {
+    if(typeof Buffer !== 'undefined') {
       this.buffer =  new Buffer(Binary.BUFFER_SIZE);
-    } else if(typeof Uint8Array != 'undefined'){
+    } else if(typeof Uint8Array !== 'undefined'){
       this.buffer = new Uint8Array(new ArrayBuffer(Binary.BUFFER_SIZE));
     } else {
       this.buffer = new Array(Binary.BUFFER_SIZE);
@@ -72,7 +72,7 @@ Binary.prototype.put = function put(byte_value) {
 
   // Decode the byte value once
   var decoded_byte = null;
-  if(typeof byte_value == 'string') {
+  if(typeof byte_value === 'string') {
     decoded_byte = byte_value.charCodeAt(0);
   } else if(byte_value['length'] != null) {
     decoded_byte = byte_value[0];
@@ -83,7 +83,7 @@ Binary.prototype.put = function put(byte_value) {
   if(this.buffer.length > this.position) {
     this.buffer[this.position++] = decoded_byte;
   } else {
-    if(typeof Buffer != 'undefined' && Buffer.isBuffer(this.buffer)) {
+    if(typeof Buffer !== 'undefined' && Buffer.isBuffer(this.buffer)) {
       // Create additional overflow buffer
       var buffer = new Buffer(Binary.BUFFER_SIZE + this.buffer.length);
       // Combine the two buffers together
@@ -93,7 +93,7 @@ Binary.prototype.put = function put(byte_value) {
     } else {
       var buffer = null;
       // Create a new buffer (typed or normal array)
-      if(Object.prototype.toString.call(this.buffer) == '[object Uint8Array]') {
+      if(Object.prototype.toString.call(this.buffer) === '[object Uint8Array]') {
         buffer = new Uint8Array(new ArrayBuffer(Binary.BUFFER_SIZE + this.buffer.length));
       } else {
         buffer = new Array(Binary.BUFFER_SIZE + this.buffer.length);
@@ -120,16 +120,16 @@ Binary.prototype.put = function put(byte_value) {
  * @api public
  */
 Binary.prototype.write = function write(string, offset) {
-  offset = typeof offset == 'number' ? offset : this.position;
+  offset = typeof offset === 'number' ? offset : this.position;
 
   // If the buffer is to small let's extend the buffer
   if(this.buffer.length < offset + string.length) {
     var buffer = null;
     // If we are in node.js
-    if(typeof Buffer != 'undefined' && Buffer.isBuffer(this.buffer)) {
+    if(typeof Buffer !== 'undefined' && Buffer.isBuffer(this.buffer)) {
       buffer = new Buffer(this.buffer.length + string.length);
       this.buffer.copy(buffer, 0, 0, this.buffer.length);
-    } else if(Object.prototype.toString.call(this.buffer) == '[object Uint8Array]') {
+    } else if(Object.prototype.toString.call(this.buffer) === '[object Uint8Array]') {
       // Create a new buffer
       buffer = new Uint8Array(new ArrayBuffer(this.buffer.length + string.length))
       // Copy the content
@@ -142,22 +142,22 @@ Binary.prototype.write = function write(string, offset) {
     this.buffer = buffer;
   }
 
-  if(typeof Buffer != 'undefined' && Buffer.isBuffer(string) && Buffer.isBuffer(this.buffer)) {
+  if(typeof Buffer !== 'undefined' && Buffer.isBuffer(string) && Buffer.isBuffer(this.buffer)) {
     string.copy(this.buffer, offset, 0, string.length);
     this.position = (offset + string.length) > this.position ? (offset + string.length) : this.position;
     // offset = string.length
-  } else if(typeof Buffer != 'undefined' && typeof string == 'string' && Buffer.isBuffer(this.buffer)) {
+  } else if(typeof Buffer !== 'undefined' && typeof string === 'string' && Buffer.isBuffer(this.buffer)) {
     this.buffer.write(string, 'binary', offset);
     this.position = (offset + string.length) > this.position ? (offset + string.length) : this.position;
     // offset = string.length;
-  } else if(Object.prototype.toString.call(string) == '[object Uint8Array]'
-    || Object.prototype.toString.call(string) == '[object Array]' && typeof string != 'string') {
+  } else if(Object.prototype.toString.call(string) === '[object Uint8Array]'
+    || Object.prototype.toString.call(string) === '[object Array]' && typeof string !== 'string') {
     for(var i = 0; i < string.length; i++) {
       this.buffer[offset++] = string[i];
     }
 
     this.position = offset > this.position ? offset : this.position;
-  } else if(typeof string == 'string') {
+  } else if(typeof string === 'string') {
     for(var i = 0; i < string.length; i++) {
       this.buffer[offset++] = string.charCodeAt(i);
     }
@@ -203,11 +203,11 @@ Binary.prototype.value = function value(asRaw) {
   asRaw = asRaw == null ? false : asRaw;
 
   // Optimize to serialize for the situation where the data == size of buffer
-  if(asRaw && typeof Buffer != 'undefined' && Buffer.isBuffer(this.buffer) && this.buffer.length == this.position)
+  if(asRaw && typeof Buffer !== 'undefined' && Buffer.isBuffer(this.buffer) && this.buffer.length == this.position)
     return this.buffer;
 
   // If it's a node.js buffer object
-  if(typeof Buffer != 'undefined' && Buffer.isBuffer(this.buffer)) {
+  if(typeof Buffer !== 'undefined' && Buffer.isBuffer(this.buffer)) {
     return asRaw ? this.buffer.slice(0, this.position) : this.buffer.toString('binary', 0, this.position);
   } else {
     if(asRaw) {
@@ -216,7 +216,7 @@ Binary.prototype.value = function value(asRaw) {
         return this.buffer.slice(0, this.position);
       } else {
         // Create a new buffer to copy content to
-        var newBuffer = Object.prototype.toString.call(this.buffer) == '[object Uint8Array]' ? new Uint8Array(new ArrayBuffer(this.position)) : new Array(this.position);
+        var newBuffer = Object.prototype.toString.call(this.buffer) === '[object Uint8Array]' ? new Uint8Array(new ArrayBuffer(this.position)) : new Array(this.position);
         // Copy content
         for(var i = 0; i < this.position; i++) {
           newBuffer[i] = this.buffer[i];
@@ -265,7 +265,7 @@ var BSON_BINARY_SUBTYPE_DEFAULT = 0;
  */
 var writeStringToArray = function(data) {
   // Create a buffer
-  var buffer = typeof Uint8Array != 'undefined' ? new Uint8Array(new ArrayBuffer(data.length)) : new Array(data.length);
+  var buffer = typeof Uint8Array !== 'undefined' ? new Uint8Array(new ArrayBuffer(data.length)) : new Array(data.length);
   // Write the content to the buffer
   for(var i = 0; i < data.length; i++) {
     buffer[i] = data.charCodeAt(i);
@@ -281,7 +281,7 @@ var writeStringToArray = function(data) {
  * @api private
  */
 var convertArraytoUtf8BinaryString = function(byteArray, startIndex, endIndex) {
-  var result = "";
+  var result = '';
   for(var i = startIndex; i < endIndex; i++) {
     result = result + String.fromCharCode(byteArray[i]);
   }
@@ -349,7 +349,6 @@ module.exports.Binary = Binary;
  *
  * @see https://github.com/mongodb/js-bson/blob/master/lib/bson/binary_parser.js
  */
-var chr = String.fromCharCode;
 
 var maxBits = [];
 for (var i = 0; i < 64; i++) {
@@ -385,7 +384,7 @@ BinaryParser.encodeInt = function encodeInt (data, bits, signed, forceBigEndian)
 	var max = maxBits[bits];
 
   if (data >= max || data < -(max / 2)) {
-    this.warn("encodeInt::overflow");
+    this.warn('encodeInt::overflow');
     data = 0;
   }
 
@@ -395,9 +394,9 @@ BinaryParser.encodeInt = function encodeInt (data, bits, signed, forceBigEndian)
 
 	for (var r = []; data; r[r.length] = String.fromCharCode(data % 256), data = Math.floor(data / 256));
 
-	for (bits = -(-bits >> 3) - r.length; bits--; r[r.length] = "\0");
+	for (bits = -(-bits >> 3) - r.length; bits--; r[r.length] = '\0');
 
-  return ((this.bigEndian || forceBigEndian) ? r.reverse() : r).join("");
+  return ((this.bigEndian || forceBigEndian) ? r.reverse() : r).join('');
 };
 
 BinaryParser.toSmall    = function( data ){ return this.decodeInt( data,  8, true  ); };
@@ -443,7 +442,7 @@ BinaryParserBuffer.prototype.hasNeededBits = function hasNeededBits (neededBits)
 
 BinaryParserBuffer.prototype.checkBuffer = function checkBuffer (neededBits) {
 	if (!this.hasNeededBits(neededBits)) {
-		throw new Error("checkBuffer::missing bytes");
+		throw new Error('checkBuffer::missing bytes');
   }
 };
 
@@ -521,6 +520,8 @@ function Collection ( name, schema, api ){
 
   // Отображение объекта documents в виде массива (для нокаута)
   this.array = [];
+
+  // todo: перенести в адаптер или сделать по другому (object.observe)
   // Нужно для обновления привязок к этому свойству для knockoutjs
   window.ko && ko.track( this, ['array'] );
 }
@@ -815,7 +816,7 @@ function Document ( data, collectionName, schema, fields, init ){
     return new Document( data, collectionName, schema, fields, init );
   }
 
-  this.$__ = new InternalCache;
+  this.$__ = new InternalCache();
   this.isNew = true;
 
   // Создать пустой документ с флагом init
@@ -982,7 +983,7 @@ Document.prototype.$__buildDoc = function ( obj, skipId ) {
   for ( ; ii < plen; ++ii ) {
     var p = paths[ii];
 
-    if ( '_id' == p ) {
+    if ( '_id' === p ) {
       if ( skipId ) continue;
       if ( obj && '_id' in obj ) continue;
     }
@@ -1065,7 +1066,7 @@ function init (self, obj, doc, prefix) {
     schema = self.schema.path(path);
 
     if (!schema && _.isPlainObject( obj[ i ] ) &&
-        (!obj[i].constructor || 'Object' == utils.getFunctionName(obj[i].constructor))) {
+        (!obj[i].constructor || 'Object' === utils.getFunctionName(obj[i].constructor))) {
       // assume nested object
       if (!doc[i]) doc[i] = {};
       init(self, obj[i], doc[i], path + '.');
@@ -1121,7 +1122,7 @@ function init (self, obj, doc, prefix) {
  * @api public
  */
 Document.prototype.set = function (path, val, type, options) {
-  if (type && 'Object' == utils.getFunctionName(type.constructor)) {
+  if (type && 'Object' === utils.getFunctionName(type.constructor)) {
     options = type;
     type = undefined;
   }
@@ -1167,8 +1168,8 @@ Document.prototype.set = function (path, val, type, options) {
         if (null != path[key]
             // need to know if plain object - no Buffer, ObjectId, ref, etc
             && _.isPlainObject(path[key])
-            && ( !path[key].constructor || 'Object' == utils.getFunctionName(path[key].constructor) )
-            && 'virtual' != pathtype
+            && ( !path[key].constructor || 'Object' === utils.getFunctionName(path[key].constructor) )
+            && 'virtual' !== pathtype
             && !( this.$__path( prefix + key ) instanceof MixedSchema )
             && !( this.schema.paths[key] && this.schema.paths[key].options.ref )
           ){
@@ -1179,8 +1180,8 @@ Document.prototype.set = function (path, val, type, options) {
           if ('real' === pathtype || 'virtual' === pathtype) {
             this.set(prefix + key, path[key], constructing);
 
-          } else if ('throw' == strict) {
-            throw new Error("Field `" + key + "` is not in schema.");
+          } else if ('throw' === strict) {
+            throw new Error('Field `' + key + '` is not in schema.');
           }
 
         } else if (undefined !== path[key]) {
@@ -1196,8 +1197,8 @@ Document.prototype.set = function (path, val, type, options) {
   // docschema = new Schema({ path: { nest: 'string' }})
   // doc.set('path', obj);
   var pathType = this.schema.pathType(path);
-  if ('nested' == pathType && val && _.isPlainObject(val) &&
-      (!val.constructor || 'Object' == utils.getFunctionName(val.constructor))) {
+  if ('nested' === pathType && val && _.isPlainObject(val) &&
+      (!val.constructor || 'Object' === utils.getFunctionName(val.constructor))) {
     if (!merge) this.setValue(path, null);
     this.set(val, path, constructing);
     return this;
@@ -1207,7 +1208,7 @@ Document.prototype.set = function (path, val, type, options) {
   var parts = path.split('.');
   var subpath;
 
-  if ('adhocOrUndefined' == pathType && strict) {
+  if ('adhocOrUndefined' === pathType && strict) {
 
     // check for roots that are Mixed types
     var mixed;
@@ -1223,13 +1224,13 @@ Document.prototype.set = function (path, val, type, options) {
     }
 
     if (!mixed) {
-      if ('throw' == strict) {
-        throw new Error("Field `" + path + "` is not in schema.");
+      if ('throw' === strict) {
+        throw new Error('Field `' + path + '` is not in schema.');
       }
       return this;
     }
 
-  } else if ('virtual' == pathType) {
+  } else if ('virtual' === pathType) {
     schema = this.schema.virtualpath(path);
     schema.applySetters(val, this);
     return this;
@@ -1599,7 +1600,7 @@ Document.prototype.isSelected = function isSelected (path) {
 
     while (i--) {
       cur = paths[i];
-      if ('_id' == cur) continue;
+      if ('_id' === cur) continue;
       inclusive = !! this.$__.selected[cur];
       break;
     }
@@ -1613,7 +1614,7 @@ Document.prototype.isSelected = function isSelected (path) {
 
     while (i--) {
       cur = paths[i];
-      if ('_id' == cur) continue;
+      if ('_id' === cur) continue;
 
       if (0 === cur.indexOf(pathDot)) {
         return inclusive;
@@ -1740,7 +1741,7 @@ Document.prototype.invalidate = function (path, errorMsg, value) {
     errorMsg = new ValidatorError(path, errorMsg, 'user defined', value);
   }
 
-  if (this.$__.validationError == errorMsg) return;
+  if (this.$__.validationError === errorMsg) return;
 
   this.$__.validationError.errors[path] = errorMsg;
 };
@@ -2865,8 +2866,10 @@ function ValidatorError (path, msg, type, val) {
   if ( !msg ) {
     msg = errorMessages.general.default;
   }
+
   var message = this.formatMessage(msg, path, type, val);
   StorageError.call(this, message);
+
   this.name = 'ValidatorError';
   this.path = path;
   this.type = type;
@@ -3168,7 +3171,9 @@ Storage.prototype.createCollection = function( name, schema, api ){
 
   this.collectionNames.push( name );
 
-  return this[ name ] = new Collection( name, schema, api );
+  this[ name ] = new Collection( name, schema, api );
+
+  return this[ name ];
 };
 
 /**
@@ -3296,7 +3301,7 @@ Storage.prototype.setAdapter = function( adapterHooks ){
  *
  * @api public
  */
-module.exports = new Storage;
+module.exports = new Storage();
 
 window.Buffer = Buffer;
 
@@ -3333,7 +3338,7 @@ function InternalCache () {
   this.populated = undefined;// the _ids that have been populated
   this.wasPopulated = false; // if this doc was the result of a population
   this.scope = undefined;
-  this.activePaths = new ActiveRoster;
+  this.activePaths = new ActiveRoster();
 
   // embedded docs
   this.ownerDocument = undefined;
@@ -3374,7 +3379,7 @@ function InternalCache () {
 exports.get = function (path, o, special, map) {
   var lookup;
 
-  if ('function' == typeof special) {
+  if ('function' === typeof special) {
     if (special.length < 2) {
       map = special;
       special = undefined;
@@ -3386,7 +3391,7 @@ exports.get = function (path, o, special, map) {
 
   map || (map = K);
 
-  var parts = 'string' == typeof path
+  var parts = 'string' === typeof path
     ? path.split('.')
     : path;
 
@@ -3438,7 +3443,7 @@ exports.get = function (path, o, special, map) {
 exports.set = function (path, val, o, special, map, _copying) {
   var lookup;
 
-  if ('function' == typeof special) {
+  if ('function' === typeof special) {
     if (special.length < 2) {
       map = special;
       special = undefined;
@@ -3450,7 +3455,7 @@ exports.set = function (path, val, o, special, map, _copying) {
 
   map || (map = K);
 
-  var parts = 'string' == typeof path
+  var parts = 'string' === typeof path
     ? path.split('.')
     : path;
 
@@ -3471,7 +3476,7 @@ exports.set = function (path, val, o, special, map, _copying) {
   for (var i = 0, len = parts.length - 1; i < len; ++i) {
     part = parts[i];
 
-    if ('$' == part) {
+    if ('$' === part) {
       if (i == len - 1) {
         break;
       } else {
@@ -3672,9 +3677,11 @@ function idGetter () {
     return this.$__._id;
   }
 
-  return this.$__._id = null == this._id
+  this.$__._id = null == this._id
     ? null
     : String(this._id);
+
+  return this.$__._id;
 }
 
 /*!
@@ -3758,7 +3765,7 @@ Schema.prototype.add = function add ( obj, prefix ) {
     }
 
     if ( _.isPlainObject(obj[key] )
-      && ( !obj[ key ].constructor || 'Object' == utils.getFunctionName(obj[key].constructor) )
+      && ( !obj[ key ].constructor || 'Object' === utils.getFunctionName(obj[key].constructor) )
       && ( !obj[ key ].type || obj[ key ].type.type ) ){
 
       if ( Object.keys(obj[ key ]).length ) {
@@ -3835,7 +3842,7 @@ Schema.prototype.path = function (path, obj) {
 
   // some path names conflict with document methods
   if (reserved[path]) {
-    throw new Error("`" + path + "` may not be used as a schema pathname");
+    throw new Error('`' + path + '` may not be used as a schema pathname');
   }
 
   // update the tree
@@ -3845,7 +3852,7 @@ Schema.prototype.path = function (path, obj) {
 
   subpaths.forEach(function(sub, i) {
     if (!branch[sub]) branch[sub] = {};
-    if ('object' != typeof branch[sub]) {
+    if ('object' !== typeof branch[sub]) {
       var msg = 'Cannot set nested path `' + path + '`. '
               + 'Parent path `'
               + subpaths.slice(0, i).concat([sub]).join('.')
@@ -3871,7 +3878,7 @@ Schema.prototype.path = function (path, obj) {
  */
 Schema.interpretAsType = function (path, obj) {
   var constructorName = utils.getFunctionName(obj.constructor);
-  if (constructorName != 'Object'){
+  if (constructorName !== 'Object'){
     obj = { type: obj };
   }
 
@@ -3882,7 +3889,7 @@ Schema.interpretAsType = function (path, obj) {
     ? obj.type
     : {};
 
-  if ('Object' == utils.getFunctionName(type.constructor) || 'mixed' == type) {
+  if ('Object' === utils.getFunctionName(type.constructor) || 'mixed' == type) {
     return new Types.Mixed(path, obj);
   }
 
@@ -3899,7 +3906,7 @@ Schema.interpretAsType = function (path, obj) {
     if ('string' == typeof cast) {
       cast = Types[cast.charAt(0).toUpperCase() + cast.substring(1)];
     } else if (cast && (!cast.type || cast.type.type)
-                    && 'Object' == utils.getFunctionName(cast.constructor)
+                    && 'Object' === utils.getFunctionName(cast.constructor)
                     && Object.keys(cast).length) {
       return new Types.DocumentArray(path, new Schema(cast), obj);
     }
@@ -3907,7 +3914,7 @@ Schema.interpretAsType = function (path, obj) {
     return new Types.Array(path, cast || Types.Mixed, obj);
   }
 
-  var name = 'string' == typeof type
+  var name = 'string' === typeof type
     ? type
     // If not string, `type` is a function. Outside of IE, function.name
     // gives you the function name. In IE, you need to compute it
@@ -3964,7 +3971,9 @@ Schema.prototype.requiredPaths = function requiredPaths () {
     if (this.paths[path].isRequired) ret.push(path);
   }
 
-  return this._requiredpaths = ret;
+  this._requiredpaths = ret;
+
+  return this._requiredpaths;
 };
 
 /**
@@ -3985,7 +3994,7 @@ Schema.prototype.pathType = function (path) {
   if (/\.\d+\.|\.\d+$/.test(path) && getPositionalPath(this, path)) {
     return 'real';
   } else {
-    return 'adhocOrUndefined'
+    return 'adhocOrUndefined';
   }
 };
 
@@ -4029,7 +4038,9 @@ function getPositionalPath (self, path) {
     val = val.schema.path(subpath);
   }
 
-  return self.subpaths[path] = val;
+  self.subpaths[ path ] = val;
+
+  return self.subpaths[ path ];
 }
 
 /**
@@ -4141,11 +4152,14 @@ Schema.prototype.plugin = function (fn, opts) {
  * @api public
  */
 Schema.prototype.method = function (name, fn) {
-  if ('string' != typeof name)
-    for (var i in name)
+  if ('string' !== typeof name) {
+    for (var i in name) {
       this.methods[i] = name[i];
-  else
+    }
+  } else {
     this.methods[name] = fn;
+  }
+
   return this;
 };
 
@@ -4171,11 +4185,14 @@ Schema.prototype.method = function (name, fn) {
  * @api public
  */
 Schema.prototype.static = function(name, fn) {
-  if ('string' != typeof name)
-    for (var i in name)
+  if ('string' !== typeof name) {
+    for (var i in name) {
       this.statics[i] = name[i];
-  else
+    }
+  } else {
     this.statics[name] = fn;
+  }
+
   return this;
 };
 
@@ -4218,12 +4235,15 @@ Schema.prototype.get = function (key) {
 Schema.prototype.virtual = function (name, options) {
   var virtuals = this.virtuals;
   var parts = name.split('.');
-  return virtuals[name] = parts.reduce(function (mem, part, i) {
+
+  virtuals[name] = parts.reduce(function (mem, part, i) {
     mem[part] || (mem[part] = (i === parts.length-1)
-                            ? new VirtualType(options, name)
-                            : {});
+      ? new VirtualType(options, name)
+      : {});
     return mem[part];
   }, this.tree);
+
+  return virtuals[name];
 };
 
 /**
@@ -4263,16 +4283,16 @@ Schema.discriminators;
  */
 Schema.prototype.discriminator = function discriminator (name, schema) {
   if (!(schema instanceof Schema)) {
-    throw new Error("You must pass a valid discriminator Schema");
+    throw new Error('You must pass a valid discriminator Schema');
   }
 
   if ( this.discriminatorMapping && !this.discriminatorMapping.isRoot ) {
-    throw new Error("Discriminator \"" + name + "\" can only be a discriminator of the root model");
+    throw new Error('Discriminator "' + name + '" can only be a discriminator of the root model');
   }
 
   var key = this.options.discriminatorKey;
   if ( schema.path(key) ) {
-    throw new Error("Discriminator \"" + name + "\" cannot have field with name \"" + key + "\"");
+    throw new Error('Discriminator "' + name + '" cannot have field with name "' + key + '"');
   }
 
   // merges base schema into new discriminator schema and sets new type field.
@@ -4322,7 +4342,7 @@ Schema.prototype.discriminator = function discriminator (name, schema) {
   }
 
   if (this.discriminators[name]) {
-    throw new Error("Discriminator with name \"" + name + "\" already exists");
+    throw new Error('Discriminator with name "' + name + '" already exists');
   }
 
   this.discriminators[name] = schema;
@@ -4373,7 +4393,7 @@ Schema.schemas = schemas = {};
  */
 
 Types = Schema.Types;
-var ObjectId = Schema.ObjectId = Types.ObjectId;
+Schema.ObjectId = Types.ObjectId;
 
 },{"./events":11,"./schema/index":21,"./utils":34,"./virtualtype":35}],16:[function(require,module,exports){
 'use strict';
@@ -4421,7 +4441,7 @@ function SchemaArray (key, cast, options) {
     }
 
     // support { type: 'String' }
-    var name = 'string' == typeof cast
+    var name = 'string' === typeof cast
       ? cast
       : utils.getFunctionName( cast );
 
@@ -4448,7 +4468,7 @@ function SchemaArray (key, cast, options) {
 
   if (this.defaultValue) {
     defaultArr = this.defaultValue;
-    fn = 'function' == typeof defaultArr;
+    fn = 'function' === typeof defaultArr;
   }
 
   this.default(function(){
@@ -4595,7 +4615,6 @@ var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
   , StorageBuffer = require('../types').Buffer
   , Binary = StorageBuffer.Binary
-  , utils = require('../utils')
   , Document;
 
 /**
@@ -4641,6 +4660,8 @@ SchemaBuffer.prototype.checkRequired = function (value, doc) {
  */
 
 SchemaBuffer.prototype.cast = function (value, doc, init) {
+  var ret;
+
   if (SchemaType._isRef(this, value, doc, init)) {
     // wait! we may need to cast this to a document
 
@@ -4669,7 +4690,7 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
     var path = doc.$__fullPath(this.path);
     var owner = doc.ownerDocument ? doc.ownerDocument() : doc;
     var pop = owner.populated(path, true);
-    var ret = new pop.options.model(value);
+    ret = new pop.options.model(value);
     ret.$__.wasPopulated = true;
     return ret;
   }
@@ -4686,7 +4707,7 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
 
     return value;
   } else if (value instanceof Binary) {
-    var ret = new StorageBuffer(value.value(true), [this.path, doc]);
+    ret = new StorageBuffer(value.value(true), [this.path, doc]);
     ret.subtype(value.sub_type);
     // do not override Binary subtypes. users set this
     // to whatever they want.
@@ -4696,8 +4717,8 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
   if (null === value) return value;
 
   var type = typeof value;
-  if ('string' == type || 'number' == type || Array.isArray(value)) {
-    var ret = new StorageBuffer(value, [this.path, doc]);
+  if ('string' === type || 'number' === type || Array.isArray(value)) {
+    ret = new StorageBuffer(value, [this.path, doc]);
     return ret;
   }
 
@@ -4711,7 +4732,7 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
 module.exports = SchemaBuffer;
 
 }).call(this,require("buffer").Buffer)
-},{"../schematype":26,"../types":32,"../utils":34,"./../document":4,"buffer":36}],19:[function(require,module,exports){
+},{"../schematype":26,"../types":32,"./../document":4,"buffer":36}],19:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -4756,25 +4777,30 @@ DateSchema.prototype.checkRequired = function (value) {
  * @api private
  */
 DateSchema.prototype.cast = function (value) {
-  if (value === null || value === '')
+  if (value === null || value === '') {
     return null;
+  }
 
-  if (value instanceof Date)
+  if (value instanceof Date) {
     return value;
+  }
 
   var date;
 
   // support for timestamps
   if (value instanceof Number || 'number' == typeof value
-      || String(value) == Number(value))
+      || String(value) == Number(value)) {
+
     date = new Date(Number(value));
 
   // support for date strings
-  else if (value.toString)
+  } else if (value.toString) {
     date = new Date(value.toString());
+  }
 
-  if (date.toString() != 'Invalid Date')
+  if (date.toString() != 'Invalid Date') {
     return date;
+  }
 
   throw new CastError('date', value, this.path );
 };
@@ -4978,7 +5004,7 @@ function approximatelyEqual ( value, prev ) {
   if ( i === prev.length ){
     _.forEach( value, function( subdoc, i ){
       if ( !subdoc._id ){
-        delete prev[ i ]._id
+        delete prev[ i ]._id;
       }
     });
   }
@@ -5113,8 +5139,8 @@ function Mixed (path, options) {
                0 === Object.keys(def).length) {
       // prevent odd "shared" objects between documents
       options.default = function () {
-        return {}
-      }
+        return {};
+      };
     }
   }
 
@@ -5192,7 +5218,7 @@ NumberSchema.prototype.checkRequired = function ( value ) {
   if ( SchemaType._isRef( this, value ) ) {
     return null != value;
   } else {
-    return typeof value == 'number' || value instanceof Number;
+    return typeof value === 'number' || value instanceof Number;
   }
 };
 
@@ -5229,7 +5255,7 @@ NumberSchema.prototype.checkRequired = function ( value ) {
 NumberSchema.prototype.min = function (value, message) {
   if (this.minValidator) {
     this.validators = this.validators.filter(function (v) {
-      return v[0] != this.minValidator;
+      return v[0] !== this.minValidator;
     }, this);
   }
 
@@ -5277,7 +5303,7 @@ NumberSchema.prototype.min = function (value, message) {
 NumberSchema.prototype.max = function (value, message) {
   if (this.maxValidator) {
     this.validators = this.validators.filter(function(v){
-      return v[0] != this.maxValidator;
+      return v[0] !== this.maxValidator;
     }, this);
   }
 
@@ -5306,9 +5332,9 @@ NumberSchema.prototype.cast = function ( value ) {
   if (!isNaN(val)){
     if (null === val) return val;
     if ('' === val) return null;
-    if ('string' == typeof val) val = Number(val);
+    if ('string' === typeof val) val = Number(val);
     if (val instanceof Number) return val;
-    if ('number' == typeof val) return val;
+    if ('number' === typeof val) return val;
     if (val.toString && !Array.isArray(val) &&
         val.toString() == Number(val)) {
       return new Number(val);
@@ -5334,7 +5360,6 @@ module.exports = NumberSchema;
 var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
   , oid = require('../types/objectid')
-  , utils = require('../utils')
   , Document;
 
 /**
@@ -5365,7 +5390,7 @@ ObjectId.prototype.constructor = ObjectId;
 ObjectId.prototype.auto = function ( turnOn ) {
   if ( turnOn ) {
     this.default( defaultId );
-    this.set( resetId )
+    this.set( resetId );
   }
 
   return this;
@@ -5479,7 +5504,7 @@ function resetId (v) {
 
 module.exports = ObjectId;
 
-},{"../schematype":26,"../types/objectid":33,"../utils":34,"./../document":4}],25:[function(require,module,exports){
+},{"../schematype":26,"../types/objectid":33,"./../document":4}],25:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5548,7 +5573,7 @@ StringSchema.prototype.constructor = StringSchema;
 StringSchema.prototype.enum = function () {
   if (this.enumValidator) {
     this.validators = this.validators.filter(function(v){
-      return v[0] != this.enumValidator;
+      return v[0] !== this.enumValidator;
     }, this);
     this.enumValidator = false;
   }
@@ -5598,7 +5623,7 @@ StringSchema.prototype.enum = function () {
  */
 StringSchema.prototype.lowercase = function () {
   return this.set(function (v, self) {
-    if ('string' != typeof v) v = self.cast(v);
+    if ('string' !== typeof v) v = self.cast(v);
     if (v) return v.toLowerCase();
     return v;
   });
@@ -5619,7 +5644,7 @@ StringSchema.prototype.lowercase = function () {
  */
 StringSchema.prototype.uppercase = function () {
   return this.set(function (v, self) {
-    if ('string' != typeof v) v = self.cast(v);
+    if ('string' !== typeof v) v = self.cast(v);
     if (v) return v.toUpperCase();
     return v;
   });
@@ -5644,7 +5669,7 @@ StringSchema.prototype.uppercase = function () {
  */
 StringSchema.prototype.trim = function () {
   return this.set(function (v, self) {
-    if ('string' != typeof v) v = self.cast(v);
+    if ('string' !== typeof v) v = self.cast(v);
     if (v) return v.trim();
     return v;
   });
@@ -5695,7 +5720,7 @@ StringSchema.prototype.match = function match (regExp, message) {
   function matchValidator (v){
     return null != v && '' !== v
       ? regExp.test(v)
-      : true
+      : true;
   }
 
   this.validators.push([matchValidator, msg, 'regexp']);
@@ -5712,7 +5737,7 @@ StringSchema.prototype.checkRequired = function checkRequired (value, doc) {
   if (SchemaType._isRef(this, value, doc, true)) {
     return null != value;
   } else {
-    return (value instanceof String || typeof value == 'string') && value.length;
+    return (value instanceof String || typeof value === 'string') && value.length;
   }
 };
 
@@ -5728,7 +5753,7 @@ StringSchema.prototype.cast = function ( value ) {
 
   if ('undefined' !== typeof value) {
     // handle documents being passed
-    if (value._id && 'string' == typeof value._id) {
+    if (value._id && 'string' === typeof value._id) {
       return value._id;
     }
     if ( value.toString ) {
@@ -5776,7 +5801,7 @@ function SchemaType (path, options, instance) {
   this.getters = [];
   this.options = options;
 
-  for (var i in options) if (this[i] && 'function' == typeof this[i]) {
+  for (var i in options) if (this[i] && 'function' === typeof this[i]) {
     var opts = Array.isArray(options[i])
       ? options[i]
       : [options[i]];
@@ -5914,7 +5939,7 @@ SchemaType.prototype.default = function (val) {
  * @api public
  */
 SchemaType.prototype.set = function (fn) {
-  if ('function' != typeof fn)
+  if ('function' !== typeof fn)
     throw new TypeError('A setter must be a function.');
   this.setters.push(fn);
   return this;
@@ -5982,7 +6007,7 @@ SchemaType.prototype.set = function (fn) {
  * @api public
  */
 SchemaType.prototype.get = function (fn) {
-  if ('function' != typeof fn)
+  if ('function' !== typeof fn)
     throw new TypeError('A getter must be a function.');
   this.getters.push(fn);
   return this;
@@ -6060,7 +6085,7 @@ SchemaType.prototype.get = function (fn) {
  * @api public
  */
 SchemaType.prototype.validate = function (obj, message, type) {
-  if ('function' == typeof obj || obj && 'RegExp' === utils.getFunctionName( obj.constructor )) {
+  if ('function' === typeof obj || obj && 'RegExp' === utils.getFunctionName( obj.constructor )) {
     if (!message) message = errorMessages.general.default;
     if (!type) type = 'user defined';
     this.validators.push([obj, message, type]);
@@ -6072,7 +6097,7 @@ SchemaType.prototype.validate = function (obj, message, type) {
 
   while (i--) {
     arg = arguments[i];
-    if (!(arg && 'Object' == utils.getFunctionName( arg.constructor ) )) {
+    if (!(arg && 'Object' === utils.getFunctionName( arg.constructor ) )) {
       var msg = 'Invalid validator. Received (' + typeof arg + ') '
         + arg
         + '. See http://mongoosejs.com/docs/api.html#schematype_SchemaType-validate';
@@ -6135,7 +6160,7 @@ SchemaType.prototype.required = function (required, message) {
     return self.checkRequired(v, this);
   };
 
-  if ('string' == typeof required) {
+  if ('string' === typeof required) {
     message = required;
     required = undefined;
   }
@@ -6365,7 +6390,7 @@ StateMachine.ctor = function () {
     // Changes the `path`'s state to `state`.
     ctor.prototype[state] = function (path) {
       this._changeState(path, state);
-    }
+    };
   });
 
   return ctor;
@@ -6502,7 +6527,6 @@ StateMachine.prototype.map = function map () {
 var EmbeddedDocument = require('./embedded');
 var Document = require('../document');
 var ObjectId = require('./objectid');
-var utils = require('../utils');
 
 /**
  * Storage Array constructor.
@@ -6577,10 +6601,10 @@ StorageArray.mixin = {
       }
 
       value = new Model(value);
-      return this._schema.caster.cast(value, this._parent, true)
+      return this._schema.caster.cast(value, this._parent, true);
     }
 
-    return this._schema.caster.cast(value, this._parent, false)
+    return this._schema.caster.cast(value, this._parent, false);
   },
 
   /**
@@ -6799,11 +6823,11 @@ StorageArray.mixin = {
       var found;
       switch (type) {
         case 'doc':
-          found = this.some(function(doc){ return doc.equals(v) });
+          found = this.some(function(doc){ return doc.equals(v); });
           break;
         case 'date':
           var val = +v;
-          found = this.some(function(d){ return +d === val });
+          found = this.some(function(d){ return +d === val; });
           break;
         default:
           found = ~this.indexOf(v);
@@ -6862,7 +6886,7 @@ StorageArray.mixin = {
       return this.map(function (doc) {
         return doc instanceof Document
           ? doc.toObject(options)
-          : doc
+          : doc;
       });
     }
 
@@ -6903,7 +6927,7 @@ StorageArray.mixin.remove = StorageArray.mixin.pull;
 
 module.exports = StorageArray;
 
-},{"../document":4,"../utils":34,"./embedded":31,"./objectid":33}],29:[function(require,module,exports){
+},{"../document":4,"./embedded":31,"./objectid":33}],29:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -6959,7 +6983,7 @@ function StorageBuffer (value, encode, offset) {
     , _parent: { value: doc }
   });
 
-  if (doc && "string" === typeof path) {
+  if (doc && 'string' === typeof path) {
     Object.defineProperty(buf, '_schema', {
         value: doc.schema.path(path)
     });
@@ -7066,7 +7090,7 @@ StorageBuffer.mixin = {
     'var ret = Buffer.prototype.'+method+'.apply(this, arguments);' +
     'this._markModified();' +
     'return ret;'
-  )
+  );
 });
 
 /**
@@ -7091,7 +7115,7 @@ StorageBuffer.mixin = {
  */
 
 StorageBuffer.mixin.toObject = function (options) {
-  var subtype = 'number' == typeof options
+  var subtype = 'number' === typeof options
     ? options
     : (this._subtype || 0);
   return new Binary(this, subtype);
@@ -7141,11 +7165,11 @@ StorageBuffer.mixin.equals = function (other) {
  */
 
 StorageBuffer.mixin.subtype = function (subtype) {
-  if ('number' != typeof subtype) {
+  if ('number' !== typeof subtype) {
     throw new TypeError('Invalid subtype. Expected a number');
   }
 
-  if (this._subtype != subtype) {
+  if (this._subtype !== subtype) {
     this._markModified();
   }
 
@@ -7171,7 +7195,6 @@ module.exports = StorageBuffer;
 var StorageArray = require('./array')
   , ObjectId = require('./objectid')
   , ObjectIdSchema = require('../schema/objectid')
-  , utils = require('../utils')
   , Document = require('../document');
 
 /**
@@ -7334,7 +7357,7 @@ StorageDocumentArray.mixin.notify = function notify (event) {
       if (!self[i]) continue;
       self[i].trigger(event, val);
     }
-  }
+  };
 };
 
 /*!
@@ -7343,7 +7366,7 @@ StorageDocumentArray.mixin.notify = function notify (event) {
 
 module.exports = StorageDocumentArray;
 
-},{"../document":4,"../schema/objectid":24,"../utils":34,"./array":28,"./objectid":33}],31:[function(require,module,exports){
+},{"../document":4,"../schema/objectid":24,"./array":28,"./objectid":33}],31:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -7426,7 +7449,7 @@ EmbeddedDocument.prototype.save = function (fn) {
   var promise = $.Deferred().done(fn);
   promise.resolve();
   return promise;
-}
+};
 
 /**
  * Removes the subdocument from its parent array.
@@ -7472,7 +7495,7 @@ EmbeddedDocument.prototype.update = function () {
  */
 EmbeddedDocument.prototype.invalidate = function (path, err, val, first) {
   if (!this.__parent) {
-    var msg = 'Unable to invalidate a subdocument that has not been added to an array.'
+    var msg = 'Unable to invalidate a subdocument that has not been added to an array.';
     throw new Error(msg);
   }
 
@@ -7511,7 +7534,9 @@ EmbeddedDocument.prototype.ownerDocument = function () {
     parent = parent.__parent;
   }
 
-  return this.$__.ownerDocument = parent;
+  this.$__.ownerDocument = parent;
+
+  return this.$__.ownerDocument;
 };
 
 /**
@@ -7607,7 +7632,7 @@ var BinaryParser = require('../binaryparser').BinaryParser;
 var MACHINE_ID = parseInt(Math.random() * 0xFFFFFF, 10);
 
 // Regular expression that checks for hex value
-var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
+var checkForHexRegExp = new RegExp('^[0-9a-fA-F]{24}$');
 
 /**
  * Create a new ObjectId instance
@@ -7627,10 +7652,10 @@ function ObjectId(id) {
 
   // Throw an error if it's not a valid setup
   if(!valid && id != null){
-    throw new Error("Argument passed in must be a single String of 12 bytes or a string of 24 hex characters");
-  } else if(valid && typeof id == 'string' && id.length == 24) {
+    throw new Error('Argument passed in must be a single String of 12 bytes or a string of 24 hex characters');
+  } else if(valid && typeof id === 'string' && id.length === 24) {
     return ObjectId.createFromHexString(id);
-  } else if(id == null || typeof id == 'number') {
+  } else if(id == null || typeof id === 'number') {
     // convert to 12 byte binary string
     this.id = this.generate(id);
   } else if(id != null && id.length === 12) {
@@ -7674,7 +7699,9 @@ ObjectId.prototype.toHexString = function() {
  * @ignore
  */
 ObjectId.prototype.get_inc = function() {
-  return ObjectId.index = (ObjectId.index + 1) % 0xFFFFFF;
+  ObjectId.index = (ObjectId.index + 1) % 0xFFFFFF;
+
+  return ObjectId.index;
 };
 
 /**
@@ -7696,7 +7723,7 @@ ObjectId.prototype.getInc = function() {
  * @return {string} return the 12 byte id binary string.
  */
 ObjectId.prototype.generate = function(time) {
-  if ('number' != typeof time) {
+  if ('number' !== typeof time) {
     time = parseInt(Date.now()/1000,10);
   }
 
@@ -7791,8 +7818,8 @@ ObjectId.createFromTime = function createFromTime (time) {
  */
 ObjectId.createFromHexString = function createFromHexString (hexString) {
   // Throw an error if it's not a valid setup
-  if(typeof hexString === 'undefined' || hexString != null && hexString.length != 24)
-    throw new Error("Argument passed in must be a single String of 12 bytes or a string of 24 hex characters");
+  if(typeof hexString === 'undefined' || hexString != null && hexString.length !== 24)
+    throw new Error('Argument passed in must be a single String of 12 bytes or a string of 24 hex characters');
 
   var len = hexString.length;
 
@@ -7822,11 +7849,11 @@ ObjectId.createFromHexString = function createFromHexString (hexString) {
 ObjectId.isValid = function isValid(id) {
   if(id == null) return false;
 
-  if(id != null && 'number' != typeof id && (id.length != 12 && id.length != 24)) {
+  if(id != null && 'number' !== typeof id && (id.length !== 12 && id.length !== 24)) {
     return false;
   } else {
     // Check specifically for hex correctness
-    if(typeof id == 'string' && id.length == 24) return checkForHexRegExp.test(id);
+    if(typeof id === 'string' && id.length === 24) return checkForHexRegExp.test(id);
     return true;
   }
 };
@@ -7834,13 +7861,14 @@ ObjectId.isValid = function isValid(id) {
 /*!
  * @ignore
  */
-Object.defineProperty(ObjectId.prototype, "generationTime", {
+Object.defineProperty(ObjectId.prototype, 'generationTime', {
   enumerable: true
   , get: function () {
     return Math.floor(BinaryParser.decodeInt(this.id.substring(0,4), 32, true, true));
   }
   , set: function (value) {
-    var value = BinaryParser.encodeInt(value, 32, true, true);
+    value = BinaryParser.encodeInt(value, 32, true, true);
+
     this.id = value + this.id.substr(4);
     // delete this.__id;
     this.toHexString();
@@ -7863,7 +7891,6 @@ module.exports.ObjectId = ObjectId;
 
 var ObjectId = require('./types/objectid')
   , mpath = require('./mpath')
-  , StorageArray
   , Document;
 
 exports.mpath = mpath;
@@ -7992,8 +8019,8 @@ exports.deepEqual = function deepEqual (a, b) {
 var toString = Object.prototype.toString;
 
 function isRegExp (o) {
-  return 'object' == typeof o
-      && '[object RegExp]' == toString.call(o);
+  return 'object' === typeof o
+      && '[object RegExp]' === toString.call(o);
 }
 
 function cloneRegExp (regexp) {
@@ -8164,7 +8191,6 @@ exports.random = function () {
  */
 exports.isStorageObject = function ( v ) {
   Document || (Document = require('./document'));
-  //StorageArray || (StorageArray = require('./types/array'));
 
   return v instanceof Document ||
        ( v && v.isStorageArray );
@@ -8231,7 +8257,7 @@ exports.setImmediate = (function() {
 
   return window.postMessage ? function(func) {
     tail = tail.next = { func: func };
-    window.postMessage(ID, "*");
+    window.postMessage(ID, '*');
   } :
   function(func) { // IE<8
     setTimeout(func, 0);
