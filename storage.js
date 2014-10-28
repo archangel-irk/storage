@@ -2758,16 +2758,16 @@ module.exports = CastError;
 var msg = module.exports = {};
 
 msg.general = {};
-msg.general.default = "Validator failed for path `{PATH}` with value `{VALUE}`";
-msg.general.required = "Path `{PATH}` is required.";
+msg.general.default = 'Validator failed for path `{PATH}` with value `{VALUE}`';
+msg.general.required = 'Path `{PATH}` is required.';
 
 msg.Number = {};
-msg.Number.min = "Path `{PATH}` ({VALUE}) is less than minimum allowed value ({MIN}).";
-msg.Number.max = "Path `{PATH}` ({VALUE}) is more than maximum allowed value ({MAX}).";
+msg.Number.min = 'Path `{PATH}` ({VALUE}) is less than minimum allowed value ({MIN}).';
+msg.Number.max = 'Path `{PATH}` ({VALUE}) is more than maximum allowed value ({MAX}).';
 
 msg.String = {};
-msg.String.enum = "`{VALUE}` is not a valid enum value for path `{PATH}`.";
-msg.String.match = "Path `{PATH}` is invalid ({VALUE}).";
+msg.String.enum = '`{VALUE}` is not a valid enum value for path `{PATH}`.';
+msg.String.match = 'Path `{PATH}` is invalid ({VALUE}).';
 
 
 },{}],8:[function(require,module,exports){
@@ -2823,7 +2823,7 @@ var StorageError = require('../error.js');
  */
 
 function ValidationError (instance) {
-  StorageError.call(this, "Validation failed");
+  StorageError.call(this, 'Validation failed');
   this.name = 'ValidationError';
   this.errors = instance.errors = {};
 }
@@ -2855,13 +2855,16 @@ var errorMessages = StorageError.messages;
  *
  * @param {String} path
  * @param {String} msg
- * @param {String|Number|any} val
+ * @param {String} type
+ * @param {String|Number|*} val
  * @inherits StorageError
  * @api private
  */
 
 function ValidatorError (path, msg, type, val) {
-  if (!msg) msg = errorMessages.general.default;
+  if ( !msg ) {
+    msg = errorMessages.general.default;
+  }
   var message = this.formatMessage(msg, path, type, val);
   StorageError.call(this, message);
   this.name = 'ValidatorError';
@@ -2876,7 +2879,7 @@ function ValidatorError (path, msg, type, val) {
 
 ValidatorError.prototype.toString = function () {
   return this.message;
-}
+};
 
 /*!
  * Inherits from StorageError
@@ -4378,7 +4381,6 @@ var ObjectId = Schema.ObjectId = Types.ObjectId;
 /*!
  * Module dependencies.
  */
-
 var SchemaType = require('../schematype')
   , CastError = SchemaType.CastError
   , Types = {
@@ -4423,12 +4425,12 @@ function SchemaArray (key, cast, options) {
       ? cast
       : utils.getFunctionName( cast );
 
-    var caster = name in Types
+    var Caster = name in Types
       ? Types[name]
       : cast;
 
-    this.casterConstructor = caster;
-    this.caster = new caster(null, castOptions);
+    this.casterConstructor = Caster;
+    this.caster = new Caster(null, castOptions);
 
     // lazy load
     EmbeddedDoc || (EmbeddedDoc = require('../types/embedded'));

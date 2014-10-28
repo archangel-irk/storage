@@ -22,6 +22,9 @@
   "maxcomplexity": 6,
   "maxlen": 120,
 
+  "eqnull": true,
+  "expr": true,
+  "laxbreak": true,
   "laxcomma": true,
   "validthis": true,
 
