@@ -1,5 +1,7 @@
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.storage=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (Buffer){
+'use strict';
+
 /**
  * A class representation of the BSON Binary type.
  *
@@ -338,6 +340,8 @@ module.exports = Binary;
 module.exports.Binary = Binary;
 }).call(this,require("buffer").Buffer)
 },{"buffer":36}],2:[function(require,module,exports){
+'use strict';
+
 /**
  * Binary Parser.
  * Jonas Raoni Soares Silva
@@ -477,6 +481,8 @@ BinaryParser.Buffer = BinaryParserBuffer;
 exports.BinaryParser = BinaryParser;
 
 },{}],3:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -773,6 +779,8 @@ Collection.prototype = {
 module.exports = Collection;
 
 },{"./document":4,"./schema":15}],4:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -2627,6 +2635,8 @@ Document.ValidationError = ValidationError;
 module.exports = Document;
 
 },{"./error":5,"./events":11,"./internal":13,"./schema":15,"./schema/mixed":22,"./schematype":26,"./types/documentarray":30,"./types/embedded":31,"./types/objectid":33,"./utils":34}],5:[function(require,module,exports){
+'use strict';
+
 //todo: портировать все ошибки!!!
 /**
  * StorageError constructor
@@ -2682,6 +2692,8 @@ StorageError.MissingSchemaError = require('./error/missingSchema');
 //StorageError.DivergentArrayError = require('./error/divergentArray');
 
 },{"./error/cast":6,"./error/messages":7,"./error/missingSchema":8,"./error/validation":9,"./error/validator":10}],6:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -2719,6 +2731,7 @@ CastError.prototype.constructor = CastError;
 module.exports = CastError;
 
 },{"../error.js":5}],7:[function(require,module,exports){
+'use strict';
 
 /**
  * The default built-in validator error messages. These may be customized.
@@ -2758,6 +2771,8 @@ msg.String.match = "Path `{PATH}` is invalid ({VALUE}).";
 
 
 },{}],8:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -2791,6 +2806,7 @@ MissingSchemaError.prototype.constructor = StorageError;
 
 module.exports = MissingSchemaError;
 },{"../error.js":5}],9:[function(require,module,exports){
+'use strict';
 
 /*!
  * Module requirements
@@ -2825,6 +2841,8 @@ ValidationError.prototype.constructor = ValidationError;
 module.exports = ValidationError;
 
 },{"../error.js":5}],10:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -2873,6 +2891,8 @@ ValidatorError.prototype.constructor = ValidatorError;
 module.exports = ValidatorError;
 
 },{"../error.js":5}],11:[function(require,module,exports){
+'use strict';
+
 /**
  *
  * Backbone.Events
@@ -3085,6 +3105,8 @@ module.exports = Events;
 
 },{}],12:[function(require,module,exports){
 (function (Buffer){
+'use strict';
+
 /*!
  * Storage documents using schema
  * inspired by mongoose 3.8.4 (fixed bugs for 3.8.16)
@@ -3095,8 +3117,6 @@ module.exports = Events;
  *
  * проследить за багом gh-1638 (3.8.16)
  */
-
-'use strict';
 
 /*!
  * Module dependencies.
@@ -3279,6 +3299,8 @@ window.Buffer = Buffer;
 
 }).call(this,require("buffer").Buffer)
 },{"../package.json":41,"./collection":3,"./document":4,"./error":5,"./schema":15,"./schematype":26,"./statemachine":27,"./types":32,"./utils":34,"./virtualtype":35,"buffer":36}],13:[function(require,module,exports){
+'use strict';
+
 // Машина состояний используется для пометки, в каком состоянии находятся поле
 // Например: если поле имеет состояние default - значит его значением является значение по умолчанию
 // Примечание: для массивов в общем случае это означает пустой массив
@@ -3316,6 +3338,8 @@ function InternalCache () {
 }
 
 },{"./statemachine":27}],14:[function(require,module,exports){
+'use strict';
+
 /**
  * Returns the value of object `o` at the given `path`.
  *
@@ -3532,6 +3556,8 @@ function K (v) {
   return v;
 }
 },{}],15:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -4347,6 +4373,8 @@ Types = Schema.Types;
 var ObjectId = Schema.ObjectId = Types.ObjectId;
 
 },{"./events":11,"./schema/index":21,"./utils":34,"./virtualtype":35}],16:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -4498,6 +4526,8 @@ SchemaArray.prototype.cast = function ( value, doc, init ) {
 module.exports = SchemaArray;
 
 },{"../schematype":26,"../types/array":28,"../types/embedded":31,"../utils":34,"./boolean":17,"./buffer":18,"./date":19,"./mixed":22,"./number":23,"./objectid":24,"./string":25}],17:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -4553,6 +4583,8 @@ module.exports = BooleanSchema;
 
 },{"../schematype":26}],18:[function(require,module,exports){
 (function (Buffer){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -4678,6 +4710,8 @@ module.exports = SchemaBuffer;
 
 }).call(this,require("buffer").Buffer)
 },{"../schematype":26,"../types":32,"../utils":34,"./../document":4,"buffer":36}],19:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module requirements.
  */
@@ -4750,6 +4784,7 @@ DateSchema.prototype.cast = function (value) {
 module.exports = DateSchema;
 
 },{"../schematype":26}],20:[function(require,module,exports){
+'use strict';
 
 /*!
  * Module dependencies.
@@ -5018,6 +5053,7 @@ function scopePaths (array, fields, init) {
 module.exports = DocumentArray;
 
 },{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"../types/objectid":33,"../utils":34,"./array":16}],21:[function(require,module,exports){
+'use strict';
 
 /*!
  * Module exports.
@@ -5048,6 +5084,8 @@ exports.Object = exports.Mixed;
 exports.Bool = exports.Boolean;
 
 },{"./array":16,"./boolean":17,"./buffer":18,"./date":19,"./documentarray":20,"./mixed":22,"./number":23,"./objectid":24,"./string":25}],22:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -5115,6 +5153,8 @@ Mixed.prototype.cast = function (value) {
 module.exports = Mixed;
 
 },{"../schematype":26}],23:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module requirements.
  */
@@ -5283,6 +5323,8 @@ NumberSchema.prototype.cast = function ( value ) {
 module.exports = NumberSchema;
 
 },{"../error":5,"../schematype":26}],24:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -5436,6 +5478,8 @@ function resetId (v) {
 module.exports = ObjectId;
 
 },{"../schematype":26,"../types/objectid":33,"../utils":34,"./../document":4}],25:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -5700,6 +5744,8 @@ StringSchema.prototype.cast = function ( value ) {
 module.exports = StringSchema;
 
 },{"../error":5,"../schematype":26}],26:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -6266,6 +6312,8 @@ SchemaType.CastError = CastError;
 SchemaType.ValidatorError = ValidatorError;
 
 },{"./error":5,"./utils":34}],27:[function(require,module,exports){
+'use strict';
+
 /*!
  * StateMachine represents a minimal `interface` for the
  * constructors it builds via StateMachine.ctor(...).
@@ -6441,6 +6489,8 @@ StateMachine.prototype.map = function map () {
 
 
 },{}],28:[function(require,module,exports){
+'use strict';
+
 //TODO: почистить код
 
 /*!
@@ -6853,6 +6903,8 @@ module.exports = StorageArray;
 
 },{"../document":4,"../utils":34,"./embedded":31,"./objectid":33}],29:[function(require,module,exports){
 (function (Buffer){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -7108,6 +7160,8 @@ module.exports = StorageBuffer;
 
 }).call(this,require("buffer").Buffer)
 },{"../binary":1,"../utils":34,"buffer":36}],30:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -7288,6 +7342,8 @@ StorageDocumentArray.mixin.notify = function notify (event) {
 module.exports = StorageDocumentArray;
 
 },{"../document":4,"../schema/objectid":24,"../utils":34,"./array":28,"./objectid":33}],31:[function(require,module,exports){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -7514,6 +7570,7 @@ EmbeddedDocument.prototype.parentArray = function () {
 module.exports = EmbeddedDocument;
 
 },{"../document":4}],32:[function(require,module,exports){
+'use strict';
 
 /*!
  * Module exports.
@@ -7529,6 +7586,8 @@ exports.ObjectId = require('./objectid');
 
 },{"./array":28,"./buffer":29,"./documentarray":30,"./embedded":31,"./objectid":33}],33:[function(require,module,exports){
 (function (process){
+'use strict';
+
 /**
  * Module dependencies.
  * @ignore
@@ -7794,6 +7853,8 @@ module.exports.ObjectId = ObjectId;
 }).call(this,require('_process'))
 },{"../binaryparser":2,"_process":40}],34:[function(require,module,exports){
 (function (process,global,Buffer){
+'use strict';
+
 /*!
  * Module dependencies.
  */
@@ -8203,6 +8264,7 @@ if (!Function.prototype.bind) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 },{"./document":4,"./mpath":14,"./types/objectid":33,"_process":40,"buffer":36}],35:[function(require,module,exports){
+'use strict';
 
 /**
  * VirtualType constructor
@@ -9610,6 +9672,8 @@ var process = module.exports = {};
 process.nextTick = (function () {
     var canSetImmediate = typeof window !== 'undefined'
     && window.setImmediate;
+    var canMutationObserver = typeof window !== 'undefined'
+    && window.MutationObserver;
     var canPost = typeof window !== 'undefined'
     && window.postMessage && window.addEventListener
     ;
@@ -9618,8 +9682,29 @@ process.nextTick = (function () {
         return function (f) { return window.setImmediate(f) };
     }
 
+    var queue = [];
+
+    if (canMutationObserver) {
+        var hiddenDiv = document.createElement("div");
+        var observer = new MutationObserver(function () {
+            var queueList = queue.slice();
+            queue.length = 0;
+            queueList.forEach(function (fn) {
+                fn();
+            });
+        });
+
+        observer.observe(hiddenDiv, { attributes: true });
+
+        return function nextTick(fn) {
+            if (!queue.length) {
+                hiddenDiv.setAttribute('yes', 'no');
+            }
+            queue.push(fn);
+        };
+    }
+
     if (canPost) {
-        var queue = [];
         window.addEventListener('message', function (ev) {
             var source = ev.source;
             if ((source === window || source === null) && ev.data === 'process-tick') {
@@ -9659,7 +9744,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-}
+};
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };

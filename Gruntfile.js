@@ -49,6 +49,7 @@ module.exports = function (grunt) {
       lib: {
         src: [
           'lib/**/*.js'
+          //'storage.debug.js'
         ]
       },
       tests: {

@@ -1,32 +1,34 @@
 {
-  "strict": true,
+  "bitwise": true,
+  "camelcase": true,
   "curly": true,
   "forin": true,
+  "freeze": true,
   "immed": true,
+  "indent": 2,
   "latedef": "nofunc",
   "newcap": true,
   "noarg": true,
   "noempty": true,
+  "nonbsp": true,
   "nonew": true,
   "quotmark": "single",
   "undef": true,
-  "validthis": true,
+  "unused": true,
+  "strict": true,
   "maxparams": 3,
   "maxdepth": 2,
+  "maxstatements": 3,
   "maxcomplexity": 5,
+  "maxlen": 120,
+
+  "laxcomma": true,
+  "validthis": true,
+
+  "browserify": true,
+
   "globals": {
-    "define": true,
-    "require": false,
-    "module": false,
-    "setTimeout": false,
     "jQuery": false,
-    "describe": false,
-    "beforeEach": false,
-    "afterEach": false,
-    "it": false,
-    "runs": false,
-    "waitsFor": false,
-    "expect": false,
-    "__karma__": false
+    "_": false
   }
 }
