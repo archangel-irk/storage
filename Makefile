@@ -26,6 +26,3 @@ docclean:
 	rm -f ./docs/source/_docs
 
 .PHONY: ghpages docs docclean gendocs docs_from_master
-
-browser:
-	./node_modules/browserify/bin/cmd.js -o ./bin/mongoose.js lib/browser.js

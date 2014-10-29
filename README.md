@@ -338,15 +338,7 @@ var BossSchema = new Schema('Boss', PersonSchema, { department: String });
 ## Running the tests
 After `npm install` you have the [karma test runner](https://github.com/karma-runner/karma) locally, now run:
 
-	./node_modules/karma/bin/karma start karma.local.conf.js
-	
-Or install `karma-cli` globally
-
-	npm install -g karma-cli
-	
-and run:
-
-	karma start karma.local.conf.js
+	grunt test
 
 Also you can see the code coverage in `./test/coverage/`.
 
