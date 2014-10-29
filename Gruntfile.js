@@ -22,6 +22,7 @@ module.exports = function (grunt) {
         src: 'lib/index.js',
         dest: 'storage.debug.js'
       },
+
       // browserify lib/ --standalone storage > storage.js
       dist: {
         options: {
@@ -65,11 +66,29 @@ module.exports = function (grunt) {
       options: {
         configFile: 'karma.conf.js'
       },
+
       local: {
         browsers: [
           'Chrome'
-        ]
+        ],
+        preprocessors: {
+          // source files, that you wanna generate coverage for
+          // do not include tests or libraries
+          // (these files will be instrumented by Istanbul)
+          './storage.js': ['coverage']
+        },
+        // coverage reporter generates the coverage
+        reporters: [
+          'dots',
+          'coverage'
+        ],
+        // optionally, configure the reporter
+        coverageReporter: {
+          type: 'html',
+          dir: 'test/coverage'
+        }
       },
+
       phantom: {
         browsers: [
           'PhantomJS'
@@ -91,6 +110,8 @@ module.exports = function (grunt) {
           dir: 'test/coverage'
         }
       },
+
+      //todo: нужен ли этот код?
       coverage: {
         preprocessors: {
           './storage.js': ['coverage']
@@ -104,6 +125,7 @@ module.exports = function (grunt) {
           dir: 'test/coverage'
         }
       },
+
       sauce: {
         reporters: [
           'dots',
@@ -160,7 +182,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test', [
-    'build',
+    'browserify:dist',
     'karma:local'
   ]);
 

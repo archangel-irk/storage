@@ -31,7 +31,7 @@ TestDocument.prototype.constructor = TestDocument;
 
 var em = new Schema({ title: String, body: String });
 em.virtual('works').get(function () {
-  return 'em virtual works'
+  return 'em virtual works';
 });
 var schema = new Schema({
     test    : String
@@ -102,7 +102,7 @@ describe('document', function(){
 
   describe('shortcut getters', function(){
     it('return undefined for properties with a null/undefined parent object (gh-1326)', function(done){
-      var doc = new TestDocument;
+      var doc = new TestDocument();
       doc.init({ nested: null });
       assert.strictEqual(undefined, doc.nested.age);
       done();
@@ -115,7 +115,7 @@ describe('document', function(){
         , oids    : []
         , nested  : {
               age   : 5
-            , cool  : DocumentObjectId('4c6c2d6240ced95d0e00003c')
+            , cool  : new DocumentObjectId('4c6c2d6240ced95d0e00003c')
             , path  : 'my path'
           }
       });
@@ -137,7 +137,7 @@ describe('document', function(){
         , oids    : []
         , nested  : {
               age   : 2
-            , cool  : DocumentObjectId('4cf70857337498f95900001c')
+            , cool  : new DocumentObjectId('4cf70857337498f95900001c')
             , deep  : { x: 'yay' }
           }
       });
@@ -164,18 +164,18 @@ describe('document', function(){
 
       doc2.nested2.yup = {
           age: 150
-        , yup: "Yesiree"
+        , yup: 'Yesiree'
         , nested: true
       };
 
       assert.equal(doc2.nested2.nested, undefined);
       assert.equal(doc2.nested2.yup.nested, true);
-      assert.equal(doc2.nested2.yup.yup, "Yesiree");
+      assert.equal(doc2.nested2.yup.yup, 'Yesiree');
       assert.equal(doc2.nested2.yup.age, 150);
-      doc2.nested2.nested = "y";
-      assert.equal(doc2.nested2.nested, "y");
+      doc2.nested2.nested = 'y';
+      assert.equal(doc2.nested2.nested, 'y');
       assert.equal(doc2.nested2.yup.nested, true);
-      assert.equal(doc2.nested2.yup.yup, "Yesiree");
+      assert.equal(doc2.nested2.yup.yup, 'Yesiree');
       assert.equal(150, doc2.nested2.yup.age);
 
       assert.equal(String(doc2.nested.cool), '4cf70857337498f95900001c');
@@ -260,11 +260,11 @@ describe('document', function(){
       , em: [{title:'asdf'}]
       , nested  : {
             age   : 5
-          , cool  : DocumentObjectId('4c6c2d6240ced95d0e00003c')
+          , cool  : new DocumentObjectId('4c6c2d6240ced95d0e00003c')
           , path  : 'my path'
         }
       , nested2: {}
-      , date: new Date
+      , date: new Date()
     });
 
     var clone = doc.toObject({ getters: true, virtuals: false });
@@ -360,13 +360,13 @@ describe('document', function(){
     assert.equal(5, clone.nested.age);
 
     // transform with return value
-    var out = { myid: doc._id.toString() }
+    var out = { myid: doc._id.toString() };
     doc.schema.options.toObject.transform = function (doc, ret, options) {
       if ('function' == typeof doc.ownerDocument)
         // ignore embedded docs
         return;
 
-      return { myid: ret._id.toString() }
+      return { myid: ret._id.toString() };
     };
 
     clone = doc.toObject();
@@ -417,7 +417,7 @@ describe('document', function(){
       , em: [{title:'asdf'}]
       , nested  : {
             age   : 5
-          , cool  : DocumentObjectId('4c6c2d6240ced95d0e00003c')
+          , cool  : new DocumentObjectId('4c6c2d6240ced95d0e00003c')
           , path  : 'my path'
         }
       , nested2: {}
@@ -484,13 +484,13 @@ describe('document', function(){
     assert.equal(5, clone.nested.age);
 
     // transform with return value
-    var out = { myid: doc._id.toString() }
+    var out = { myid: doc._id.toString() };
     doc.schema.options.toJSON.transform = function (doc, ret, options) {
-      if ('function' == typeof doc.ownerDocument)
+      if ('function' === typeof doc.ownerDocument)
         // ignore embedded docs
         return;
 
-      return { myid: ret._id.toString() }
+      return { myid: ret._id.toString() };
     };
 
     clone = doc.toJSON();
@@ -589,7 +589,7 @@ describe('document', function(){
 
   describe('Errors', function(){
     it('StorageError should be instances of Error (gh-209)', function(done){
-      var err = new StorageError("Some message");
+      var err = new StorageError('Some message');
       assert.ok(err instanceof Error);
       done();
     });
@@ -601,7 +601,7 @@ describe('document', function(){
   });
 
   it('methods on embedded docs should work', function(done){
-    var ESchema = new Schema({ name: String })
+    var ESchema = new Schema({ name: String });
 
     ESchema.methods.test = function () {
       return this.name + ' butter';
@@ -630,7 +630,7 @@ describe('document', function(){
   });
 
   it('setting a positional path does not cast value to array', function(done){
-    var doc = new TestDocument;
+    var doc = new TestDocument();
     doc.init({ numbers: [1,3] });
     assert.equal(1, doc.numbers[0]);
     assert.equal(3, doc.numbers[1]);
@@ -666,7 +666,7 @@ describe('document', function(){
 
     var S = storage.createCollection('noMaxListeners', schema);
 
-    var s = S.add({ title: "test" });
+    var s = S.add({ title: 'test' });
 
     assert.equal(false, traced);
     done();
@@ -718,7 +718,7 @@ describe('document', function(){
     it('works (gh-891)', function(done){
       var called = false;
 
-      var validate = [function(str){ called = true; return true }, 'BAM'];
+      var validate = [function(str){ called = true; return true; }, 'BAM'];
 
       var schema = new Schema({
           prop: { type: String, required: true, validate: validate }
@@ -740,8 +740,8 @@ describe('document', function(){
         m.save(function(){
           assert.equal(false, called);
           done();
-        }, true)
-      }, true)
+        }, true);
+      }, true);
     });
 
     describe('works on arrays', function(){
@@ -763,9 +763,9 @@ describe('document', function(){
 
             m.save(function(){
               done();
-            }, true)
-          }, true)
-        }, true)
+            }, true);
+          }, true);
+        }, true);
       });
 
       it('with custom validator', function(done){
@@ -773,7 +773,7 @@ describe('document', function(){
 
         function validator (val) {
           called = true;
-          return val && val.length > 1
+          return val && val.length > 1;
         }
 
         var validate = [validator, 'BAM'];
@@ -794,15 +794,15 @@ describe('document', function(){
 
           m.save(function(){
             assert.equal(true, called);
-            done()
-          }, true)
-        }, true)
+            done();
+          }, true);
+        }, true);
       });
 
       it('with both required + custom validator', function(done){
         function validator (val) {
           called = true;
-          return val && val.length > 1
+          return val && val.length > 1;
         }
 
         var validate = [validator, 'BAM'];
@@ -825,15 +825,15 @@ describe('document', function(){
             m.arr.push(95);
 
             m.save(function(){
-              done()
-            }, true)
-          }, true)
-        }, true)
+              done();
+            }, true);
+          }, true);
+        }, true);
       });
 
     });
 
-    it("validator should run only once gh-1743", function (done) {
+    it('validator should run only once gh-1743', function (done) {
       var count = 0;
 
       var Control = new Schema({
@@ -853,7 +853,7 @@ describe('document', function(){
 
       var post = Post.add({
         controls: [{
-          test: "xx"
+          test: 'xx'
         }]
       });
 
@@ -863,7 +863,7 @@ describe('document', function(){
       });
     });
 
-    it("validator should run only once per sub-doc gh-1743", function (done) {
+    it('validator should run only once per sub-doc gh-1743', function (done) {
       var count = 0;
 
       var Control = new Schema({
@@ -884,11 +884,11 @@ describe('document', function(){
       var post = Post.add({
         controls: [
           {
-            test: "xx"
+            test: 'xx'
           }
           ,
           {
-            test: "yy"
+            test: 'yy'
           }
         ]
       });
@@ -900,7 +900,7 @@ describe('document', function(){
     });
 
 
-    it("validator should run in parallel", function (done) {
+    it('validator should run in parallel', function (done) {
       // we set the time out to be double that of the validator - 1 (so that running in serial will be greater then that)
       this.timeout(1000);
       var count = 0;
@@ -917,19 +917,19 @@ describe('document', function(){
       var m = MWSV.add({
         subs: [
           {
-            preference: "xx"
+            preference: 'xx'
           }
           ,
           {
-            preference: "yy"
+            preference: 'yy'
           }
           ,
           {
-            preference: "1"
+            preference: '1'
           }
           ,
           {
-            preference: "2"
+            preference: '2'
           }
         ]
       });
@@ -991,12 +991,12 @@ describe('document', function(){
         done();
       });*/
       it('with ObjectId _ids', function(done){
-        var id = new DocumentObjectId;
+        var id = new DocumentObjectId();
         var o1 = O.add({ _id: id });
         var o2 = O.add({ _id: id });
         assert.ok(o1.equals(o2));
 
-        id = String(new DocumentObjectId);
+        id = String(new DocumentObjectId());
         o1 = O.add({ _id: id });
         o2 = O.add({ _id: id });
         assert.ok(o1.equals(o2));
@@ -1010,7 +1010,7 @@ describe('document', function(){
         });
         done();
       });*/
-    })
+    });
   });
 
   describe('setter', function(){
@@ -1026,7 +1026,7 @@ describe('document', function(){
         assert.ok(d.date instanceof Date);
         assert.equal(+d.date, +new Date(date));
         done();
-      })
+      });
     });
 
     describe('on nested paths', function(){
@@ -1112,8 +1112,8 @@ describe('document', function(){
           assert.ok(doc.isModified('nested.deep'));
           assert.equal('Hank and Marie', doc.nested.deep.x);
           done();
-        })
-      })
+        });
+      });
 
       describe('when overwriting with a document instance', function(){
         it('does not cause StackOverflows (gh-1234)', function(done){
@@ -1123,7 +1123,7 @@ describe('document', function(){
             doc.nested.age;
           });
           done();
-        })
+        });
       })
     })
 
