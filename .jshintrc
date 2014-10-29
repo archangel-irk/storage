@@ -37,6 +37,8 @@
     "_": false,
     "storage": true,
 
-    "describe": false
+    "describe": false,
+    "it": false,
+    "assert": false
   }
 }
