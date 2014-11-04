@@ -3,7 +3,6 @@
 [![Sauce Test Status](https://saucelabs.com/buildstatus/archangel_irk)](https://saucelabs.com/u/archangel_irk)
 [![Code Climate](https://codeclimate.com/github/archangel-irk/storage/badges/gpa.svg)](https://codeclimate.com/github/archangel-irk/storage)
 [![Coverage Status](https://img.shields.io/coveralls/archangel-irk/storage.svg)](https://coveralls.io/r/archangel-irk/storage?branch=master)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 Use mongoose-like schema validation, collections and documents on browser.  
 
