@@ -565,14 +565,14 @@
   {
     "tags": [],
     "description": {
-      "full": "<p>Expose.</p>",
-      "summary": "<p>Expose.</p>",
+      "full": "<p>Module exports.</p>",
+      "summary": "<p>Module exports.</p>",
       "body": ""
     },
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
+    "ignore": true,
     "line": 334,
     "codeStart": 337,
     "code": "module.exports = Binary;\nmodule.exports.Binary = Binary;",
@@ -637,17 +637,17 @@
   {
     "tags": [],
     "description": {
-      "full": "<p>Expose.</p>",
-      "summary": "<p>Expose.</p>",
+      "full": "<p>Module exports.</p>",
+      "summary": "<p>Module exports.</p>",
       "body": ""
     },
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
+    "ignore": true,
     "line": 133,
     "codeStart": 136,
-    "code": "BinaryParser.Buffer = BinaryParserBuffer;\n\nexports.BinaryParser = BinaryParser;",
+    "code": "BinaryParser.Buffer = BinaryParserBuffer;\nexports.BinaryParser = BinaryParser;",
     "ctx": {
       "type": "property",
       "receiver": "BinaryParser",
@@ -1355,7 +1355,7 @@
     "isEvent": false,
     "ignore": true,
     "line": 296,
-    "codeStart": 300,
+    "codeStart": 299,
     "code": "module.exports = Collection;",
     "ctx": {
       "type": "property",
