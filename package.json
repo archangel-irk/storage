@@ -33,6 +33,7 @@
     "browserify": "latest",
     "dox": "latest",
     "highlight.js": "latest",
-    "jade": "latest"
+    "jade": "latest",
+    "markdown": "latest"
   }
 }
