@@ -4,7 +4,7 @@
   {
     "tags": [
       {
-        "type": "class",
+        "type": "constructor",
         "string": "Represents the Binary BSON type."
       },
       {
@@ -39,14 +39,14 @@
       "body": "<p>Sub types</p><ul>\n<li><strong>BSON.BSON_BINARY_SUBTYPE_DEFAULT</strong>, default BSON type.</li>\n<li><strong>BSON.BSON_BINARY_SUBTYPE_FUNCTION</strong>, BSON function type.</li>\n<li><strong>BSON.BSON_BINARY_SUBTYPE_BYTE_ARRAY</strong>, BSON byte array type.</li>\n<li><strong>BSON.BSON_BINARY_SUBTYPE_UUID</strong>, BSON uuid type.</li>\n<li><strong>BSON.BSON_BINARY_SUBTYPE_MD5</strong>, BSON md5 type.</li>\n<li><strong>BSON.BSON_BINARY_SUBTYPE_USER_DEFINED</strong>, BSON user defined type.</li>\n</ul>\n"
     },
     "isPrivate": false,
-    "isConstructor": false,
+    "isConstructor": true,
     "isEvent": false,
     "ignore": false,
     "line": 3,
     "codeStart": 19,
     "code": "function Binary(buffer, subType) {\n  if(!(this instanceof Binary)) return new Binary(buffer, subType);\n\n  this._bsontype = 'Binary';\n\n  if(buffer instanceof Number) {\n    this.sub_type = buffer;\n    this.position = 0;\n  } else {\n    this.sub_type = subType == null ? BSON_BINARY_SUBTYPE_DEFAULT : subType;\n    this.position = 0;\n  }\n\n  if(buffer != null && !(buffer instanceof Number)) {\n    // Only accept Buffer, Uint8Array or Arrays\n    if(typeof buffer === 'string') {\n      // Different ways of writing the length of the string for the different types\n      if(typeof Buffer !== 'undefined') {\n        this.buffer = new Buffer(buffer);\n      } else if(typeof Uint8Array !== 'undefined' || (Object.prototype.toString.call(buffer) === '[object Array]')) {\n        this.buffer = writeStringToArray(buffer);\n      } else {\n        throw new Error('only String, Buffer, Uint8Array or Array accepted');\n      }\n    } else {\n      this.buffer = buffer;\n    }\n    this.position = buffer.length;\n  } else {\n    if(typeof Buffer !== 'undefined') {\n      this.buffer =  new Buffer(Binary.BUFFER_SIZE);\n    } else if(typeof Uint8Array !== 'undefined'){\n      this.buffer = new Uint8Array(new ArrayBuffer(Binary.BUFFER_SIZE));\n    } else {\n      this.buffer = new Array(Binary.BUFFER_SIZE);\n    }\n    // Set position to start of buffer\n    this.position = 0;\n  }\n}",
     "ctx": {
-      "type": "function",
+      "type": "constructor",
       "name": "Binary",
       "string": "Binary()"
     }
@@ -376,7 +376,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -388,7 +388,7 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
+    "ignore": true,
     "line": 291,
     "codeStart": 296,
     "code": "Binary.SUBTYPE_DEFAULT = 0;",
@@ -403,7 +403,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -415,9 +415,9 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
-    "line": 297,
-    "codeStart": 302,
+    "ignore": true,
+    "line": 298,
+    "codeStart": 303,
     "code": "Binary.SUBTYPE_FUNCTION = 1;",
     "ctx": {
       "type": "property",
@@ -430,7 +430,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -442,9 +442,9 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
-    "line": 303,
-    "codeStart": 308,
+    "ignore": true,
+    "line": 305,
+    "codeStart": 310,
     "code": "Binary.SUBTYPE_BYTE_ARRAY = 2;",
     "ctx": {
       "type": "property",
@@ -457,7 +457,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -469,9 +469,9 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
-    "line": 309,
-    "codeStart": 314,
+    "ignore": true,
+    "line": 312,
+    "codeStart": 317,
     "code": "Binary.SUBTYPE_UUID_OLD = 3;",
     "ctx": {
       "type": "property",
@@ -484,7 +484,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -496,9 +496,9 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
-    "line": 315,
-    "codeStart": 320,
+    "ignore": true,
+    "line": 319,
+    "codeStart": 324,
     "code": "Binary.SUBTYPE_UUID = 4;",
     "ctx": {
       "type": "property",
@@ -511,7 +511,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -523,9 +523,9 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
-    "line": 321,
-    "codeStart": 326,
+    "ignore": true,
+    "line": 326,
+    "codeStart": 331,
     "code": "Binary.SUBTYPE_MD5 = 5;",
     "ctx": {
       "type": "property",
@@ -538,7 +538,7 @@
   {
     "tags": [
       {
-        "type": "classconstant",
+        "type": "const",
         "string": "SUBTYPE_DEFAULT"
       }
     ],
@@ -550,9 +550,9 @@
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
-    "line": 327,
-    "codeStart": 332,
+    "ignore": true,
+    "line": 333,
+    "codeStart": 338,
     "code": "Binary.SUBTYPE_USER_DEFINED = 128;",
     "ctx": {
       "type": "property",
@@ -573,8 +573,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 334,
-    "codeStart": 337,
+    "line": 340,
+    "codeStart": 343,
     "code": "module.exports = Binary;\nmodule.exports.Binary = Binary;",
     "ctx": {
       "type": "property",
@@ -590,20 +590,29 @@
   {
     "tags": [
       {
+        "type": "copyright",
+        "string": "Jonas Raoni Soares Silva"
+      },
+      {
+        "type": "see",
+        "title": "http://jsfromhell.com/classes/binary-parser",
+        "url": "[v1.0] "
+      },
+      {
         "type": "see",
         "title": "",
         "url": "https://github.com/mongodb/js-bson/blob/master/lib/bson/binary_parser.js"
       }
     ],
     "description": {
-      "full": "<p>Binary Parser.<br />Jonas Raoni Soares Silva<br /><a href=\"http://jsfromhell.com/classes/binary-parser\">http://jsfromhell.com/classes/binary-parser</a> [v1.0]</p>",
-      "summary": "<p>Binary Parser.<br />Jonas Raoni Soares Silva<br /><a href=\"http://jsfromhell.com/classes/binary-parser\">http://jsfromhell.com/classes/binary-parser</a> [v1.0]</p>",
+      "full": "<p>Binary Parser.</p>",
+      "summary": "<p>Binary Parser.</p>",
       "body": ""
     },
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
-    "ignore": false,
+    "ignore": true,
     "line": 3,
     "codeStart": 11,
     "code": "var maxBits = [];\nfor (var i = 0; i < 64; i++) {\n\tmaxBits[i] = Math.pow(2, i);\n}\n\nfunction BinaryParser (bigEndian, allowExceptions) {\n  if(!(this instanceof BinaryParser)) return new BinaryParser(bigEndian, allowExceptions);\n  \n\tthis.bigEndian = bigEndian;\n\tthis.allowExceptions = allowExceptions;\n}\n\nBinaryParser.warn = function warn (msg) {\n\tif (this.allowExceptions) {\n\t\tthrow new Error(msg);\n  }\n\n\treturn 1;\n};\n\nBinaryParser.decodeInt = function decodeInt (data, bits, signed, forceBigEndian) {\n  var b = new this.Buffer(this.bigEndian || forceBigEndian, data)\n      , x = b.readBits(0, bits)\n      , max = maxBits[bits]; //max = Math.pow( 2, bits );\n  \n  return signed && x >= max / 2\n      ? x - max\n      : x;\n};\n\nBinaryParser.encodeInt = function encodeInt (data, bits, signed, forceBigEndian) {\n\tvar max = maxBits[bits];\n\n  if (data >= max || data < -(max / 2)) {\n    this.warn('encodeInt::overflow');\n    data = 0;\n  }\n\n\tif (data < 0) {\n    data += max;\n  }\n\n\tfor (var r = []; data; r[r.length] = String.fromCharCode(data % 256), data = Math.floor(data / 256));\n\n\tfor (bits = -(-bits >> 3) - r.length; bits--; r[r.length] = '\\0');\n\n  return ((this.bigEndian || forceBigEndian) ? r.reverse() : r).join('');\n};\n\nBinaryParser.toSmall    = function( data ){ return this.decodeInt( data,  8, true  ); };\nBinaryParser.fromSmall  = function( data ){ return this.encodeInt( data,  8, true  ); };\nBinaryParser.toByte     = function( data ){ return this.decodeInt( data,  8, false ); };\nBinaryParser.fromByte   = function( data ){ return this.encodeInt( data,  8, false ); };\nBinaryParser.toShort    = function( data ){ return this.decodeInt( data, 16, true  ); };\nBinaryParser.fromShort  = function( data ){ return this.encodeInt( data, 16, true  ); };\nBinaryParser.toWord     = function( data ){ return this.decodeInt( data, 16, false ); };\nBinaryParser.fromWord   = function( data ){ return this.encodeInt( data, 16, false ); };\nBinaryParser.toInt      = function( data ){ return this.decodeInt( data, 32, true  ); };\nBinaryParser.fromInt    = function( data ){ return this.encodeInt( data, 32, true  ); };\nBinaryParser.toLong     = function( data ){ return this.decodeInt( data, 64, true  ); };\nBinaryParser.fromLong   = function( data ){ return this.encodeInt( data, 64, true  ); };\nBinaryParser.toDWord    = function( data ){ return this.decodeInt( data, 32, false ); };\nBinaryParser.fromDWord  = function( data ){ return this.encodeInt( data, 32, false ); };\nBinaryParser.toQWord    = function( data ){ return this.decodeInt( data, 64, true ); };\nBinaryParser.fromQWord  = function( data ){ return this.encodeInt( data, 64, true ); };",
@@ -615,21 +624,26 @@
     }
   },
   {
-    "tags": [],
+    "tags": [
+      {
+        "type": "constructor",
+        "string": "BinaryParser buffer constructor."
+      }
+    ],
     "description": {
-      "full": "<p>BinaryParser buffer constructor.</p>",
-      "summary": "<p>BinaryParser buffer constructor.</p>",
+      "full": "",
+      "summary": "",
       "body": ""
     },
     "isPrivate": false,
-    "isConstructor": false,
+    "isConstructor": true,
     "isEvent": false,
-    "ignore": false,
+    "ignore": true,
     "line": 77,
     "codeStart": 80,
     "code": "function BinaryParserBuffer (bigEndian, buffer) {\n  this.bigEndian = bigEndian || 0;\n  this.buffer = [];\n  this.setBuffer(buffer);\n}\n\nBinaryParserBuffer.prototype.setBuffer = function setBuffer (data) {\n  var l, i, b;\n\n\tif (data) {\n    i = l = data.length;\n    b = this.buffer = new Array(l);\n\t\tfor (; i; b[l - i] = data.charCodeAt(--i));\n\t\tthis.bigEndian && b.reverse();\n\t}\n};\n\nBinaryParserBuffer.prototype.hasNeededBits = function hasNeededBits (neededBits) {\n\treturn this.buffer.length >= -(-neededBits >> 3);\n};\n\nBinaryParserBuffer.prototype.checkBuffer = function checkBuffer (neededBits) {\n\tif (!this.hasNeededBits(neededBits)) {\n\t\tthrow new Error('checkBuffer::missing bytes');\n  }\n};\n\nBinaryParserBuffer.prototype.readBits = function readBits (start, length) {\n\t//shl fix: Henri Torgemane ~1996 (compressed by Jonas Raoni)\n\n\tfunction shl (a, b) {\n\t\tfor (; b--; a = ((a %= 0x7fffffff + 1) & 0x40000000) == 0x40000000 ? a * 2 : (a - 0x40000000) * 2 + 0x7fffffff + 1);\n\t\treturn a;\n\t}\n\n\tif (start < 0 || length <= 0) {\n\t\treturn 0;\n  }\n\n\tthis.checkBuffer(start + length);\n\n  var offsetLeft\n    , offsetRight = start % 8\n    , curByte = this.buffer.length - ( start >> 3 ) - 1\n    , lastByte = this.buffer.length + ( -( start + length ) >> 3 )\n    , diff = curByte - lastByte\n    , sum = ((this.buffer[ curByte ] >> offsetRight) & ((1 << (diff ? 8 - offsetRight : length)) - 1)) + (diff && (offsetLeft = (start + length) % 8) ? (this.buffer[lastByte++] & ((1 << offsetLeft) - 1)) << (diff-- << 3) - offsetRight : 0);\n\n\tfor(; diff; sum += shl(this.buffer[lastByte++], (diff-- << 3) - offsetRight));\n\n\treturn sum;\n};",
     "ctx": {
-      "type": "function",
+      "type": "constructor",
       "name": "BinaryParserBuffer",
       "string": "BinaryParserBuffer()"
     }
