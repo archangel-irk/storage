@@ -219,13 +219,14 @@ function fix (str) {
 function order (docs) {
   var sortByCtxName = function (a, b) {
     if (!a.ctx) {
-      console.error('missing ctx', a);
+      console.error('missing a ctx', a);
     }
     if (!b.ctx) {
-      console.error('missing ctx', b);
+      console.error('missing b ctx', b);
     }
 
-    if ( !a.ctx.name ){
+    if ( a.ctx && !a.ctx.name ){
+      console.log( 'missing a ctx name' );
       console.log( a );
     }
 
@@ -236,9 +237,9 @@ function order (docs) {
   for (var i = 0; i < docs.length; ++i) {
     var doc = docs[i];
 
-    if ('index.js' == doc.title) {
+    if ('index.js' === doc.title) {
       docs.unshift(docs.splice(i, 1)[0]);
-    } else if ('collection.js' == doc.title) {
+    } else if ('collection.js' === doc.title) {
       docs.push(docs.splice(i, 1)[0]);
     }
 

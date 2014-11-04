@@ -25,4 +25,4 @@ docclean:
 	rm -f ./docs/*.{1,html,json}
 	rm -f ./docs/source/_docs
 
-.PHONY: ghpages docs docclean gendocs docs_from_master
+.PHONY: ghpages docs docclean gendocs
