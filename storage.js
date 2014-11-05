@@ -8219,14 +8219,12 @@ exports.setValue = function (path, val, obj, map) {
 };
 
 var rFunctionName = /^function\s*([^\s(]+)/;
-
 function getFunctionName( ctor ){
   if (ctor.name) {
     return ctor.name;
   }
   return (ctor.toString().trim().match( rFunctionName ) || [])[1];
 }
-
 exports.getFunctionName = getFunctionName;
 
 exports.setImmediate = (function() {
@@ -8273,16 +8271,16 @@ if (!Function.prototype.bind) {
 
     var aArgs = Array.prototype.slice.call(arguments, 1),
       fToBind = this,
-      fNOP    = function() {},
+      Noop    = function() {},
       fBound  = function() {
-        return fToBind.apply(this instanceof fNOP && oThis
+        return fToBind.apply(this instanceof Noop && oThis
             ? this
             : oThis,
           aArgs.concat(Array.prototype.slice.call(arguments)));
       };
 
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
+    Noop.prototype = this.prototype;
+    fBound.prototype = new Noop();
 
     return fBound;
   };
@@ -9698,8 +9696,6 @@ var process = module.exports = {};
 process.nextTick = (function () {
     var canSetImmediate = typeof window !== 'undefined'
     && window.setImmediate;
-    var canMutationObserver = typeof window !== 'undefined'
-    && window.MutationObserver;
     var canPost = typeof window !== 'undefined'
     && window.postMessage && window.addEventListener
     ;
@@ -9708,29 +9704,8 @@ process.nextTick = (function () {
         return function (f) { return window.setImmediate(f) };
     }
 
-    var queue = [];
-
-    if (canMutationObserver) {
-        var hiddenDiv = document.createElement("div");
-        var observer = new MutationObserver(function () {
-            var queueList = queue.slice();
-            queue.length = 0;
-            queueList.forEach(function (fn) {
-                fn();
-            });
-        });
-
-        observer.observe(hiddenDiv, { attributes: true });
-
-        return function nextTick(fn) {
-            if (!queue.length) {
-                hiddenDiv.setAttribute('yes', 'no');
-            }
-            queue.push(fn);
-        };
-    }
-
     if (canPost) {
+        var queue = [];
         window.addEventListener('message', function (ev) {
             var source = ev.source;
             if ((source === window || source === null) && ev.data === 'process-tick') {
@@ -9770,7 +9745,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-};
+}
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
