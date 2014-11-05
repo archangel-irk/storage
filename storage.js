@@ -13,7 +13,7 @@
  *  - **BSON.BSON_BINARY_SUBTYPE_MD5**, BSON md5 type.
  *  - **BSON.BSON_BINARY_SUBTYPE_USER_DEFINED**, BSON user defined type.
  *
- * @class Represents the Binary BSON type.
+ * @constructor Represents the Binary BSON type.
  * @param {Buffer} buffer a buffer object containing the binary data.
  * @param {Number} [subType] the option binary type.
  * @return {Grid}
@@ -290,51 +290,57 @@ var convertArraytoUtf8BinaryString = function(byteArray, startIndex, endIndex) {
 
 Binary.BUFFER_SIZE = 256;
 
-/**
+/*!
  * Default BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_DEFAULT = 0;
-/**
+
+/*!
  * Function BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_FUNCTION = 1;
-/**
+
+/*!
  * Byte Array BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_BYTE_ARRAY = 2;
-/**
+
+/*!
  * OLD UUID BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_UUID_OLD = 3;
-/**
+
+/*!
  * UUID BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_UUID = 4;
-/**
+
+/*!
  * MD5 BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_MD5 = 5;
-/**
+
+/*!
  * User BSON type
  *
- * @classconstant SUBTYPE_DEFAULT
+ * @const SUBTYPE_DEFAULT
  **/
 Binary.SUBTYPE_USER_DEFINED = 128;
 
-/**
- * Expose.
+/*!
+ * Module exports.
  */
 module.exports = Binary;
 module.exports.Binary = Binary;
@@ -342,10 +348,10 @@ module.exports.Binary = Binary;
 },{"buffer":36}],2:[function(require,module,exports){
 'use strict';
 
-/**
+/*!
  * Binary Parser.
- * Jonas Raoni Soares Silva
- * http://jsfromhell.com/classes/binary-parser [v1.0]
+ * @copyright Jonas Raoni Soares Silva
+ * @see http://jsfromhell.com/classes/binary-parser [v1.0]
  *
  * @see https://github.com/mongodb/js-bson/blob/master/lib/bson/binary_parser.js
  */
@@ -416,8 +422,8 @@ BinaryParser.fromDWord  = function( data ){ return this.encodeInt( data, 32, fal
 BinaryParser.toQWord    = function( data ){ return this.decodeInt( data, 64, true ); };
 BinaryParser.fromQWord  = function( data ){ return this.encodeInt( data, 64, true ); };
 
-/**
- * BinaryParser buffer constructor.
+/*!
+ * @constructor BinaryParser buffer constructor.
  */
 function BinaryParserBuffer (bigEndian, buffer) {
   this.bigEndian = bigEndian || 0;
@@ -472,11 +478,10 @@ BinaryParserBuffer.prototype.readBits = function readBits (start, length) {
 	return sum;
 };
 
-/**
- * Expose.
+/*!
+ * Module exports.
  */
 BinaryParser.Buffer = BinaryParserBuffer;
-
 exports.BinaryParser = BinaryParser;
 
 },{}],3:[function(require,module,exports){
@@ -518,9 +523,8 @@ function Collection ( name, schema, api ){
   // Используемая схема для коллекции
   this.schema = schema;
 
-  // Отображение объекта documents в виде массива (для нокаута)
+  // Отображение поля documents в виде массива (для нокаута)
   this.array = [];
-
   // todo: перенести в адаптер или сделать по другому (object.observe)
   // Нужно для обновления привязок к этому свойству для knockoutjs
   window.ko && ko.track( this, ['array'] );
@@ -586,9 +590,11 @@ Collection.prototype = {
 
       var newDoc = new Document( doc, this.name, schema, fields, init );
       //todo: тут нужна проверка на существование id (может стоит смотреть в схеме опцию id)
-      /*if ( !newDoc._id ){
+      /*!
+      if ( !newDoc._id ){
         throw new TypeError('Для помещения в коллекцию необходимо, чтобы у документа был _id');
-      }*/
+      }
+      */
 
       id = newDoc._id.toString();
       // Поместить документ в коллекцию
@@ -776,7 +782,6 @@ Collection.prototype = {
 /*!
  * Module exports.
  */
-
 module.exports = Collection;
 
 },{"./document":4,"./schema":15}],4:[function(require,module,exports){
@@ -2638,7 +2643,6 @@ module.exports = Document;
 },{"./error":5,"./events":11,"./internal":13,"./schema":15,"./schema/mixed":22,"./schematype":26,"./types/documentarray":30,"./types/embedded":31,"./types/objectid":33,"./utils":34}],5:[function(require,module,exports){
 'use strict';
 
-//todo: портировать все ошибки!!!
 /**
  * StorageError constructor
  *
@@ -2667,7 +2671,6 @@ StorageError.prototype.formatMessage = function (msg, path, type, val) {
 /*!
  * Module exports.
  */
-
 module.exports = StorageError;
 
 /**
@@ -2676,18 +2679,15 @@ module.exports = StorageError;
  * @see Error.messages #error_messages_StorageError-messages
  * @api public
  */
-
 StorageError.messages = require('./error/messages');
 
 /*!
  * Expose subclasses
  */
-
 StorageError.CastError = require('./error/cast');
 StorageError.ValidationError = require('./error/validation');
 StorageError.ValidatorError = require('./error/validator');
 //todo:
-//StorageError.VersionError = require('./error/version');
 //StorageError.OverwriteModelError = require('./error/overwriteModel');
 StorageError.MissingSchemaError = require('./error/missingSchema');
 //StorageError.DivergentArrayError = require('./error/divergentArray');
@@ -3389,7 +3389,6 @@ function InternalCache () {
  * @param {String} [special] When this property name is present on any object in the path, walking will continue on the value of this property.
  * @param {Function} [map] Optional function which receives each individual found value. The value returned from `map` is used in the original values place.
  */
-
 exports.get = function (path, o, special, map) {
   var lookup;
 
@@ -3453,7 +3452,6 @@ exports.get = function (path, o, special, map) {
  * @param {String} [special] When this property name is present on any object in the path, walking will continue on the value of this property.
  * @param {Function} [map] Optional function which is passed each individual value before setting it. The value returned from `map` is used in the original values place.
  */
-
 exports.set = function (path, val, o, special, map, _copying) {
   var lookup;
 
@@ -3573,7 +3571,6 @@ exports.set = function (path, val, o, special, map, _copying) {
 /*!
  * Returns the value passed to it.
  */
-
 function K (v) {
   return v;
 }
@@ -5790,7 +5787,6 @@ module.exports = StringSchema;
 /*!
  * Module dependencies.
  */
-
 var error = require('./error')
   , utils = require('./utils');
 
@@ -5806,7 +5802,6 @@ var ValidatorError = error.ValidatorError;
  * @param {String} [instance]
  * @api public
  */
-
 function SchemaType (path, options, instance) {
   this.path = path;
   this.instance = instance;
@@ -6214,7 +6209,6 @@ SchemaType.prototype.getDefault = function (scope, init) {
  * @param {*} priorVal
  * @api private
  */
-
 SchemaType.prototype.applySetters = function (value, scope, init, priorVal) {
   if (SchemaType._isRef( this, value )) {
     return init
@@ -6345,7 +6339,6 @@ SchemaType._isRef = function( self, value ){
 /*!
  * Module exports.
  */
-
 module.exports = SchemaType;
 
 SchemaType.CastError = CastError;
@@ -6361,7 +6354,6 @@ SchemaType.ValidatorError = ValidatorError;
  *
  * @api private
  */
-
 var StateMachine = module.exports = function StateMachine () {
   this.paths = {};
   this.states = {};
@@ -6380,7 +6372,6 @@ var StateMachine = module.exports = function StateMachine () {
  * @return {Function} subclass constructor
  * @private
  */
-
 StateMachine.ctor = function () {
   var states = _.toArray(arguments);
 
@@ -6419,7 +6410,6 @@ StateMachine.ctor = function () {
  *
  * @api private
  */
-
 StateMachine.prototype._changeState = function _changeState (path, nextState) {
   var prevBucket = this.states[this.paths[path]];
   if (prevBucket) delete prevBucket[path];
@@ -6431,7 +6421,6 @@ StateMachine.prototype._changeState = function _changeState (path, nextState) {
 /*!
  * ignore
  */
-
 StateMachine.prototype.clear = function clear (state) {
   var keys = Object.keys(this.states[state])
     , i = keys.length
@@ -6451,7 +6440,6 @@ StateMachine.prototype.clear = function clear (state) {
  * @param {String} state that we want to check for.
  * @private
  */
-
 StateMachine.prototype.some = function some () {
   var self = this;
   var what = arguments.length ? arguments : this.stateNames;
@@ -6468,7 +6456,6 @@ StateMachine.prototype.some = function some () {
  * @return {Function}
  * @api private
  */
-
 StateMachine.prototype._iter = function _iter (iterMethod) {
   return function () {
     var numArgs = arguments.length
@@ -6502,7 +6489,6 @@ StateMachine.prototype._iter = function _iter (iterMethod) {
  * @param {Function} callback
  * @private
  */
-
 StateMachine.prototype.forEach = function forEach () {
   this.forEach = this._iter('forEach');
   return this.forEach.apply(this, arguments);
@@ -6522,12 +6508,10 @@ StateMachine.prototype.forEach = function forEach () {
  * @return {Array}
  * @private
  */
-
 StateMachine.prototype.map = function map () {
   this.map = this._iter('map');
   return this.map.apply(this, arguments);
 };
-
 
 },{}],28:[function(require,module,exports){
 'use strict';
@@ -9797,7 +9781,7 @@ process.chdir = function (dir) {
 },{}],41:[function(require,module,exports){
 module.exports={
   "name": "storage.js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "storage.js",
   "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
   "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
@@ -9830,8 +9814,10 @@ module.exports={
     "browserify": "latest",
     "dox": "latest",
     "highlight.js": "latest",
-    "jade": "latest"
+    "jade": "latest",
+    "markdown": "latest"
   }
 }
+
 },{}]},{},[12])(12)
 });
