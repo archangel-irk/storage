@@ -1963,12 +1963,15 @@ Document.prototype.$__getAllSubdocs = function () {
   function docReducer(seed, path) {
     var val = this[path];
     if (val instanceof Embedded) seed.push(val);
-    if (val instanceof DocumentArray)
+    if (val instanceof DocumentArray){
       val.forEach(function _docReduce(doc) {
+
         if (!doc || !doc._doc) return;
         if (doc instanceof Embedded) seed.push(doc);
+
         seed = Object.keys(doc._doc).reduce(docReducer.bind(doc._doc), seed);
       });
+    }
     return seed;
   }
 
@@ -2190,17 +2193,18 @@ Document.prototype.save = function ( done ) {
   });
 
   // Сначала надо сохранить все поддокументы и сделать resolve!!!
+  // (тут псевдосохранение смотреть EmbeddedDocument.prototype.save )
   // Call save hooks on subdocs
   var subDocs = self.$__getAllSubdocs();
   var whenCond = subDocs.map(function (d) {return d.save();});
+
   whenCond.push( p0 );
 
   // Так мы передаём массив promise условий
   var p1 = $.when.apply( $, whenCond );
 
   // Handle save and results
-  p1
-    .then( this.$__handleSave.bind( this ) )
+  p1.then( this.$__handleSave.bind( this ) )
     .then(function(){
       return finalPromise.resolve( self );
     }, function ( err ) {
@@ -3151,6 +3155,7 @@ function Storage () {
 
 /**
  * Create a collection and get it
+ * todo: переименовать в addCollection ?
  *
  * @example
  *
@@ -4949,7 +4954,7 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
     return this.cast([value], doc, init, prev);
   }
 
-  // Если два массива примерно одинаковые - не надо перезаписывать
+  // Если два массива примерно (кроме _id) одинаковые - не надо перезаписывать
   if ( prev && approximatelyEqual( value, prev ) ){
     return prev;
   }
@@ -5000,6 +5005,7 @@ DocumentArray.prototype.cast = function (value, doc, init, prev) {
  * Приблизительное сравнение двух массивов
  *
  * Это нужно для populated полей - их мы преобразовываем в id.
+ *
  * Так же в сравнении не участвует id существующих Embedded документов,
  * Если на сервере _id: false, а на клиенте по умолчанию есть _id.
  *
@@ -5088,7 +5094,6 @@ function scopePaths (array, fields, init) {
 /*!
  * Module exports.
  */
-
 module.exports = DocumentArray;
 
 },{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"../types/objectid":33,"../utils":34,"./array":16}],21:[function(require,module,exports){
@@ -7189,7 +7194,6 @@ module.exports = StorageBuffer;
 /*!
  * Module dependencies.
  */
-
 var StorageArray = require('./array')
   , ObjectId = require('./objectid')
   , ObjectIdSchema = require('../schema/objectid')
