@@ -114,21 +114,6 @@ module.exports = function (grunt) {
         }
       },
 
-      //todo: нужен ли этот код?
-      coverage: {
-        preprocessors: {
-          './storage.js': ['coverage']
-        },
-        reporters: [
-          'dots',
-          'coverage'
-        ],
-        coverageReporter: {
-          type: 'html',
-          dir: 'test/coverage'
-        }
-      },
-
       sauce: {
         reporters: [
           'dots',
