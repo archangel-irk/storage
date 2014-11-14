@@ -37,6 +37,9 @@ module.exports = function (grunt) {
 
     uglify: {
       main: {
+        options: {
+          mangle: false
+        },
         files: {
           'storage.min.js': ['storage.js']
         }
@@ -75,7 +78,7 @@ module.exports = function (grunt) {
           // source files, that you wanna generate coverage for
           // do not include tests or libraries
           // (these files will be instrumented by Istanbul)
-          './storage.js': ['coverage']
+          './storage.min.js': ['coverage']
         },
         // coverage reporter generates the coverage
         reporters: [
