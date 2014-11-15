@@ -10240,7 +10240,7 @@ process.chdir = function (dir) {
 },{}],42:[function(require,module,exports){
 module.exports={
   "name": "storage.js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "storage.js",
   "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
   "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
