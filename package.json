@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "grunt": "latest",
+    "time-grunt": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
@@ -29,8 +30,9 @@
     "karma-ie-launcher": "latest",
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
-    "time-grunt": "latest",
+
     "browserify": "latest",
+
     "dox": "latest",
     "highlight.js": "latest",
     "jade": "latest",

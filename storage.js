@@ -345,7 +345,7 @@ Binary.SUBTYPE_USER_DEFINED = 128;
 module.exports = Binary;
 module.exports.Binary = Binary;
 }).call(this,require("buffer").Buffer)
-},{"buffer":36}],2:[function(require,module,exports){
+},{"buffer":37}],2:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -784,7 +784,460 @@ Collection.prototype = {
  */
 module.exports = Collection;
 
-},{"./document":4,"./schema":15}],4:[function(require,module,exports){
+},{"./document":5,"./schema":16}],4:[function(require,module,exports){
+'use strict';
+
+/*
+Standalone Deferred
+Copyright 2012 Otto Vehviläinen
+Released under MIT license
+https://github.com/Mumakil/Standalone-Deferred
+
+This is a standalone implementation of the wonderful jQuery.Deferred API.
+The documentation here is only for quick reference, for complete api please
+see the great work of the original project:
+
+http://api.jquery.com/category/deferred-object/
+*/
+
+var Promise, flatten, isObservable,
+  __slice = Array.prototype.slice,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+if (!Array.prototype.forEach) throw new Error('Deferred requires Array.forEach');
+
+/*
+Tells if an object is observable
+*/
+
+isObservable = function(obj) {
+  return (obj instanceof Deferred) || (obj instanceof Promise);
+};
+
+/*
+Flatten a two dimensional array into one dimension.
+Removes elements that are not functions
+*/
+
+flatten = function(args) {
+  var flatted;
+  if (!args) return [];
+  flatted = [];
+  args.forEach(function(item) {
+    if (item) {
+      if (typeof item === 'function') {
+        return flatted.push(item);
+      } else {
+        return args.forEach(function(fn) {
+          if (typeof fn === 'function') return flatted.push(fn);
+        });
+      }
+    }
+  });
+  return flatted;
+};
+
+/*
+Promise object functions as a proxy for a Deferred, except
+it does not let you modify the state of the Deferred
+*/
+
+Promise = (function() {
+
+  Promise.prototype._deferred = null;
+
+  function Promise(deferred) {
+    this._deferred = deferred;
+  }
+
+  Promise.prototype.always = function() {
+    var args, _ref;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    (_ref = this._deferred).always.apply(_ref, args);
+    return this;
+  };
+
+  Promise.prototype.done = function() {
+    var args, _ref;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    (_ref = this._deferred).done.apply(_ref, args);
+    return this;
+  };
+
+  Promise.prototype.fail = function() {
+    var args, _ref;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    (_ref = this._deferred).fail.apply(_ref, args);
+    return this;
+  };
+
+  Promise.prototype.pipe = function(doneFilter, failFilter) {
+    return this._deferred.pipe(doneFilter, failFilter);
+  };
+
+  Promise.prototype.state = function() {
+    return this._deferred.state();
+  };
+
+  Promise.prototype.then = function(done, fail) {
+    this._deferred.then(done, fail);
+    return this;
+  };
+
+  return Promise;
+
+})();
+
+/*
+  Initializes a new Deferred. You can pass a function as a parameter
+  to be executed immediately after init. The function receives
+  the new deferred object as a parameter and this is also set to the
+  same object.
+*/
+function Deferred() {
+  //this.then = __bind(this.then, this);
+  //this.resolveWith = __bind(this.resolveWith, this);
+  //this.resolve = __bind(this.resolve, this);
+  //this.rejectWith = __bind(this.rejectWith, this);
+  //this.reject = __bind(this.reject, this);
+  //this.promise = __bind(this.promise, this);
+  //this.progress = __bind(this.progress, this);
+  //this.pipe = __bind(this.pipe, this);
+  //this.notifyWith = __bind(this.notifyWith, this);
+  //this.notify = __bind(this.notify, this);
+  //this.fail = __bind(this.fail, this);
+ // this.done = __bind(this.done, this);
+ // this.always = __bind(this.always, this);
+  //if (typeof fn === 'function') fn.call(this, this);
+
+  this._state = 'pending';
+}
+
+/*
+  Pass in functions or arrays of functions to be executed when the
+  Deferred object changes state from pending. If the state is already
+  rejected or resolved, the functions are executed immediately. They
+  receive the arguments that are passed to reject or resolve and this
+  is set to the object defined by rejectWith or resolveWith if those
+  variants are used.
+*/
+
+Deferred.prototype.always = function() {
+  var args, functions, _ref,
+    _this = this;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  if (args.length === 0) return this;
+  functions = flatten(args);
+  if (this._state === 'pending') {
+    this._alwaysCallbacks || (this._alwaysCallbacks = []);
+    (_ref = this._alwaysCallbacks).push.apply(_ref, functions);
+  } else {
+    functions.forEach(function(fn) {
+      return fn.apply(_this._context, _this._withArguments);
+    });
+  }
+  return this;
+};
+
+/*
+  Pass in functions or arrays of functions to be executed when the
+  Deferred object is resolved. If the object has already been resolved,
+  the functions are executed immediately. If the object has been rejected,
+  nothing happens. The functions receive the arguments that are passed
+  to resolve and this is set to the object defined by resolveWith if that
+  variant is used.
+*/
+
+Deferred.prototype.done = function() {
+  var args, functions, _ref,
+    _this = this;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  if (args.length === 0) return this;
+  functions = flatten(args);
+  if (this._state === 'resolved') {
+    functions.forEach(function(fn) {
+      return fn.apply(_this._context, _this._withArguments);
+    });
+  } else if (this._state === 'pending') {
+    this._doneCallbacks || (this._doneCallbacks = []);
+    (_ref = this._doneCallbacks).push.apply(_ref, functions);
+  }
+  return this;
+};
+
+/*
+  Pass in functions or arrays of functions to be executed when the
+  Deferred object is rejected. If the object has already been rejected,
+  the functions are executed immediately. If the object has been resolved,
+  nothing happens. The functions receive the arguments that are passed
+  to reject and this is set to the object defined by rejectWith if that
+  variant is used.
+*/
+
+Deferred.prototype.fail = function() {
+  var args, functions, _ref,
+    _this = this;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  if (args.length === 0) return this;
+  functions = flatten(args);
+  if (this._state === 'rejected') {
+    functions.forEach(function(fn) {
+      return fn.apply(_this._context, _this._withArguments);
+    });
+  } else if (this._state === 'pending') {
+    this._failCallbacks || (this._failCallbacks = []);
+    (_ref = this._failCallbacks).push.apply(_ref, functions);
+  }
+  return this;
+};
+
+/*
+  Notify progress callbacks. The callbacks get passed the arguments given to notify.
+  If the object has resolved or rejected, nothing will happen
+*/
+
+Deferred.prototype.notify = function() {
+  var args;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  this.notifyWith.apply(this, [window].concat(__slice.call(args)));
+  return this;
+};
+
+/*
+  Notify progress callbacks with additional context. Works the same way as notify(),
+  except this is set to context when calling the functions.
+*/
+
+Deferred.prototype.notifyWith = function() {
+  var args, context, _ref;
+  context = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  if (this._state !== 'pending') return this;
+  if ((_ref = this._progressCallbacks) != null) {
+    _ref.forEach(function(fn) {
+      return fn.apply(context, args);
+    });
+  }
+  return this;
+};
+
+/*
+  Returns a new Promise object that's tied to the current Deferred. The doneFilter
+  and failFilter can be used to modify the final values that are passed to the
+  callbacks of the new promise. If the parameters passed are falsy, the promise
+  object resolves or rejects normally. If the filter functions return a value,
+  that one is passed to the respective callbacks. The filters can also return a
+  new Promise or Deferred object, of which rejected / resolved will control how the
+  callbacks fire.
+*/
+
+Deferred.prototype.pipe = function(doneFilter, failFilter) {
+  var def;
+  def = new Deferred();
+  this.done(function() {
+    var args, result, _ref;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    if (doneFilter != null) {
+      result = doneFilter.apply(this, args);
+      if (isObservable(result)) {
+        return result.done(function() {
+          var doneArgs, _ref;
+          doneArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return (_ref = def.resolveWith).call.apply(_ref, [def, this].concat(__slice.call(doneArgs)));
+        }).fail(function() {
+          var failArgs, _ref;
+          failArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return (_ref = def.rejectWith).call.apply(_ref, [def, this].concat(__slice.call(failArgs)));
+        });
+      } else {
+        return def.resolveWith.call(def, this, result);
+      }
+    } else {
+      return (_ref = def.resolveWith).call.apply(_ref, [def, this].concat(__slice.call(args)));
+    }
+  });
+  this.fail(function() {
+    var args, result, _ref, _ref2;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    if (failFilter != null) {
+      result = failFilter.apply(this, args);
+      if (isObservable(result)) {
+        result.done(function() {
+          var doneArgs, _ref;
+          doneArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return (_ref = def.resolveWith).call.apply(_ref, [def, this].concat(__slice.call(doneArgs)));
+        }).fail(function() {
+          var failArgs, _ref;
+          failArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return (_ref = def.rejectWith).call.apply(_ref, [def, this].concat(__slice.call(failArgs)));
+        });
+      } else {
+        def.rejectWith.call(def, this, result);
+      }
+      return (_ref = def.rejectWith).call.apply(_ref, [def, this].concat(__slice.call(args)));
+    } else {
+      return (_ref2 = def.rejectWith).call.apply(_ref2, [def, this].concat(__slice.call(args)));
+    }
+  });
+  return def.promise();
+};
+
+/*
+  Add progress callbacks to be fired when using notify()
+*/
+
+Deferred.prototype.progress = function() {
+  var args, functions, _ref;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  if (args.length === 0 || this._state !== 'pending') return this;
+  functions = flatten(args);
+  this._progressCallbacks || (this._progressCallbacks = []);
+  (_ref = this._progressCallbacks).push.apply(_ref, functions);
+  return this;
+};
+
+/*
+  Returns the promise object of this Deferred.
+*/
+
+Deferred.prototype.promise = function() {
+  return this._promise || (this._promise = new Promise(this));
+};
+
+/*
+  Reject this Deferred. If the object has already been rejected or resolved,
+  nothing happens. Parameters passed to reject will be handed to all current
+  and future fail and always callbacks.
+*/
+
+Deferred.prototype.reject = function() {
+  var args;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  this.rejectWith.apply(this, [window].concat(__slice.call(args)));
+  return this;
+};
+
+/*
+  Reject this Deferred with additional context. Works the same way as reject, except
+  the first parameter is used as this when calling the fail and always callbacks.
+*/
+
+Deferred.prototype.rejectWith = function() {
+  var args, context, _ref, _ref2,
+    _this = this;
+  context = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  if (this._state !== 'pending') return this;
+  this._state = 'rejected';
+  this._withArguments = args;
+  this._context = context;
+  if ((_ref = this._failCallbacks) != null) {
+    _ref.forEach(function(fn) {
+      return fn.apply(_this._context, args);
+    });
+  }
+  if ((_ref2 = this._alwaysCallbacks) != null) {
+    _ref2.forEach(function(fn) {
+      return fn.apply(_this._context, args);
+    });
+  }
+  return this;
+};
+
+/*
+  Resolves this Deferred object. If the object has already been rejected or resolved,
+  nothing happens. Parameters passed to resolve will be handed to all current and
+  future done and always callbacks.
+*/
+
+Deferred.prototype.resolve = function() {
+  var args;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  this.resolveWith.apply(this, [window].concat(__slice.call(args)));
+  return this;
+};
+
+/*
+  Resolve this Deferred with additional context. Works the same way as resolve, except
+  the first parameter is used as this when calling the done and always callbacks.
+*/
+
+Deferred.prototype.resolveWith = function() {
+  var args, context, _ref, _ref2,
+    _this = this;
+  context = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  if (this._state !== 'pending') return this;
+  this._state = 'resolved';
+  this._context = context;
+  this._withArguments = args;
+  if ((_ref = this._doneCallbacks) != null) {
+    _ref.forEach(function(fn) {
+      return fn.apply(_this._context, args);
+    });
+  }
+  if ((_ref2 = this._alwaysCallbacks) != null) {
+    _ref2.forEach(function(fn) {
+      return fn.apply(_this._context, args);
+    });
+  }
+  return this;
+};
+
+/*
+  Returns the state of this Deferred. Can be 'pending', 'rejected' or 'resolved'.
+*/
+
+Deferred.prototype.state = function() {
+  return this._state;
+};
+
+/*
+  Convenience function to specify each done, fail and progress callbacks at the same time.
+*/
+
+Deferred.prototype.then = function(doneCallbacks, failCallbacks, progressCallbacks) {
+  this.done(doneCallbacks);
+  this.fail(failCallbacks);
+  this.progress(progressCallbacks);
+  return this;
+};
+
+
+
+/*
+Returns a new promise object which will resolve when all of the deferreds or promises
+passed to the function resolve. The callbacks receive all the parameters that the
+individual resolves yielded as an array. If any of the deferreds or promises are
+rejected, the promise will be rejected immediately.
+*/
+
+Deferred.when = function() {
+  var allDoneArgs, allReady, args, readyCount;
+  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  if (args.length === 0) return new Deferred().resolve().promise();
+  if (args.length === 1) return args[0].promise();
+  allReady = new Deferred();
+  readyCount = 0;
+  allDoneArgs = [];
+  args.forEach(function(dfr, index) {
+    return dfr.done(function() {
+      var doneArgs;
+      doneArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      readyCount += 1;
+      allDoneArgs[index] = doneArgs;
+      if (readyCount === args.length) {
+        return allReady.resolve.apply(allReady, allDoneArgs);
+      }
+    }).fail(function() {
+      var failArgs;
+      failArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return allReady.rejectWith.apply(allReady, [this].concat(__slice.call(failArgs)));
+    });
+  });
+  return allReady.promise();
+};
+
+module.exports = Deferred;
+
+},{}],5:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -797,6 +1250,7 @@ var Events = require('./events')
   , ObjectId = require('./types/objectid')
   , Schema = require('./schema')
   , ValidatorError = require('./schematype').ValidatorError
+  , Deferred = require('./deferred')
   , utils = require('./utils')
   , clone = utils.clone
   , ValidationError = StorageError.ValidationError
@@ -961,10 +1415,10 @@ Document.prototype.id;
 Document.prototype.errors;
 
 Document.prototype.adapterHooks = {
-  documentDefineProperty: $.noop,
-  documentSetInitialValue: $.noop,
-  documentGetValue: $.noop,
-  documentSetValue: $.noop
+  documentDefineProperty: _.noop,
+  documentSetInitialValue: _.noop,
+  documentGetValue: _.noop,
+  documentSetValue: _.noop
 };
 
 /**
@@ -2069,7 +2523,7 @@ Document.prototype.$__handleSave = function(){
     resource = this.collection.api;
   }
 
-  var innerPromise = new $.Deferred();
+  var innerPromise = new Deferred();
 
   if ( this.isNew ) {
     // send entire doc
@@ -2165,7 +2619,7 @@ Document.prototype.$__handleSave = function(){
  */
 Document.prototype.save = function ( done ) {
   var self = this;
-  var finalPromise = new $.Deferred().done( done );
+  var finalPromise = new Deferred().done( done );
 
   // Сохранять документ можно только если он находится в коллекции
   if ( !this.collection ){
@@ -2182,7 +2636,7 @@ Document.prototype.save = function ( done ) {
   }
 
   // Validate
-  var p0 = new $.Deferred();
+  var p0 = new Deferred();
   self.validate(function( err ){
     if ( err ){
       p0.reject( err );
@@ -2201,7 +2655,7 @@ Document.prototype.save = function ( done ) {
   whenCond.push( p0 );
 
   // Так мы передаём массив promise условий
-  var p1 = $.when.apply( $, whenCond );
+  var p1 = Deferred.when.apply( Deferred, whenCond );
 
   // Handle save and results
   p1.then( this.$__handleSave.bind( this ) )
@@ -2644,7 +3098,7 @@ Document.prototype.empty = function(){
 Document.ValidationError = ValidationError;
 module.exports = Document;
 
-},{"./error":5,"./events":11,"./internal":13,"./schema":15,"./schema/mixed":22,"./schematype":26,"./types/documentarray":30,"./types/embedded":31,"./types/objectid":33,"./utils":34}],5:[function(require,module,exports){
+},{"./deferred":4,"./error":6,"./events":12,"./internal":14,"./schema":16,"./schema/mixed":23,"./schematype":27,"./types/documentarray":31,"./types/embedded":32,"./types/objectid":34,"./utils":35}],6:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2696,7 +3150,7 @@ StorageError.ValidatorError = require('./error/validator');
 StorageError.MissingSchemaError = require('./error/missingSchema');
 //StorageError.DivergentArrayError = require('./error/divergentArray');
 
-},{"./error/cast":6,"./error/messages":7,"./error/missingSchema":8,"./error/validation":9,"./error/validator":10}],6:[function(require,module,exports){
+},{"./error/cast":7,"./error/messages":8,"./error/missingSchema":9,"./error/validation":10,"./error/validator":11}],7:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -2735,7 +3189,7 @@ CastError.prototype.constructor = CastError;
 
 module.exports = CastError;
 
-},{"../error.js":5}],7:[function(require,module,exports){
+},{"../error.js":6}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -2775,7 +3229,7 @@ msg.String.enum = '`{VALUE}` is not a valid enum value for path `{PATH}`.';
 msg.String.match = 'Path `{PATH}` is invalid ({VALUE}).';
 
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -2810,7 +3264,7 @@ MissingSchemaError.prototype.constructor = StorageError;
  */
 
 module.exports = MissingSchemaError;
-},{"../error.js":5}],9:[function(require,module,exports){
+},{"../error.js":6}],10:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -2845,7 +3299,7 @@ ValidationError.prototype.constructor = ValidationError;
 
 module.exports = ValidationError;
 
-},{"../error.js":5}],10:[function(require,module,exports){
+},{"../error.js":6}],11:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -2900,7 +3354,7 @@ ValidatorError.prototype.constructor = ValidatorError;
 
 module.exports = ValidatorError;
 
-},{"../error.js":5}],11:[function(require,module,exports){
+},{"../error.js":6}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3113,7 +3567,7 @@ _.each(listenMethods, function(implementation, method) {
 
 module.exports = Events;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -3304,7 +3758,8 @@ Storage.prototype.Document = Document;
 Storage.prototype.Error = require('./error');
 
 
-
+Storage.prototype.Deferred = require('./deferred');
+Storage.prototype.events = require('./events');
 Storage.prototype.StateMachine = require('./statemachine');
 Storage.prototype.utils = utils;
 Storage.prototype.ObjectId = Types.ObjectId;
@@ -3325,7 +3780,7 @@ module.exports = new Storage();
 window.Buffer = Buffer;
 
 }).call(this,require("buffer").Buffer)
-},{"../package.json":41,"./collection":3,"./document":4,"./error":5,"./schema":15,"./schematype":26,"./statemachine":27,"./types":32,"./utils":34,"./virtualtype":35,"buffer":36}],13:[function(require,module,exports){
+},{"../package.json":42,"./collection":3,"./deferred":4,"./document":5,"./error":6,"./events":12,"./schema":16,"./schematype":27,"./statemachine":28,"./types":33,"./utils":35,"./virtualtype":36,"buffer":37}],14:[function(require,module,exports){
 'use strict';
 
 // Машина состояний используется для пометки, в каком состоянии находятся поле
@@ -3364,7 +3819,7 @@ function InternalCache () {
   this.fullPath = undefined;
 }
 
-},{"./statemachine":27}],14:[function(require,module,exports){
+},{"./statemachine":28}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3579,7 +4034,7 @@ exports.set = function (path, val, o, special, map, _copying) {
 function K (v) {
   return v;
 }
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -3744,7 +4199,7 @@ Schema.prototype.tree;
  * @api private
  */
 Schema.prototype.defaultOptions = function (options) {
-  options = $.extend({
+  options = _.assign({
       strict: true
     , versionKey: '__v'
     , discriminatorKey: '__t'
@@ -4411,7 +4866,7 @@ Schema.schemas = schemas = {};
 Types = Schema.Types;
 Schema.ObjectId = Types.ObjectId;
 
-},{"./events":11,"./schema/index":21,"./utils":34,"./virtualtype":35}],16:[function(require,module,exports){
+},{"./events":12,"./schema/index":22,"./utils":35,"./virtualtype":36}],17:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -4563,7 +5018,7 @@ SchemaArray.prototype.cast = function ( value, doc, init ) {
 
 module.exports = SchemaArray;
 
-},{"../schematype":26,"../types/array":28,"../types/embedded":31,"../utils":34,"./boolean":17,"./buffer":18,"./date":19,"./mixed":22,"./number":23,"./objectid":24,"./string":25}],17:[function(require,module,exports){
+},{"../schematype":27,"../types/array":29,"../types/embedded":32,"../utils":35,"./boolean":18,"./buffer":19,"./date":20,"./mixed":23,"./number":24,"./objectid":25,"./string":26}],18:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -4619,7 +5074,7 @@ BooleanSchema.prototype.cast = function (value) {
 
 module.exports = BooleanSchema;
 
-},{"../schematype":26}],18:[function(require,module,exports){
+},{"../schematype":27}],19:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -4748,7 +5203,7 @@ SchemaBuffer.prototype.cast = function (value, doc, init) {
 module.exports = SchemaBuffer;
 
 }).call(this,require("buffer").Buffer)
-},{"../schematype":26,"../types":32,"./../document":4,"buffer":36}],19:[function(require,module,exports){
+},{"../schematype":27,"../types":33,"./../document":5,"buffer":37}],20:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -4827,7 +5282,7 @@ DateSchema.prototype.cast = function (value) {
 
 module.exports = DateSchema;
 
-},{"../schematype":26}],20:[function(require,module,exports){
+},{"../schematype":27}],21:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5096,7 +5551,7 @@ function scopePaths (array, fields, init) {
  */
 module.exports = DocumentArray;
 
-},{"../document":4,"../schematype":26,"../types/documentarray":30,"../types/embedded":31,"../types/objectid":33,"../utils":34,"./array":16}],21:[function(require,module,exports){
+},{"../document":5,"../schematype":27,"../types/documentarray":31,"../types/embedded":32,"../types/objectid":34,"../utils":35,"./array":17}],22:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5127,7 +5582,7 @@ exports.Oid = exports.ObjectId;
 exports.Object = exports.Mixed;
 exports.Bool = exports.Boolean;
 
-},{"./array":16,"./boolean":17,"./buffer":18,"./date":19,"./documentarray":20,"./mixed":22,"./number":23,"./objectid":24,"./string":25}],22:[function(require,module,exports){
+},{"./array":17,"./boolean":18,"./buffer":19,"./date":20,"./documentarray":21,"./mixed":23,"./number":24,"./objectid":25,"./string":26}],23:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5196,7 +5651,7 @@ Mixed.prototype.cast = function (value) {
 
 module.exports = Mixed;
 
-},{"../schematype":26}],23:[function(require,module,exports){
+},{"../schematype":27}],24:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5366,7 +5821,7 @@ NumberSchema.prototype.cast = function ( value ) {
 
 module.exports = NumberSchema;
 
-},{"../error":5,"../schematype":26}],24:[function(require,module,exports){
+},{"../error":6,"../schematype":27}],25:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5520,7 +5975,7 @@ function resetId (v) {
 
 module.exports = ObjectId;
 
-},{"../schematype":26,"../types/objectid":33,"./../document":4}],25:[function(require,module,exports){
+},{"../schematype":27,"../types/objectid":34,"./../document":5}],26:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -5786,7 +6241,7 @@ StringSchema.prototype.cast = function ( value ) {
 
 module.exports = StringSchema;
 
-},{"../error":5,"../schematype":26}],26:[function(require,module,exports){
+},{"../error":6,"../schematype":27}],27:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -6350,7 +6805,7 @@ SchemaType.CastError = CastError;
 
 SchemaType.ValidatorError = ValidatorError;
 
-},{"./error":5,"./utils":34}],27:[function(require,module,exports){
+},{"./error":6,"./utils":35}],28:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -6518,7 +6973,7 @@ StateMachine.prototype.map = function map () {
   return this.map.apply(this, arguments);
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 //TODO: почистить код
@@ -6930,7 +7385,7 @@ StorageArray.mixin.remove = StorageArray.mixin.pull;
 
 module.exports = StorageArray;
 
-},{"../document":4,"./embedded":31,"./objectid":33}],29:[function(require,module,exports){
+},{"../document":5,"./embedded":32,"./objectid":34}],30:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -7188,7 +7643,7 @@ StorageBuffer.Binary = Binary;
 module.exports = StorageBuffer;
 
 }).call(this,require("buffer").Buffer)
-},{"../binary":1,"../utils":34,"buffer":36}],30:[function(require,module,exports){
+},{"../binary":1,"../utils":35,"buffer":37}],31:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -7368,7 +7823,7 @@ StorageDocumentArray.mixin.notify = function notify (event) {
 
 module.exports = StorageDocumentArray;
 
-},{"../document":4,"../schema/objectid":24,"./array":28,"./objectid":33}],31:[function(require,module,exports){
+},{"../document":5,"../schema/objectid":25,"./array":29,"./objectid":34}],32:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -7376,6 +7831,7 @@ module.exports = StorageDocumentArray;
  */
 
 var Document = require('../document');
+var Deferred = require('../deferred');
 
 /**
  * EmbeddedDocument constructor.
@@ -7448,7 +7904,7 @@ EmbeddedDocument.prototype.markModified = function (path) {
  */
 
 EmbeddedDocument.prototype.save = function (fn) {
-  var promise = $.Deferred().done(fn);
+  var promise = new Deferred().done(fn);
   promise.resolve();
   return promise;
 };
@@ -7598,7 +8054,7 @@ EmbeddedDocument.prototype.parentArray = function () {
 
 module.exports = EmbeddedDocument;
 
-},{"../document":4}],32:[function(require,module,exports){
+},{"../deferred":4,"../document":5}],33:[function(require,module,exports){
 'use strict';
 
 /*!
@@ -7613,7 +8069,7 @@ exports.Embedded = require('./embedded');
 exports.DocumentArray = require('./documentarray');
 exports.ObjectId = require('./objectid');
 
-},{"./array":28,"./buffer":29,"./documentarray":30,"./embedded":31,"./objectid":33}],33:[function(require,module,exports){
+},{"./array":29,"./buffer":30,"./documentarray":31,"./embedded":32,"./objectid":34}],34:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -7883,7 +8339,7 @@ Object.defineProperty(ObjectId.prototype, 'generationTime', {
 module.exports = ObjectId;
 module.exports.ObjectId = ObjectId;
 }).call(this,require('_process'))
-},{"../binaryparser":2,"_process":40}],34:[function(require,module,exports){
+},{"../binaryparser":2,"_process":41}],35:[function(require,module,exports){
 (function (process,global,Buffer){
 'use strict';
 
@@ -8291,7 +8747,7 @@ if (!Function.prototype.bind) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./document":4,"./mpath":14,"./types/objectid":33,"_process":40,"buffer":36}],35:[function(require,module,exports){
+},{"./document":5,"./mpath":15,"./types/objectid":34,"_process":41,"buffer":37}],36:[function(require,module,exports){
 'use strict';
 
 /**
@@ -8397,7 +8853,7 @@ VirtualType.prototype.applySetters = function (value, scope) {
 
 module.exports = VirtualType;
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -9450,7 +9906,7 @@ function decodeUtf8Char (str) {
   }
 }
 
-},{"base64-js":37,"ieee754":38,"is-array":39}],37:[function(require,module,exports){
+},{"base64-js":38,"ieee754":39,"is-array":40}],38:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -9572,7 +10028,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -9658,7 +10114,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 
 /**
  * isArray
@@ -9693,7 +10149,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -9781,7 +10237,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports={
   "name": "storage.js",
   "version": "0.1.0",
@@ -9797,6 +10253,7 @@ module.exports={
   },
   "devDependencies": {
     "grunt": "latest",
+    "time-grunt": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
@@ -9813,8 +10270,9 @@ module.exports={
     "karma-ie-launcher": "latest",
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
-    "time-grunt": "latest",
+
     "browserify": "latest",
+
     "dox": "latest",
     "highlight.js": "latest",
     "jade": "latest",
@@ -9822,5 +10280,5 @@ module.exports={
   }
 }
 
-},{}]},{},[12])(12)
+},{}]},{},[13])(13)
 });

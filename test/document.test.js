@@ -740,8 +740,8 @@ describe('document', function(){
         m.save(function(){
           assert.equal(false, called);
           done();
-        }, true);
-      }, true);
+        });
+      });
     });
 
     describe('works on arrays', function(){
@@ -763,9 +763,9 @@ describe('document', function(){
 
             m.save(function(){
               done();
-            }, true);
-          }, true);
-        }, true);
+            });
+          });
+        });
       });
 
       it('with custom validator', function(done){
@@ -795,8 +795,8 @@ describe('document', function(){
           m.save(function(){
             assert.equal(true, called);
             done();
-          }, true);
-        }, true);
+          });
+        });
       });
 
       it('with both required + custom validator', function(done){
@@ -826,9 +826,9 @@ describe('document', function(){
 
             m.save(function(){
               done();
-            }, true);
-          }, true);
-        }, true);
+            });
+          });
+        });
       });
 
     });
