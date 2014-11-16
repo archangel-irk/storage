@@ -32,8 +32,6 @@
   "browserify": true,
 
   "globals": {
-    "$": false,
-    "jQuery": false,
     "_": false,
     "storage": true,
 
