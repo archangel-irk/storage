@@ -743,7 +743,7 @@
     "ignore": false,
     "line": 13,
     "codeStart": 23,
-    "code": "function Collection ( name, schema, api ){\n  // Сохраним название пространства имён\n  this.name = name;\n  // Хранилище для документов\n  this.documents = {};\n\n  if ( _.isObject( schema ) && !( schema instanceof Schema ) ) {\n    schema = new Schema( schema );\n  }\n\n  // Сохраним ссылку на api для метода .save()\n  this.api = api;\n\n  // Используемая схема для коллекции\n  this.schema = schema;\n\n  // Отображение объекта documents в виде массива (для нокаута)\n  this.array = [];\n\n  // todo: перенести в адаптер или сделать по другому (object.observe)\n  // Нужно для обновления привязок к этому свойству для knockoutjs\n  window.ko && ko.track( this, ['array'] );\n}\n\nCollection.prototype = {",
+    "code": "function Collection ( name, schema, api ){\n  // Сохраним название пространства имён\n  this.name = name;\n  // Хранилище для документов\n  this.documents = {};\n\n  if ( _.isObject( schema ) && !( schema instanceof Schema ) ) {\n    schema = new Schema( schema );\n  }\n\n  // Сохраним ссылку на api для метода .save()\n  this.api = api;\n\n  // Используемая схема для коллекции\n  this.schema = schema;\n\n  // Отображение поля documents в виде массива (для нокаута)\n  this.array = [];\n  // todo: перенести в адаптер или сделать по другому (object.observe)\n  // Нужно для обновления привязок к этому свойству для knockoutjs\n  window.ko && ko.track( this, ['array'] );\n}\n\nCollection.prototype = {",
     "ctx": {
       "type": "constructor",
       "name": "Collection",
@@ -811,8 +811,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 48,
-    "codeStart": 62,
+    "line": 47,
+    "codeStart": 61,
     "code": "add: function( doc, fields, init, _storageWillMutate ){\n  var self = this;\n\n  // Если документа нет, значит будет пустой\n  if ( doc == null ) doc = null;\n\n  // Массив документов\n  if ( _.isArray( doc ) ){\n    var savedDocs = [];\n\n    _.each( doc, function( doc ){\n      savedDocs.push( self.add( doc, fields, init, true ) );\n    });\n\n    this.storageHasMutated();\n\n    return savedDocs;\n  }\n\n  var id = doc && doc._id;\n\n  // Если документ уже есть, то просто установить значения\n  if ( id && this.documents[ id ] ){\n    this.documents[ id ].set( doc );\n\n  } else {\n    var discriminatorMapping = this.schema\n      ? this.schema.discriminatorMapping\n      : null;\n\n    var key = discriminatorMapping && discriminatorMapping.isRoot\n      ? discriminatorMapping.key\n      : null;\n\n    // Выбираем схему, если есть дискриминатор\n    var schema;\n    if (key && doc && doc[key] && this.schema.discriminators && this.schema.discriminators[doc[key]]) {\n      schema = this.schema.discriminators[doc[key]];\n\n    } else {\n      schema = this.schema;\n    }\n\n    var newDoc = new Document( doc, this.name, schema, fields, init );\n    //todo: тут нужна проверка на существование id (может стоит смотреть в схеме опцию id)",
     "ctx": {
       "type": "method",
@@ -831,8 +831,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 107,
-    "codeStart": 113,
+    "line": 106,
+    "codeStart": 112,
     "code": "id = newDoc._id.toString();\n// Поместить документ в коллекцию\nthis.documents[ id ] = newDoc;\n    }\n\n    // Для одиночных документов тоже нужно  вызвать storageHasMutated\n    if ( !_storageWillMutate ){\nthis.storageHasMutated();\n    }\n\n    return this.documents[ id ];\n  },"
   },
   {
@@ -868,8 +868,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 126,
-    "codeStart": 136,
+    "line": 125,
+    "codeStart": 135,
     "code": "remove: function( document ){\n  return delete this.documents[ document._id || document ];\n},",
     "ctx": {
       "type": "method",
@@ -909,8 +909,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 140,
-    "codeStart": 151,
+    "line": 139,
+    "codeStart": 150,
     "code": "find: function( conditions ){\n  return _.where( this.documents, conditions );\n},",
     "ctx": {
       "type": "method",
@@ -951,8 +951,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 155,
-    "codeStart": 164,
+    "line": 154,
+    "codeStart": 163,
     "code": "findById: function( _id ){\n  return this.documents[ _id ];\n},",
     "ctx": {
       "type": "method",
@@ -1000,8 +1000,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 168,
-    "codeStart": 180,
+    "line": 167,
+    "codeStart": 179,
     "code": "findByIdAndRemove: function( _id ){\n  this.remove( this.findById( _id ) );\n  return this;\n},",
     "ctx": {
       "type": "method",
@@ -1070,8 +1070,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 185,
-    "codeStart": 196,
+    "line": 184,
+    "codeStart": 195,
     "code": "findByIdAndUpdate: function( _id, path, value ){\n  return this.update( this.findById( _id ), path, value );\n},",
     "ctx": {
       "type": "method",
@@ -1112,8 +1112,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 200,
-    "codeStart": 210,
+    "line": 199,
+    "codeStart": 209,
     "code": "findOne: function( conditions ){\n  return _.findWhere( this.documents, conditions );\n},",
     "ctx": {
       "type": "method",
@@ -1161,8 +1161,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 214,
-    "codeStart": 226,
+    "line": 213,
+    "codeStart": 225,
     "code": "findOneAndRemove: function( conditions ){\n  this.remove( this.findOne( conditions ) );\n  return this;\n},",
     "ctx": {
       "type": "method",
@@ -1231,8 +1231,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 231,
-    "codeStart": 242,
+    "line": 230,
+    "codeStart": 241,
     "code": "findOneAndUpdate: function( conditions, path, value ){\n  return this.update( this.findOne( conditions ), path, value );\n},",
     "ctx": {
       "type": "method",
@@ -1298,8 +1298,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 246,
-    "codeStart": 259,
+    "line": 245,
+    "codeStart": 258,
     "code": "update: function( document, path, value ){\n  var doc = this.documents[ document._id || document ];\n\n  if ( doc == null ){\n    console.warn('storage::update: Document is not found.');\n    return false;\n  }\n\n  return doc.set( path, value );\n},",
     "ctx": {
       "type": "method",
@@ -1318,8 +1318,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 270,
-    "codeStart": 273,
+    "line": 269,
+    "codeStart": 272,
     "code": "storageHasMutated: function(){\n  // Обновим массив документов (специальное отображение для перебора нокаутом)\n  this.array = _.toArray( this.documents );\n},",
     "ctx": {
       "type": "method",
@@ -1348,8 +1348,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 278,
-    "codeStart": 283,
+    "line": 277,
+    "codeStart": 282,
     "code": "updateIdLink: function( doc ){\n  var id = doc._id.toString();\n  var oldId = _.findKey( this.documents, { _id: doc._id });\n\n  if ( !oldId ){\n    throw new TypeError('Не найден документ для обновления ссылки по этому _id: ' + id );\n  }\n\n  delete this.documents[ oldId ];\n  this.documents[ id ] = doc;\n}\n};",
     "ctx": {
       "type": "method",
@@ -1368,8 +1368,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 296,
-    "codeStart": 299,
+    "line": 295,
+    "codeStart": 298,
     "code": "module.exports = Collection;",
     "ctx": {
       "type": "property",
@@ -1377,6 +1377,418 @@
       "name": "exports",
       "value": "Collection",
       "string": "module.exports"
+    }
+  }
+]
+### lib/deferred.js
+[
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Standalone Deferred<br />Copyright 2012 Otto Vehviläinen<br />Released under MIT license<br /><a href=\"https://github.com/Mumakil/Standalone-Deferred\">https://github.com/Mumakil/Standalone-Deferred</a></p><p>This is a standalone implementation of the wonderful jQuery.Deferred API.<br />The documentation here is only for quick reference, for complete api please<br />see the great work of the original project:</p><p><a href=\"http://api.jquery.com/category/deferred-object/\">http://api.jquery.com/category/deferred-object/</a></p>",
+      "summary": "<p>Standalone Deferred<br />Copyright 2012 Otto Vehviläinen<br />Released under MIT license<br /><a href=\"https://github.com/Mumakil/Standalone-Deferred\">https://github.com/Mumakil/Standalone-Deferred</a></p>",
+      "body": "<p>This is a standalone implementation of the wonderful jQuery.Deferred API.<br />The documentation here is only for quick reference, for complete api please<br />see the great work of the original project:</p><p><a href=\"http://api.jquery.com/category/deferred-object/\">http://api.jquery.com/category/deferred-object/</a></p>"
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 3,
+    "codeStart": 16,
+    "code": "var Promise, flatten, isObservable,\n  __slice = Array.prototype.slice,\n  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };\n\nif (!Array.prototype.forEach) throw new Error('Deferred requires Array.forEach');"
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Tells if an object is observable</p>",
+      "summary": "<p>Tells if an object is observable</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 22,
+    "codeStart": 26,
+    "code": "isObservable = function(obj) {\n  return (obj instanceof Deferred) || (obj instanceof Promise);\n};"
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Flatten a two dimensional array into one dimension.<br />Removes elements that are not functions</p>",
+      "summary": "<p>Flatten a two dimensional array into one dimension.<br />Removes elements that are not functions</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 30,
+    "codeStart": 35,
+    "code": "flatten = function(args) {\n  var flatted;\n  if (!args) return [];\n  flatted = [];\n  args.forEach(function(item) {\n    if (item) {\n      if (typeof item === 'function') {\n        return flatted.push(item);\n      } else {\n        return args.forEach(function(fn) {\n          if (typeof fn === 'function') return flatted.push(fn);\n        });\n      }\n    }\n  });\n  return flatted;\n};"
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Promise object functions as a proxy for a Deferred, except<br />it does not let you modify the state of the Deferred</p>",
+      "summary": "<p>Promise object functions as a proxy for a Deferred, except<br />it does not let you modify the state of the Deferred</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 53,
+    "codeStart": 58,
+    "code": "Promise = (function() {\n\n  Promise.prototype._deferred = null;\n\n  function Promise(deferred) {\n    this._deferred = deferred;\n  }\n\n  Promise.prototype.always = function() {\n    var args, _ref;\n    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n    (_ref = this._deferred).always.apply(_ref, args);\n    return this;\n  };\n\n  Promise.prototype.done = function() {\n    var args, _ref;\n    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n    (_ref = this._deferred).done.apply(_ref, args);\n    return this;\n  };\n\n  Promise.prototype.fail = function() {\n    var args, _ref;\n    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n    (_ref = this._deferred).fail.apply(_ref, args);\n    return this;\n  };\n\n  Promise.prototype.pipe = function(doneFilter, failFilter) {\n    return this._deferred.pipe(doneFilter, failFilter);\n  };\n\n  Promise.prototype.state = function() {\n    return this._deferred.state();\n  };\n\n  Promise.prototype.then = function(done, fail) {\n    this._deferred.then(done, fail);\n    return this;\n  };\n\n  return Promise;\n\n})();"
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Initializes a new Deferred. You can pass a function as a parameter<br />  to be executed immediately after init. The function receives<br />  the new deferred object as a parameter and this is also set to the<br />  same object.</p>",
+      "summary": "<p>Initializes a new Deferred. You can pass a function as a parameter<br />  to be executed immediately after init. The function receives<br />  the new deferred object as a parameter and this is also set to the<br />  same object.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 104,
+    "codeStart": 110,
+    "code": "function Deferred() {\n  //this.then = __bind(this.then, this);\n  //this.resolveWith = __bind(this.resolveWith, this);\n  //this.resolve = __bind(this.resolve, this);\n  //this.rejectWith = __bind(this.rejectWith, this);\n  //this.reject = __bind(this.reject, this);\n  //this.promise = __bind(this.promise, this);\n  //this.progress = __bind(this.progress, this);\n  //this.pipe = __bind(this.pipe, this);\n  //this.notifyWith = __bind(this.notifyWith, this);\n  //this.notify = __bind(this.notify, this);\n  //this.fail = __bind(this.fail, this);\n // this.done = __bind(this.done, this);\n // this.always = __bind(this.always, this);\n  //if (typeof fn === 'function') fn.call(this, this);\n\n  this._state = 'pending';\n}",
+    "ctx": {
+      "type": "function",
+      "name": "Deferred",
+      "string": "Deferred()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Pass in functions or arrays of functions to be executed when the<br />  Deferred object changes state from pending. If the state is already<br />  rejected or resolved, the functions are executed immediately. They<br />  receive the arguments that are passed to reject or resolve and this<br />  is set to the object defined by rejectWith or resolveWith if those<br />  variants are used.</p>",
+      "summary": "<p>Pass in functions or arrays of functions to be executed when the<br />  Deferred object changes state from pending. If the state is already<br />  rejected or resolved, the functions are executed immediately. They<br />  receive the arguments that are passed to reject or resolve and this<br />  is set to the object defined by rejectWith or resolveWith if those<br />  variants are used.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 129,
+    "codeStart": 138,
+    "code": "Deferred.prototype.always = function() {\n  var args, functions, _ref,\n    _this = this;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  if (args.length === 0) return this;\n  functions = flatten(args);\n  if (this._state === 'pending') {\n    this._alwaysCallbacks || (this._alwaysCallbacks = []);\n    (_ref = this._alwaysCallbacks).push.apply(_ref, functions);\n  } else {\n    functions.forEach(function(fn) {\n      return fn.apply(_this._context, _this._withArguments);\n    });\n  }\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "always",
+      "string": "Deferred.prototype.always()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Pass in functions or arrays of functions to be executed when the<br />  Deferred object is resolved. If the object has already been resolved,<br />  the functions are executed immediately. If the object has been rejected,<br />  nothing happens. The functions receive the arguments that are passed<br />  to resolve and this is set to the object defined by resolveWith if that<br />  variant is used.</p>",
+      "summary": "<p>Pass in functions or arrays of functions to be executed when the<br />  Deferred object is resolved. If the object has already been resolved,<br />  the functions are executed immediately. If the object has been rejected,<br />  nothing happens. The functions receive the arguments that are passed<br />  to resolve and this is set to the object defined by resolveWith if that<br />  variant is used.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 155,
+    "codeStart": 164,
+    "code": "Deferred.prototype.done = function() {\n  var args, functions, _ref,\n    _this = this;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  if (args.length === 0) return this;\n  functions = flatten(args);\n  if (this._state === 'resolved') {\n    functions.forEach(function(fn) {\n      return fn.apply(_this._context, _this._withArguments);\n    });\n  } else if (this._state === 'pending') {\n    this._doneCallbacks || (this._doneCallbacks = []);\n    (_ref = this._doneCallbacks).push.apply(_ref, functions);\n  }\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "done",
+      "string": "Deferred.prototype.done()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Pass in functions or arrays of functions to be executed when the<br />  Deferred object is rejected. If the object has already been rejected,<br />  the functions are executed immediately. If the object has been resolved,<br />  nothing happens. The functions receive the arguments that are passed<br />  to reject and this is set to the object defined by rejectWith if that<br />  variant is used.</p>",
+      "summary": "<p>Pass in functions or arrays of functions to be executed when the<br />  Deferred object is rejected. If the object has already been rejected,<br />  the functions are executed immediately. If the object has been resolved,<br />  nothing happens. The functions receive the arguments that are passed<br />  to reject and this is set to the object defined by rejectWith if that<br />  variant is used.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 181,
+    "codeStart": 190,
+    "code": "Deferred.prototype.fail = function() {\n  var args, functions, _ref,\n    _this = this;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  if (args.length === 0) return this;\n  functions = flatten(args);\n  if (this._state === 'rejected') {\n    functions.forEach(function(fn) {\n      return fn.apply(_this._context, _this._withArguments);\n    });\n  } else if (this._state === 'pending') {\n    this._failCallbacks || (this._failCallbacks = []);\n    (_ref = this._failCallbacks).push.apply(_ref, functions);\n  }\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "fail",
+      "string": "Deferred.prototype.fail()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Notify progress callbacks. The callbacks get passed the arguments given to notify.<br />  If the object has resolved or rejected, nothing will happen</p>",
+      "summary": "<p>Notify progress callbacks. The callbacks get passed the arguments given to notify.<br />  If the object has resolved or rejected, nothing will happen</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 207,
+    "codeStart": 212,
+    "code": "Deferred.prototype.notify = function() {\n  var args;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  this.notifyWith.apply(this, [window].concat(__slice.call(args)));\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "notify",
+      "string": "Deferred.prototype.notify()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Notify progress callbacks with additional context. Works the same way as notify(),<br />  except this is set to context when calling the functions.</p>",
+      "summary": "<p>Notify progress callbacks with additional context. Works the same way as notify(),<br />  except this is set to context when calling the functions.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 219,
+    "codeStart": 224,
+    "code": "Deferred.prototype.notifyWith = function() {\n  var args, context, _ref;\n  context = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];\n  if (this._state !== 'pending') return this;\n  if ((_ref = this._progressCallbacks) != null) {\n    _ref.forEach(function(fn) {\n      return fn.apply(context, args);\n    });\n  }\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "notifyWith",
+      "string": "Deferred.prototype.notifyWith()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Returns a new Promise object that&#39;s tied to the current Deferred. The doneFilter<br />  and failFilter can be used to modify the final values that are passed to the<br />  callbacks of the new promise. If the parameters passed are falsy, the promise<br />  object resolves or rejects normally. If the filter functions return a value,<br />  that one is passed to the respective callbacks. The filters can also return a<br />  new Promise or Deferred object, of which rejected / resolved will control how the<br />  callbacks fire.</p>",
+      "summary": "<p>Returns a new Promise object that&#39;s tied to the current Deferred. The doneFilter<br />  and failFilter can be used to modify the final values that are passed to the<br />  callbacks of the new promise. If the parameters passed are falsy, the promise<br />  object resolves or rejects normally. If the filter functions return a value,<br />  that one is passed to the respective callbacks. The filters can also return a<br />  new Promise or Deferred object, of which rejected / resolved will control how the<br />  callbacks fire.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 236,
+    "codeStart": 246,
+    "code": "Deferred.prototype.pipe = function(doneFilter, failFilter) {\n  var def;\n  def = new Deferred();\n  this.done(function() {\n    var args, result, _ref;\n    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n    if (doneFilter != null) {\n      result = doneFilter.apply(this, args);\n      if (isObservable(result)) {\n        return result.done(function() {\n          var doneArgs, _ref;\n          doneArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n          return (_ref = def.resolveWith).call.apply(_ref, [def, this].concat(__slice.call(doneArgs)));\n        }).fail(function() {\n          var failArgs, _ref;\n          failArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n          return (_ref = def.rejectWith).call.apply(_ref, [def, this].concat(__slice.call(failArgs)));\n        });\n      } else {\n        return def.resolveWith.call(def, this, result);\n      }\n    } else {\n      return (_ref = def.resolveWith).call.apply(_ref, [def, this].concat(__slice.call(args)));\n    }\n  });\n  this.fail(function() {\n    var args, result, _ref, _ref2;\n    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n    if (failFilter != null) {\n      result = failFilter.apply(this, args);\n      if (isObservable(result)) {\n        result.done(function() {\n          var doneArgs, _ref;\n          doneArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n          return (_ref = def.resolveWith).call.apply(_ref, [def, this].concat(__slice.call(doneArgs)));\n        }).fail(function() {\n          var failArgs, _ref;\n          failArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n          return (_ref = def.rejectWith).call.apply(_ref, [def, this].concat(__slice.call(failArgs)));\n        });\n      } else {\n        def.rejectWith.call(def, this, result);\n      }\n      return (_ref = def.rejectWith).call.apply(_ref, [def, this].concat(__slice.call(args)));\n    } else {\n      return (_ref2 = def.rejectWith).call.apply(_ref2, [def, this].concat(__slice.call(args)));\n    }\n  });\n  return def.promise();\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "pipe",
+      "string": "Deferred.prototype.pipe()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Add progress callbacks to be fired when using notify()</p>",
+      "summary": "<p>Add progress callbacks to be fired when using notify()</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 297,
+    "codeStart": 301,
+    "code": "Deferred.prototype.progress = function() {\n  var args, functions, _ref;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  if (args.length === 0 || this._state !== 'pending') return this;\n  functions = flatten(args);\n  this._progressCallbacks || (this._progressCallbacks = []);\n  (_ref = this._progressCallbacks).push.apply(_ref, functions);\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "progress",
+      "string": "Deferred.prototype.progress()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Returns the promise object of this Deferred.</p>",
+      "summary": "<p>Returns the promise object of this Deferred.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 311,
+    "codeStart": 315,
+    "code": "Deferred.prototype.promise = function() {\n  return this._promise || (this._promise = new Promise(this));\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "promise",
+      "string": "Deferred.prototype.promise()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Reject this Deferred. If the object has already been rejected or resolved,<br />  nothing happens. Parameters passed to reject will be handed to all current<br />  and future fail and always callbacks.</p>",
+      "summary": "<p>Reject this Deferred. If the object has already been rejected or resolved,<br />  nothing happens. Parameters passed to reject will be handed to all current<br />  and future fail and always callbacks.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 319,
+    "codeStart": 325,
+    "code": "Deferred.prototype.reject = function() {\n  var args;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  this.rejectWith.apply(this, [window].concat(__slice.call(args)));\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "reject",
+      "string": "Deferred.prototype.reject()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Reject this Deferred with additional context. Works the same way as reject, except<br />  the first parameter is used as this when calling the fail and always callbacks.</p>",
+      "summary": "<p>Reject this Deferred with additional context. Works the same way as reject, except<br />  the first parameter is used as this when calling the fail and always callbacks.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 332,
+    "codeStart": 337,
+    "code": "Deferred.prototype.rejectWith = function() {\n  var args, context, _ref, _ref2,\n    _this = this;\n  context = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];\n  if (this._state !== 'pending') return this;\n  this._state = 'rejected';\n  this._withArguments = args;\n  this._context = context;\n  if ((_ref = this._failCallbacks) != null) {\n    _ref.forEach(function(fn) {\n      return fn.apply(_this._context, args);\n    });\n  }\n  if ((_ref2 = this._alwaysCallbacks) != null) {\n    _ref2.forEach(function(fn) {\n      return fn.apply(_this._context, args);\n    });\n  }\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "rejectWith",
+      "string": "Deferred.prototype.rejectWith()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Resolves this Deferred object. If the object has already been rejected or resolved,<br />  nothing happens. Parameters passed to resolve will be handed to all current and<br />  future done and always callbacks.</p>",
+      "summary": "<p>Resolves this Deferred object. If the object has already been rejected or resolved,<br />  nothing happens. Parameters passed to resolve will be handed to all current and<br />  future done and always callbacks.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 358,
+    "codeStart": 364,
+    "code": "Deferred.prototype.resolve = function() {\n  var args;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  this.resolveWith.apply(this, [window].concat(__slice.call(args)));\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "resolve",
+      "string": "Deferred.prototype.resolve()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Resolve this Deferred with additional context. Works the same way as resolve, except<br />  the first parameter is used as this when calling the done and always callbacks.</p>",
+      "summary": "<p>Resolve this Deferred with additional context. Works the same way as resolve, except<br />  the first parameter is used as this when calling the done and always callbacks.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 371,
+    "codeStart": 376,
+    "code": "Deferred.prototype.resolveWith = function() {\n  var args, context, _ref, _ref2,\n    _this = this;\n  context = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];\n  if (this._state !== 'pending') return this;\n  this._state = 'resolved';\n  this._context = context;\n  this._withArguments = args;\n  if ((_ref = this._doneCallbacks) != null) {\n    _ref.forEach(function(fn) {\n      return fn.apply(_this._context, args);\n    });\n  }\n  if ((_ref2 = this._alwaysCallbacks) != null) {\n    _ref2.forEach(function(fn) {\n      return fn.apply(_this._context, args);\n    });\n  }\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "resolveWith",
+      "string": "Deferred.prototype.resolveWith()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Returns the state of this Deferred. Can be &#39;pending&#39;, &#39;rejected&#39; or &#39;resolved&#39;.</p>",
+      "summary": "<p>Returns the state of this Deferred. Can be &#39;pending&#39;, &#39;rejected&#39; or &#39;resolved&#39;.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 397,
+    "codeStart": 401,
+    "code": "Deferred.prototype.state = function() {\n  return this._state;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "state",
+      "string": "Deferred.prototype.state()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Convenience function to specify each done, fail and progress callbacks at the same time.</p>",
+      "summary": "<p>Convenience function to specify each done, fail and progress callbacks at the same time.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 405,
+    "codeStart": 409,
+    "code": "Deferred.prototype.then = function(doneCallbacks, failCallbacks, progressCallbacks) {\n  this.done(doneCallbacks);\n  this.fail(failCallbacks);\n  this.progress(progressCallbacks);\n  return this;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Deferred",
+      "cons": "Deferred",
+      "name": "then",
+      "string": "Deferred.prototype.then()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Returns a new promise object which will resolve when all of the deferreds or promises<br />passed to the function resolve. The callbacks receive all the parameters that the<br />individual resolves yielded as an array. If any of the deferreds or promises are<br />rejected, the promise will be rejected immediately.</p>",
+      "summary": "<p>Returns a new promise object which will resolve when all of the deferreds or promises<br />passed to the function resolve. The callbacks receive all the parameters that the<br />individual resolves yielded as an array. If any of the deferreds or promises are<br />rejected, the promise will be rejected immediately.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 418,
+    "codeStart": 425,
+    "code": "Deferred.when = function() {\n  var allDoneArgs, allReady, args, readyCount;\n  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n  if (args.length === 0) return new Deferred().resolve().promise();\n  if (args.length === 1) return args[0].promise();\n  allReady = new Deferred();\n  readyCount = 0;\n  allDoneArgs = [];\n  args.forEach(function(dfr, index) {\n    return dfr.done(function() {\n      var doneArgs;\n      doneArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n      readyCount += 1;\n      allDoneArgs[index] = doneArgs;\n      if (readyCount === args.length) {\n        return allReady.resolve.apply(allReady, allDoneArgs);\n      }\n    }).fail(function() {\n      var failArgs;\n      failArgs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];\n      return allReady.rejectWith.apply(allReady, [this].concat(__slice.call(failArgs)));\n    });\n  });\n  return allReady.promise();\n};\n\nmodule.exports = Deferred;",
+    "ctx": {
+      "type": "method",
+      "receiver": "Deferred",
+      "name": "when",
+      "string": "Deferred.when()"
     }
   }
 ]
@@ -1395,7 +1807,7 @@
     "ignore": true,
     "line": 3,
     "codeStart": 7,
-    "code": "var Events = require('./events')\n  , StorageError = require('./error')\n  , MixedSchema = require('./schema/mixed')\n  , ObjectId = require('./types/objectid')\n  , Schema = require('./schema')\n  , ValidatorError = require('./schematype').ValidatorError\n  , utils = require('./utils')\n  , clone = utils.clone\n  , ValidationError = StorageError.ValidationError\n  , InternalCache = require('./internal')\n  , deepEqual = utils.deepEqual\n  , DocumentArray\n  , SchemaArray\n  , Embedded;",
+    "code": "var Events = require('./events')\n  , StorageError = require('./error')\n  , MixedSchema = require('./schema/mixed')\n  , ObjectId = require('./types/objectid')\n  , Schema = require('./schema')\n  , ValidatorError = require('./schematype').ValidatorError\n  , Deferred = require('./deferred')\n  , utils = require('./utils')\n  , clone = utils.clone\n  , ValidationError = StorageError.ValidationError\n  , InternalCache = require('./internal')\n  , deepEqual = utils.deepEqual\n  , DocumentArray\n  , SchemaArray\n  , Embedded;",
     "ctx": {
       "type": "declaration",
       "name": "Events",
@@ -1465,8 +1877,8 @@
     "isConstructor": true,
     "isEvent": false,
     "ignore": false,
-    "line": 22,
-    "codeStart": 32,
+    "line": 23,
+    "codeStart": 33,
     "code": "function Document ( data, collectionName, schema, fields, init ){\n  if ( !(this instanceof Document) ) {\n    return new Document( data, collectionName, schema, fields, init );\n  }\n\n  this.$__ = new InternalCache();\n  this.isNew = true;\n\n  // Создать пустой документ с флагом init\n  // new TestDocument(true);\n  if ( 'boolean' === typeof data ){\n    init = data;\n    data = null;\n  }\n\n  if ( collectionName instanceof Schema ){\n    schema = collectionName;\n    collectionName = undefined;\n  }\n\n  if ( _.isObject( schema ) && !( schema instanceof Schema )) {\n    schema = new Schema( schema );\n  }\n\n  // Создать пустой документ по схеме\n  if ( data instanceof Schema ){\n    schema = data;\n    data = null;\n\n    if ( schema.options._id ){\n      data = { _id: new ObjectId() };\n    }\n\n  } else {\n    // При создании EmbeddedDocument, в нём уже есть схема и ему не нужен _id\n    schema = this.schema || schema;\n    // Сгенерировать ObjectId, если он отсутствует, но его требует схема\n    if ( schema && !this.schema && schema.options._id ){\n      data = data || {};\n\n      if ( data._id === undefined ){\n        data._id = new ObjectId();\n      }\n    }\n  }\n\n  if ( !schema ){\n    throw new StorageError.MissingSchemaError();\n  }\n\n  // Создать документ с флагом init\n  // new TestDocument({ test: 'boom' }, true);\n  if ( 'boolean' === typeof collectionName ){\n    init = collectionName;\n    collectionName = undefined;\n  }\n\n  // Создать документ с strict: true\n  // collection.add({...}, true);\n  if ('boolean' === typeof fields) {\n    this.$__.strictMode = fields;\n    fields = undefined;\n  } else {\n    this.$__.strictMode = schema.options && schema.options.strict;\n    this.$__.selected = fields;\n  }\n\n  this.schema = schema;\n\n  if ( collectionName ){\n    this.collection = window.storage[ collectionName ];\n    this.collectionName = collectionName;\n  }\n\n  var required = schema.requiredPaths();\n  for (var i = 0; i < required.length; ++i) {\n    this.$__.activePaths.require( required[i] );\n  }\n\n  this.$__setSchema( schema );\n\n  this._doc = this.$__buildDoc( data, init );\n\n  if ( init ){\n    this.init( data );\n  } else if ( data ) {\n    this.set( data, undefined, true );\n  }\n\n  // apply methods\n  for ( var m in schema.methods ){\n    this[ m ] = schema.methods[ m ];\n  }\n  // apply statics\n  for ( var s in schema.statics ){\n    this[ s ] = schema.statics[ s ];\n  }\n}",
     "ctx": {
       "type": "constructor",
@@ -1485,8 +1897,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 131,
-    "codeStart": 134,
+    "line": 132,
+    "codeStart": 135,
     "code": "Document.prototype = Object.create( Events.prototype );\nDocument.prototype.constructor = Document;",
     "ctx": {
       "type": "property",
@@ -1521,8 +1933,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 137,
-    "codeStart": 143,
+    "line": 138,
+    "codeStart": 144,
     "code": "Document.prototype.schema;",
     "ctx": {
       "type": "property",
@@ -1557,8 +1969,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 145,
-    "codeStart": 151,
+    "line": 146,
+    "codeStart": 152,
     "code": "Document.prototype.isNew;",
     "ctx": {
       "type": "property",
@@ -1597,8 +2009,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 153,
-    "codeStart": 166,
+    "line": 154,
+    "codeStart": 167,
     "code": "Document.prototype.id;",
     "ctx": {
       "type": "property",
@@ -1633,9 +2045,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 168,
-    "codeStart": 174,
-    "code": "Document.prototype.errors;\n\nDocument.prototype.adapterHooks = {\n  documentDefineProperty: $.noop,\n  documentSetInitialValue: $.noop,\n  documentGetValue: $.noop,\n  documentSetValue: $.noop\n};",
+    "line": 169,
+    "codeStart": 175,
+    "code": "Document.prototype.errors;\n\nDocument.prototype.adapterHooks = {\n  documentDefineProperty: _.noop,\n  documentSetInitialValue: _.noop,\n  documentGetValue: _.noop,\n  documentSetValue: _.noop\n};",
     "ctx": {
       "type": "property",
       "constructor": "Document",
@@ -1693,8 +2105,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 183,
-    "codeStart": 193,
+    "line": 184,
+    "codeStart": 194,
     "code": "Document.prototype.$__buildDoc = function ( obj, skipId ) {\n  var doc = {}\n    , self = this;\n\n  var paths = Object.keys( this.schema.paths )\n    , plen = paths.length\n    , ii = 0;\n\n  for ( ; ii < plen; ++ii ) {\n    var p = paths[ii];\n\n    if ( '_id' === p ) {\n      if ( skipId ) continue;\n      if ( obj && '_id' in obj ) continue;\n    }\n\n    var type = this.schema.paths[ p ]\n      , path = p.split('.')\n      , len = path.length\n      , last = len - 1\n      , doc_ = doc\n      , i = 0;\n\n    for ( ; i < len; ++i ) {\n      var piece = path[ i ]\n        , defaultVal;\n\n      if ( i === last ) {\n        defaultVal = type.getDefault( self, true );\n\n        if ('undefined' !== typeof defaultVal ) {\n          doc_[ piece ] = defaultVal;\n          self.$__.activePaths.default( p );\n        }\n      } else {\n        doc_ = doc_[ piece ] || ( doc_[ piece ] = {} );\n      }\n    }\n  }\n\n  return doc;\n};",
     "ctx": {
       "type": "method",
@@ -1729,8 +2141,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 236,
-    "codeStart": 244,
+    "line": 237,
+    "codeStart": 245,
     "code": "Document.prototype.init = function ( data ) {\n  this.isNew = false;\n\n  //todo: сдесь всё изменится, смотреть коммент метода this.populated\n  // handle docs with populated paths",
     "ctx": {
       "type": "method",
@@ -1751,8 +2163,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 249,
-    "codeStart": 259,
+    "line": 250,
+    "codeStart": 260,
     "code": "init( this, data, this._doc );\n\nreturn this;\n};"
   },
   {
@@ -1798,8 +2210,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 264,
-    "codeStart": 272,
+    "line": 265,
+    "codeStart": 273,
     "code": "function init (self, obj, doc, prefix) {\n  prefix = prefix || '';\n\n  var keys = Object.keys(obj)\n    , len = keys.length\n    , schema\n    , path\n    , i;\n\n  while (len--) {\n    i = keys[len];\n    path = prefix + i;\n    schema = self.schema.path(path);\n\n    if (!schema && _.isPlainObject( obj[ i ] ) &&\n        (!obj[i].constructor || 'Object' === utils.getFunctionName(obj[i].constructor))) {\n      // assume nested object\n      if (!doc[i]) doc[i] = {};\n      init(self, obj[i], doc[i], path + '.');\n    } else {\n      if (obj[i] === null) {\n        doc[i] = null;\n      } else if (obj[i] !== undefined) {\n        if (schema) {\n          self.$__try(function(){\n            doc[i] = schema.cast(obj[i], self, true);\n          });\n        } else {\n          doc[i] = obj[i];\n        }\n\n        self.adapterHooks.documentSetInitialValue.call( self, self, path, doc[i] );\n      }\n      // mark as hydrated\n      self.$__.activePaths.init(path);\n    }\n  }\n}",
     "ctx": {
       "type": "function",
@@ -1863,8 +2275,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 311,
-    "codeStart": 342,
+    "line": 312,
+    "codeStart": 343,
     "code": "Document.prototype.set = function (path, val, type, options) {\n  if (type && 'Object' === utils.getFunctionName(type.constructor)) {\n    options = type;\n    type = undefined;\n  }\n\n  var merge = options && options.merge\n    , adhoc = type && true !== type\n    , constructing = true === type\n    , adhocs;\n\n  var strict = options && 'strict' in options\n    ? options.strict\n    : this.$__.strictMode;\n\n  if (adhoc) {\n    adhocs = this.$__.adhocPaths || (this.$__.adhocPaths = {});\n    adhocs[path] = Schema.interpretAsType(path, type);\n  }\n\n  if ('string' !== typeof path) {\n    // new Document({ key: val })\n\n    if (null === path || undefined === path) {\n      var _temp = path;\n      path = val;\n      val = _temp;\n\n    } else {\n      var prefix = val\n        ? val + '.'\n        : '';\n\n      if (path instanceof Document) path = path._doc;\n\n      var keys = Object.keys(path)\n        , i = keys.length\n        , pathtype\n        , key;\n\n\n      while (i--) {\n        key = keys[i];\n        pathtype = this.schema.pathType(prefix + key);\n        if (null != path[key]\n            // need to know if plain object - no Buffer, ObjectId, ref, etc\n            && _.isPlainObject(path[key])\n            && ( !path[key].constructor || 'Object' === utils.getFunctionName(path[key].constructor) )\n            && 'virtual' !== pathtype\n            && !( this.$__path( prefix + key ) instanceof MixedSchema )\n            && !( this.schema.paths[key] && this.schema.paths[key].options.ref )\n          ){\n\n          this.set(path[key], prefix + key, constructing);\n\n        } else if (strict) {\n          if ('real' === pathtype || 'virtual' === pathtype) {\n            this.set(prefix + key, path[key], constructing);\n\n          } else if ('throw' === strict) {\n            throw new Error('Field `' + key + '` is not in schema.');\n          }\n\n        } else if (undefined !== path[key]) {\n          this.set(prefix + key, path[key], constructing);\n        }\n      }\n\n      return this;\n    }\n  }\n\n  // ensure _strict is honored for obj props\n  // docschema = new Schema({ path: { nest: 'string' }})\n  // doc.set('path', obj);\n  var pathType = this.schema.pathType(path);\n  if ('nested' === pathType && val && _.isPlainObject(val) &&\n      (!val.constructor || 'Object' === utils.getFunctionName(val.constructor))) {\n    if (!merge) this.setValue(path, null);\n    this.set(val, path, constructing);\n    return this;\n  }\n\n  var schema;\n  var parts = path.split('.');\n  var subpath;\n\n  if ('adhocOrUndefined' === pathType && strict) {\n\n    // check for roots that are Mixed types\n    var mixed;\n\n    for (var i = 0; i < parts.length; ++i) {\n      subpath = parts.slice(0, i+1).join('.');\n      schema = this.schema.path(subpath);\n      if (schema instanceof MixedSchema) {\n        // allow changes to sub paths of mixed types\n        mixed = true;\n        break;\n      }\n    }\n\n    if (!mixed) {\n      if ('throw' === strict) {\n        throw new Error('Field `' + path + '` is not in schema.');\n      }\n      return this;\n    }\n\n  } else if ('virtual' === pathType) {\n    schema = this.schema.virtualpath(path);\n    schema.applySetters(val, this);\n    return this;\n  } else {\n    schema = this.$__path(path);\n  }\n\n  var pathToMark;\n\n  // When using the $set operator the path to the field must already exist.\n  // Else mongodb throws: \"LEFT_SUBFIELD only supports Object\"\n\n  if (parts.length <= 1) {\n    pathToMark = path;\n  } else {\n    for ( i = 0; i < parts.length; ++i ) {\n      subpath = parts.slice(0, i + 1).join('.');\n      if (this.isDirectModified(subpath) // earlier prefixes that are already\n                                         // marked as dirty have precedence\n          || this.get(subpath) === null) {\n        pathToMark = subpath;\n        break;\n      }\n    }\n\n    if (!pathToMark) pathToMark = path;\n  }\n\n  // if this doc is being constructed we should not trigger getters\n  var priorVal = constructing\n    ? undefined\n    : this.getValue(path);\n\n  if (!schema || undefined === val) {\n    this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);\n    return this;\n  }\n\n  var self = this;\n  var shouldSet = this.$__try(function(){\n    val = schema.applySetters(val, self, false, priorVal);\n  });\n\n  if (shouldSet) {\n    this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);\n  }\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -1905,8 +2317,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 502,
-    "codeStart": 510,
+    "line": 503,
+    "codeStart": 511,
     "code": "Document.prototype.$__shouldModify = function (\n    pathToMark, path, constructing, parts, schema, val, priorVal) {\n\n  if (this.isNew) return true;\n\n  if ( undefined === val && !this.isSelected(path) ) {\n    // when a path is not selected in a query, its initial\n    // value will be undefined.\n    return true;\n  }\n\n  if (undefined === val && path in this.$__.activePaths.states.default) {\n    // we're just unsetting the default value which was never saved\n    return false;\n  }\n\n  if (!utils.deepEqual(val, priorVal || this.get(path))) {\n    return true;\n  }\n\n  //тест не проходит из-за наличия лишнего поля в states.default (comments)\n  // На самом деле поле вроде и не лишнее\n  //console.info( path, path in this.$__.activePaths.states.default );\n  //console.log( this.$__.activePaths );\n\n  // Когда мы устанавливаем такое же значение как default\n  // Не понятно зачем мангуст его обновлял",
     "ctx": {
       "type": "method",
@@ -1927,8 +2339,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 537,
-    "codeStart": 551,
+    "line": 538,
+    "codeStart": 552,
     "code": "return false;\n};"
   },
   {
@@ -1955,8 +2367,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 554,
-    "codeStart": 561,
+    "line": 555,
+    "codeStart": 562,
     "code": "Document.prototype.$__set = function ( pathToMark, path, constructing, parts, schema, val, priorVal ) {\n  var shouldModify = this.$__shouldModify.apply(this, arguments);\n\n  if (shouldModify) {\n    this.markModified(pathToMark, val);\n  }\n\n  var obj = this._doc\n    , i = 0\n    , l = parts.length;\n\n  for (; i < l; i++) {\n    var next = i + 1\n      , last = next === l;\n\n    if ( last ) {\n      obj[parts[i]] = val;\n\n      this.adapterHooks.documentSetValue.call( this, this, path, val );\n\n    } else {\n      if (obj[parts[i]] && 'Object' === utils.getFunctionName(obj[parts[i]].constructor)) {\n        obj = obj[parts[i]];\n\n      } else if (obj[parts[i]] && 'EmbeddedDocument' === utils.getFunctionName(obj[parts[i]].constructor) ) {\n        obj = obj[parts[i]];\n\n      } else if (obj[parts[i]] && Array.isArray(obj[parts[i]])) {\n        obj = obj[parts[i]];\n\n      } else {\n        obj = obj[parts[i]] = {};\n      }\n    }\n  }\n};",
     "ctx": {
       "type": "method",
@@ -1991,8 +2403,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 598,
-    "codeStart": 604,
+    "line": 599,
+    "codeStart": 605,
     "code": "Document.prototype.getValue = function (path) {\n  return utils.getValue(path, this._doc);\n};",
     "ctx": {
       "type": "method",
@@ -2036,8 +2448,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 608,
-    "codeStart": 615,
+    "line": 609,
+    "codeStart": 616,
     "code": "Document.prototype.setValue = function (path, value) {\n  utils.setValue(path, value, this._doc);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -2083,8 +2495,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 620,
-    "codeStart": 635,
+    "line": 621,
+    "codeStart": 636,
     "code": "Document.prototype.get = function (path, type) {\n  var adhocs;\n  if (type) {\n    adhocs = this.$__.adhocPaths || (this.$__.adhocPaths = {});\n    adhocs[path] = Schema.interpretAsType(path, type);\n  }\n\n  var schema = this.$__path(path) || this.schema.virtualpath(path)\n    , pieces = path.split('.')\n    , obj = this._doc;\n\n  for (var i = 0, l = pieces.length; i < l; i++) {\n    obj = undefined === obj || null === obj\n      ? undefined\n      : obj[pieces[i]];\n  }\n\n  if (schema) {\n    obj = schema.applyGetters(obj, this);\n  }\n\n  this.adapterHooks.documentGetValue.call( this, this, path );\n\n  return obj;\n};",
     "ctx": {
       "type": "method",
@@ -2127,8 +2539,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 661,
-    "codeStart": 669,
+    "line": 662,
+    "codeStart": 670,
     "code": "Document.prototype.$__path = function (path) {\n  var adhocs = this.$__.adhocPaths\n    , adhocType = adhocs && adhocs[path];\n\n  if (adhocType) {\n    return adhocType;\n  } else {\n    return this.schema.path(path);\n  }\n};",
     "ctx": {
       "type": "method",
@@ -2163,8 +2575,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 680,
-    "codeStart": 694,
+    "line": 681,
+    "codeStart": 695,
     "code": "Document.prototype.markModified = function (path) {\n  this.$__.activePaths.modify(path);\n};",
     "ctx": {
       "type": "method",
@@ -2216,8 +2628,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 698,
-    "codeStart": 707,
+    "line": 699,
+    "codeStart": 708,
     "code": "Document.prototype.$__try = function (fn, scope) {\n  var res;\n  try {\n    fn.call(scope);\n    res = true;\n  } catch (e) {\n    this.$__error(e);\n    res = false;\n  }\n  return res;\n};",
     "ctx": {
       "type": "method",
@@ -2250,8 +2662,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 719,
-    "codeStart": 725,
+    "line": 720,
+    "codeStart": 726,
     "code": "Document.prototype.modifiedPaths = function () {\n  var directModifiedPaths = Object.keys(this.$__.activePaths.states.modify);\n\n  return directModifiedPaths.reduce(function (list, path) {\n    var parts = path.split('.');\n    return list.concat(parts.reduce(function (chains, part, i) {\n      return chains.concat(parts.slice(0, i).concat(part).join('.'));\n    }, []));\n  }, []);\n};",
     "ctx": {
       "type": "method",
@@ -2293,8 +2705,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 736,
-    "codeStart": 753,
+    "line": 737,
+    "codeStart": 754,
     "code": "Document.prototype.isModified = function (path) {\n  return path\n    ? !!~this.modifiedPaths().indexOf(path)\n    : this.$__.activePaths.some('modify');\n};",
     "ctx": {
       "type": "method",
@@ -2336,8 +2748,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 759,
-    "codeStart": 772,
+    "line": 760,
+    "codeStart": 773,
     "code": "Document.prototype.isDirectModified = function (path) {\n  return (path in this.$__.activePaths.states.modify);\n};",
     "ctx": {
       "type": "method",
@@ -2379,8 +2791,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 776,
-    "codeStart": 783,
+    "line": 777,
+    "codeStart": 784,
     "code": "Document.prototype.isInit = function (path) {\n  return (path in this.$__.activePaths.states.init);\n};",
     "ctx": {
       "type": "method",
@@ -2422,8 +2834,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 787,
-    "codeStart": 802,
+    "line": 788,
+    "codeStart": 803,
     "code": "Document.prototype.isSelected = function isSelected (path) {\n  if (this.$__.selected) {\n\n    if ('_id' === path) {\n      return 0 !== this.$__.selected._id;\n    }\n\n    var paths = Object.keys(this.$__.selected)\n      , i = paths.length\n      , inclusive = false\n      , cur;\n\n    if (1 === i && '_id' === paths[0]) {\n      // only _id was selected.\n      return 0 === this.$__.selected._id;\n    }\n\n    while (i--) {\n      cur = paths[i];\n      if ('_id' === cur) continue;\n      inclusive = !! this.$__.selected[cur];\n      break;\n    }\n\n    if (path in this.$__.selected) {\n      return inclusive;\n    }\n\n    i = paths.length;\n    var pathDot = path + '.';\n\n    while (i--) {\n      cur = paths[i];\n      if ('_id' === cur) continue;\n\n      if (0 === cur.indexOf(pathDot)) {\n        return inclusive;\n      }\n\n      if (0 === pathDot.indexOf(cur + '.')) {\n        return inclusive;\n      }\n    }\n\n    return ! inclusive;\n  }\n\n  return true;\n};",
     "ctx": {
       "type": "method",
@@ -2458,8 +2870,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 852,
-    "codeStart": 869,
+    "line": 853,
+    "codeStart": 870,
     "code": "Document.prototype.validate = function (cb) {\n  var self = this;\n\n  // only validate required fields when necessary\n  var paths = Object.keys(this.$__.activePaths.states.require).filter(function (path) {\n    if (!self.isSelected(path) && !self.isModified(path)) return false;\n    return true;\n  });\n\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.init));\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.modify));\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.default));\n\n  if (0 === paths.length) {\n    complete();\n    return this;\n  }\n\n  var validating = {}\n    , total = 0;\n\n  paths.forEach(validatePath);\n  return this;\n\n  function validatePath (path) {\n    if (validating[path]) return;\n\n    validating[path] = true;\n    total++;\n\n    utils.setImmediate(function(){\n      var p = self.schema.path(path);\n      if (!p) return --total || complete();\n\n      var val = self.getValue(path);\n      p.doValidate(val, function (err) {\n        if (err) {\n          self.invalidate(\n              path\n            , err\n            , undefined\n            //, true // embedded docs\n            );\n        }\n        --total || complete();\n      }, self);\n    });\n  }\n\n  function complete () {\n    var err = self.$__.validationError;\n    self.$__.validationError = undefined;\n    cb && cb(err);\n  }\n};",
     "ctx": {
       "type": "method",
@@ -2516,8 +2928,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 925,
-    "codeStart": 953,
+    "line": 926,
+    "codeStart": 954,
     "code": "Document.prototype.invalidate = function (path, errorMsg, value) {\n  if (!this.$__.validationError) {\n    this.$__.validationError = new ValidationError(this);\n  }\n\n  if (!errorMsg || 'string' === typeof errorMsg) {\n    errorMsg = new ValidatorError(path, errorMsg, 'user defined', value);\n  }\n\n  if (this.$__.validationError === errorMsg) return;\n\n  this.$__.validationError.errors[path] = errorMsg;\n};",
     "ctx": {
       "type": "method",
@@ -2558,8 +2970,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 967,
-    "codeStart": 976,
+    "line": 968,
+    "codeStart": 977,
     "code": "Document.prototype.$__reset = function reset () {\n  var self = this;\n\n  this.$__.activePaths\n  .map('init', 'modify', function (i) {\n    return self.getValue(i);\n  })\n  .filter(function (val) {\n    return val && val.isStorageDocumentArray && val.length;\n  })\n  .forEach(function (array) {\n    var i = array.length;\n    while (i--) {\n      var doc = array[i];\n      if (!doc) continue;\n      doc.$__reset();\n    }\n  });\n\n  // Clear 'modify'('dirty') cache\n  this.$__.activePaths.clear('modify');\n  this.$__.validationError = undefined;\n  this.errors = undefined;\n  //console.log( self.$__.activePaths.states.require );\n  //TODO: тут\n  this.schema.requiredPaths().forEach(function (path) {\n    self.$__.activePaths.require(path);\n  });\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -2593,8 +3005,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1009,
-    "codeStart": 1017,
+    "line": 1010,
+    "codeStart": 1018,
     "code": "Document.prototype.$__dirty = function () {\n  var self = this;\n\n  var all = this.$__.activePaths.map('modify', function (path) {\n    return { path: path\n           , value: self.getValue( path )\n           , schema: self.$__path( path ) };\n  });\n\n  // Sort dirty paths in a flat hierarchy.\n  all.sort(function (a, b) {\n    return (a.path < b.path ? -1 : (a.path > b.path ? 1 : 0));\n  });\n\n  // Ignore \"foo.a\" if \"foo\" is dirty already.\n  var minimal = []\n    , lastPath\n    , top;\n\n  all.forEach(function( item ){\n    lastPath = item.path + '.';\n    minimal.push(item);\n    top = item;\n  });\n\n  top = lastPath = null;\n  return minimal;\n};",
     "ctx": {
       "type": "method",
@@ -2615,8 +3027,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1046,
-    "codeStart": 1050,
+    "line": 1047,
+    "codeStart": 1051,
     "code": "function compile (self, tree, proto, prefix) {\n  var keys = Object.keys(tree)\n    , i = keys.length\n    , limb\n    , key;\n\n  while (i--) {\n    key = keys[i];\n    limb = tree[key];\n\n    define(self\n        , key\n        , (('Object' === utils.getFunctionName(limb.constructor)\n               && Object.keys(limb).length)\n               && (!limb.type || limb.type.type)\n               ? limb\n               : null)\n        , proto\n        , prefix\n        , keys);\n  }\n}\n\n// gets descriptors for all properties of `object`\n// makes all properties non-enumerable to match previous behavior to #2211\nfunction getOwnPropertyDescriptors(object) {\n  var result = {};\n\n  Object.getOwnPropertyNames(object).forEach(function(key) {\n    result[key] = Object.getOwnPropertyDescriptor(object, key);\n    result[key].enumerable = false;\n  });\n\n  return result;\n}",
     "ctx": {
       "type": "function",
@@ -2635,8 +3047,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1086,
-    "codeStart": 1090,
+    "line": 1087,
+    "codeStart": 1091,
     "code": "function define (self, prop, subprops, prototype, prefix, keys) {\n  prefix = prefix || '';\n  var path = (prefix ? prefix + '.' : '') + prop;\n\n  if (subprops) {\n    Object.defineProperty(prototype, prop, {\n        enumerable: true\n      , configurable: true\n      , get: function () {\n          if (!this.$__.getters)\n            this.$__.getters = {};\n\n          if (!this.$__.getters[path]) {\n            var nested = Object.create(Object.getPrototypeOf(this), getOwnPropertyDescriptors(this));\n\n            // save scope for nested getters/setters\n            if (!prefix) nested.$__.scope = this;\n\n            // shadow inherited getters from sub-objects so\n            // thing.nested.nested.nested... doesn't occur (gh-366)\n            var i = 0\n              , len = keys.length;\n\n            for (; i < len; ++i) {\n              // over-write the parents getter without triggering it\n              Object.defineProperty(nested, keys[i], {\n                  enumerable: false   // It doesn't show up.\n                , writable: true      // We can set it later.\n                , configurable: true  // We can Object.defineProperty again.\n                , value: undefined    // It shadows its parent.\n              });\n            }\n\n            nested.toObject = function () {\n              return this.get(path);\n            };\n\n            compile( self, subprops, nested, path );\n            this.$__.getters[path] = nested;\n          }\n\n          return this.$__.getters[path];\n        }\n      , set: function (v) {\n          if (v instanceof Document) v = v.toObject();\n          return (this.$__.scope || this).set( path, v );\n        }\n    });\n\n  } else {\n    Object.defineProperty( prototype, prop, {\n        enumerable: true\n      , configurable: true\n      , get: function ( ) { return this.get.call(this.$__.scope || this, path); }\n      , set: function (v) { return this.set.call(this.$__.scope || this, path, v); }\n    });\n  }\n\n  self.adapterHooks.documentDefineProperty.call( self, self, prototype, prop, prefix, path );\n  //self.adapterHooks.documentDefineProperty.call( self, self, path, prototype );\n}",
     "ctx": {
       "type": "function",
@@ -2677,8 +3089,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1152,
-    "codeStart": 1160,
+    "line": 1153,
+    "codeStart": 1161,
     "code": "Document.prototype.$__setSchema = function ( schema ) {\n  this.schema = schema;\n  compile( this, schema.tree, this );\n};",
     "ctx": {
       "type": "method",
@@ -2712,9 +3124,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1165,
-    "codeStart": 1172,
-    "code": "Document.prototype.$__getAllSubdocs = function () {\n  DocumentArray || (DocumentArray = require('./types/documentarray'));\n  Embedded = Embedded || require('./types/embedded');\n\n  function docReducer(seed, path) {\n    var val = this[path];\n    if (val instanceof Embedded) seed.push(val);\n    if (val instanceof DocumentArray)\n      val.forEach(function _docReduce(doc) {\n        if (!doc || !doc._doc) return;\n        if (doc instanceof Embedded) seed.push(doc);\n        seed = Object.keys(doc._doc).reduce(docReducer.bind(doc._doc), seed);\n      });\n    return seed;\n  }\n\n  return Object.keys(this._doc).reduce(docReducer.bind(this), []);\n};",
+    "line": 1166,
+    "codeStart": 1173,
+    "code": "Document.prototype.$__getAllSubdocs = function () {\n  DocumentArray || (DocumentArray = require('./types/documentarray'));\n  Embedded = Embedded || require('./types/embedded');\n\n  function docReducer(seed, path) {\n    var val = this[path];\n    if (val instanceof Embedded) seed.push(val);\n    if (val instanceof DocumentArray){\n      val.forEach(function _docReduce(doc) {\n\n        if (!doc || !doc._doc) return;\n        if (doc instanceof Embedded) seed.push(doc);\n\n        seed = Object.keys(doc._doc).reduce(docReducer.bind(doc._doc), seed);\n      });\n    }\n    return seed;\n  }\n\n  return Object.keys(this._doc).reduce(docReducer.bind(this), []);\n};",
     "ctx": {
       "type": "method",
       "constructor": "Document",
@@ -2747,8 +3159,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1191,
-    "codeStart": 1199,
+    "line": 1195,
+    "codeStart": 1203,
     "code": "Document.prototype.$__presaveValidate = function $__presaveValidate() {\n  // if any doc.set() calls failed\n\n  var docs = this.$__getArrayPathsToValidate();\n\n  var e2 = docs.map(function (doc) {\n    return doc.$__presaveValidate();\n  });\n  var e1 = [this.$__.saveError].concat(e2);\n  var err = e1.filter(function (x) {return x})[0];\n  this.$__.saveError = null;\n\n  return err;\n};",
     "ctx": {
       "type": "method",
@@ -2782,8 +3194,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1214,
-    "codeStart": 1221,
+    "line": 1218,
+    "codeStart": 1225,
     "code": "Document.prototype.$__getArrayPathsToValidate = function () {\n  DocumentArray || (DocumentArray = require('./types/documentarray'));\n\n  // validate all document arrays.\n  return this.$__.activePaths\n    .map('init', 'modify', function (i) {\n      return this.getValue(i);\n    }.bind(this))\n    .filter(function (val) {\n      return val && val instanceof DocumentArray && val.length;\n    }).reduce(function(seed, array) {\n      return seed.concat(array);\n    }, [])\n    .filter(function (doc) {return doc});\n};",
     "ctx": {
       "type": "method",
@@ -2826,8 +3238,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1237,
-    "codeStart": 1245,
+    "line": 1241,
+    "codeStart": 1249,
     "code": "Document.prototype.$__error = function (err) {\n  this.$__.saveError = err;\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -2861,9 +3273,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1250,
-    "codeStart": 1257,
-    "code": "Document.prototype.$__delta = function () {\n  var dirty = this.$__dirty();\n\n  var delta = {}\n    , len = dirty.length\n    , d = 0;\n\n  for (; d < len; ++d) {\n    var data = dirty[ d ];\n    var value = data.value;\n\n    value = utils.clone(value, { depopulate: 1 });\n    delta[ data.path ] = value;\n  }\n\n  return delta;\n};\n\nDocument.prototype.$__handleSave = function(){\n  // Получаем ресурс коллекции, куда будем сохранять данные\n  var resource;\n  if ( this.collection ){\n    resource = this.collection.api;\n  }\n\n  var innerPromise = new $.Deferred();\n\n  if ( this.isNew ) {\n    // send entire doc\n    var obj = this.toObject({ depopulate: 1 });\n\n    if ( ( obj || {} ).hasOwnProperty('_id') === false ) {\n      // documents must have an _id else mongoose won't know\n      // what to update later if more changes are made. the user\n      // wouldn't know what _id was generated by mongodb either\n      // nor would the ObjectId generated my mongodb necessarily\n      // match the schema definition.\n      innerPromise.reject(new Error('document must have an _id before saving'));\n      return innerPromise;\n    }\n\n    // Проверка на окружение тестов\n    // Хотя можно таким образом просто делать валидацию, даже если нет коллекции или api\n    if ( !resource ){\n      innerPromise.resolve( this );\n    } else {\n      resource.create( obj ).always( innerPromise.resolve );\n    }\n\n    this.$__reset();\n    this.isNew = false;\n    this.trigger('isNew', false);\n    // Make it possible to retry the insert\n    this.$__.inserting = true;\n\n  } else {\n    // Make sure we don't treat it as a new object on error,\n    // since it already exists\n    this.$__.inserting = false;\n\n    var delta = this.$__delta();\n\n    if ( !_.isEmpty( delta ) ) {\n      this.$__reset();\n      // Проверка на окружение тестов\n      // Хотя можно таким образом просто делать валидацию, даже если нет коллекции или api\n      if ( !resource ){\n        innerPromise.resolve( this );\n      } else {\n        resource( this.id ).update( delta ).always( innerPromise.resolve );\n      }\n    } else {\n      this.$__reset();\n      innerPromise.resolve( this );\n    }\n\n    this.trigger('isNew', false);\n  }\n\n  return innerPromise;\n};",
+    "line": 1254,
+    "codeStart": 1261,
+    "code": "Document.prototype.$__delta = function () {\n  var dirty = this.$__dirty();\n\n  var delta = {}\n    , len = dirty.length\n    , d = 0;\n\n  for (; d < len; ++d) {\n    var data = dirty[ d ];\n    var value = data.value;\n\n    value = utils.clone(value, { depopulate: 1 });\n    delta[ data.path ] = value;\n  }\n\n  return delta;\n};\n\nDocument.prototype.$__handleSave = function(){\n  // Получаем ресурс коллекции, куда будем сохранять данные\n  var resource;\n  if ( this.collection ){\n    resource = this.collection.api;\n  }\n\n  var innerPromise = new Deferred();\n\n  if ( this.isNew ) {\n    // send entire doc\n    var obj = this.toObject({ depopulate: 1 });\n\n    if ( ( obj || {} ).hasOwnProperty('_id') === false ) {\n      // documents must have an _id else mongoose won't know\n      // what to update later if more changes are made. the user\n      // wouldn't know what _id was generated by mongodb either\n      // nor would the ObjectId generated my mongodb necessarily\n      // match the schema definition.\n      innerPromise.reject(new Error('document must have an _id before saving'));\n      return innerPromise;\n    }\n\n    // Проверка на окружение тестов\n    // Хотя можно таким образом просто делать валидацию, даже если нет коллекции или api\n    if ( !resource ){\n      innerPromise.resolve( this );\n    } else {\n      resource.create( obj ).always( innerPromise.resolve );\n    }\n\n    this.$__reset();\n    this.isNew = false;\n    this.trigger('isNew', false);\n    // Make it possible to retry the insert\n    this.$__.inserting = true;\n\n  } else {\n    // Make sure we don't treat it as a new object on error,\n    // since it already exists\n    this.$__.inserting = false;\n\n    var delta = this.$__delta();\n\n    if ( !_.isEmpty( delta ) ) {\n      this.$__reset();\n      // Проверка на окружение тестов\n      // Хотя можно таким образом просто делать валидацию, даже если нет коллекции или api\n      if ( !resource ){\n        innerPromise.resolve( this );\n      } else {\n        resource( this.id ).update( delta ).always( innerPromise.resolve );\n      }\n    } else {\n      this.$__reset();\n      innerPromise.resolve( this );\n    }\n\n    this.trigger('isNew', false);\n  }\n\n  return innerPromise;\n};",
     "ctx": {
       "type": "method",
       "constructor": "Document",
@@ -2942,9 +3354,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1339,
-    "codeStart": 1376,
-    "code": "Document.prototype.save = function ( done ) {\n  var self = this;\n  var finalPromise = new $.Deferred().done( done );\n\n  // Сохранять документ можно только если он находится в коллекции\n  if ( !this.collection ){\n    finalPromise.reject( arguments );\n    console.error('Document.save api handle is not implemented.');\n    return finalPromise;\n  }\n\n  // Check for preSave errors (точо знаю, что она проверяет ошибки в массивах (CastError))\n  var preSaveErr = self.$__presaveValidate();\n  if ( preSaveErr ) {\n    finalPromise.reject( preSaveErr );\n    return finalPromise;\n  }\n\n  // Validate\n  var p0 = new $.Deferred();\n  self.validate(function( err ){\n    if ( err ){\n      p0.reject( err );\n      finalPromise.reject( err );\n    } else {\n      p0.resolve();\n    }\n  });\n\n  // Сначала надо сохранить все поддокументы и сделать resolve!!!\n  // Call save hooks on subdocs\n  var subDocs = self.$__getAllSubdocs();\n  var whenCond = subDocs.map(function (d) {return d.save();});\n  whenCond.push( p0 );\n\n  // Так мы передаём массив promise условий\n  var p1 = $.when.apply( $, whenCond );\n\n  // Handle save and results\n  p1\n    .then( this.$__handleSave.bind( this ) )\n    .then(function(){\n      return finalPromise.resolve( self );\n    }, function ( err ) {\n      // If the initial insert fails provide a second chance.\n      // (If we did this all the time we would break updates)\n      if (self.$__.inserting) {\n        self.isNew = true;\n        self.emit('isNew', true);\n      }\n      finalPromise.reject( err );\n    });\n\n  return finalPromise;\n};",
+    "line": 1343,
+    "codeStart": 1380,
+    "code": "Document.prototype.save = function ( done ) {\n  var self = this;\n  var finalPromise = new Deferred().done( done );\n\n  // Сохранять документ можно только если он находится в коллекции\n  if ( !this.collection ){\n    finalPromise.reject( arguments );\n    console.error('Document.save api handle is not implemented.');\n    return finalPromise;\n  }\n\n  // Check for preSave errors (точо знаю, что она проверяет ошибки в массивах (CastError))\n  var preSaveErr = self.$__presaveValidate();\n  if ( preSaveErr ) {\n    finalPromise.reject( preSaveErr );\n    return finalPromise;\n  }\n\n  // Validate\n  var p0 = new Deferred();\n  self.validate(function( err ){\n    if ( err ){\n      p0.reject( err );\n      finalPromise.reject( err );\n    } else {\n      p0.resolve();\n    }\n  });\n\n  // Сначала надо сохранить все поддокументы и сделать resolve!!!\n  // (тут псевдосохранение смотреть EmbeddedDocument.prototype.save )\n  // Call save hooks on subdocs\n  var subDocs = self.$__getAllSubdocs();\n  var whenCond = subDocs.map(function (d) {return d.save();});\n\n  whenCond.push( p0 );\n\n  // Так мы передаём массив promise условий\n  var p1 = Deferred.when.apply( Deferred, whenCond );\n\n  // Handle save and results\n  p1.then( this.$__handleSave.bind( this ) )\n    .then(function(){\n      return finalPromise.resolve( self );\n    }, function ( err ) {\n      // If the initial insert fails provide a second chance.\n      // (If we did this all the time we would break updates)\n      if (self.$__.inserting) {\n        self.isNew = true;\n        self.emit('isNew', true);\n      }\n      finalPromise.reject( err );\n    });\n\n  return finalPromise;\n};",
     "ctx": {
       "type": "method",
       "constructor": "Document",
@@ -2990,8 +3402,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1433,
-    "codeStart": 1548,
+    "line": 1438,
+    "codeStart": 1553,
     "code": "Document.prototype.toObject = function (options) {\n  if (options && options.depopulate && this.$__.wasPopulated) {\n    // populated paths that we set to a document\n    return utils.clone(this._id, options);\n  }\n\n  // When internally saving this document we always pass options,\n  // bypassing the custom schema options.\n  var optionsParameter = options;\n  if (!(options && 'Object' == utils.getFunctionName(options.constructor)) ||\n    (options && options._useSchemaOptions)) {\n    options = this.schema.options.toObject\n      ? clone(this.schema.options.toObject)\n      : {};\n  }\n\n  if ( options.minimize === undefined ){\n    options.minimize = this.schema.options.minimize;\n  }\n\n  if (!optionsParameter) {\n    options._useSchemaOptions = true;\n  }\n\n  var ret = utils.clone(this._doc, options);\n\n  if (options.virtuals || options.getters && false !== options.virtuals) {\n    applyGetters(this, ret, 'virtuals', options);\n  }\n\n  if (options.getters) {\n    applyGetters(this, ret, 'paths', options);\n    // applyGetters for paths will add nested empty objects;\n    // if minimize is set, we need to remove them.\n    if (options.minimize) {\n      ret = minimize(ret) || {};\n    }\n  }\n\n  // In the case where a subdocument has its own transform function, we need to\n  // check and see if the parent has a transform (options.transform) and if the\n  // child schema has a transform (this.schema.options.toObject) In this case,\n  // we need to adjust options.transform to be the child schema's transform and\n  // not the parent schema's\n  if (true === options.transform ||\n      (this.schema.options.toObject && options.transform)) {\n    var opts = options.json\n      ? this.schema.options.toJSON\n      : this.schema.options.toObject;\n    if (opts) {\n      options.transform = opts.transform;\n    }\n  }\n\n  if ('function' == typeof options.transform) {\n    var xformed = options.transform(this, ret, options);\n    if ('undefined' != typeof xformed) ret = xformed;\n  }\n\n  return ret;\n};",
     "ctx": {
       "type": "method",
@@ -3029,8 +3441,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1610,
-    "codeStart": 1617,
+    "line": 1615,
+    "codeStart": 1622,
     "code": "function minimize (obj) {\n  var keys = Object.keys(obj)\n    , i = keys.length\n    , hasKeys\n    , key\n    , val;\n\n  while (i--) {\n    key = keys[i];\n    val = obj[key];\n\n    if ( _.isPlainObject(val) ) {\n      obj[key] = minimize(val);\n    }\n\n    if (undefined === obj[key]) {\n      delete obj[key];\n      continue;\n    }\n\n    hasKeys = true;\n  }\n\n  return hasKeys\n    ? obj\n    : undefined;\n}",
     "ctx": {
       "type": "function",
@@ -3084,8 +3496,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1645,
-    "codeStart": 1654,
+    "line": 1650,
+    "codeStart": 1659,
     "code": "function applyGetters (self, json, type, options) {\n  var schema = self.schema\n    , paths = Object.keys(schema[type])\n    , i = paths.length\n    , path;\n\n  while (i--) {\n    path = paths[i];\n\n    var parts = path.split('.')\n      , plen = parts.length\n      , last = plen - 1\n      , branch = json\n      , part;\n\n    for (var ii = 0; ii < plen; ++ii) {\n      part = parts[ii];\n      if (ii === last) {\n        branch[part] = utils.clone(self.get(path), options);\n      } else {\n        branch = branch[part] || (branch[part] = {});\n      }\n    }\n  }\n\n  return json;\n}",
     "ctx": {
       "type": "function",
@@ -3129,8 +3541,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1682,
-    "codeStart": 1697,
+    "line": 1687,
+    "codeStart": 1702,
     "code": "Document.prototype.toJSON = function (options) {\n  // check for object type since an array of documents\n  // being stringified passes array indexes instead\n  // of options objects. JSON.stringify([doc, doc])\n  // The second check here is to make sure that populated documents (or\n  // subdocuments) use their own options for `.toJSON()` instead of their\n  // parent's\n  if (!(options && 'Object' == utils.getFunctionName(options.constructor))\n      || ((!options || options.json) && this.schema.options.toJSON)) {\n\n    options = this.schema.options.toJSON\n      ? utils.clone(this.schema.options.toJSON)\n      : {};\n  }\n  options.json = true;\n\n  return this.toObject(options);\n};",
     "ctx": {
       "type": "method",
@@ -3172,8 +3584,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1716,
-    "codeStart": 1728,
+    "line": 1721,
+    "codeStart": 1733,
     "code": "Document.prototype.equals = function (doc) {\n  var tid = this.get('_id');\n  var docid = doc.get('_id');\n  if (!tid && !docid) {\n    return deepEqual(this, doc);\n  }\n  return tid && tid.equals\n    ? tid.equals(docid)\n    : tid === docid;\n};",
     "ctx": {
       "type": "method",
@@ -3220,8 +3632,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1739,
-    "codeStart": 1755,
+    "line": 1744,
+    "codeStart": 1760,
     "code": "Document.prototype.populated = function (path, val, options) {\n  // val and options are internal\n\n  //TODO: доделать эту проверку, она должна опираться не на $__.populated, а на то, что наш объект имеет родителя\n  // и потом уже выставлять свойство populated == true\n  if (null == val) {\n    if (!this.$__.populated) return undefined;\n    var v = this.$__.populated[path];\n    if (v) return v.value;\n    return undefined;\n  }\n\n  // internal\n\n  if (true === val) {\n    if (!this.$__.populated) return undefined;\n    return this.$__.populated[path];\n  }\n\n  this.$__.populated || (this.$__.populated = {});\n  this.$__.populated[path] = { value: val, options: options };\n  return val;\n};",
     "ctx": {
       "type": "method",
@@ -3271,8 +3683,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1779,
-    "codeStart": 1788,
+    "line": 1784,
+    "codeStart": 1793,
     "code": "Document.prototype.$__fullPath = function (path) {\n  // overridden in SubDocuments\n  return path || '';\n};",
     "ctx": {
       "type": "method",
@@ -3309,8 +3721,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1793,
-    "codeStart": 1802,
+    "line": 1798,
+    "codeStart": 1807,
     "code": "Document.prototype.remove = function(){\n  if ( this.collection ){\n    return this.collection.remove( this );\n  }\n\n  return delete this;\n};",
     "ctx": {
       "type": "method",
@@ -3331,8 +3743,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1811,
-    "codeStart": 1814,
+    "line": 1816,
+    "codeStart": 1819,
     "code": "Document.prototype.empty = function(){\n  var doc = this\n    , self = this\n    , paths = Object.keys( this.schema.paths )\n    , plen = paths.length\n    , ii = 0;\n\n  for ( ; ii < plen; ++ii ) {\n    var p = paths[ii];\n\n    if ( '_id' == p ) continue;\n\n    var type = this.schema.paths[ p ]\n      , path = p.split('.')\n      , len = path.length\n      , last = len - 1\n      , doc_ = doc\n      , i = 0;\n\n    for ( ; i < len; ++i ) {\n      var piece = path[ i ]\n        , defaultVal;\n\n      if ( i === last ) {\n        defaultVal = type.getDefault( self, true );\n\n        doc_[ piece ] = defaultVal || undefined;\n        self.$__.activePaths.default( p );\n      } else {\n        doc_ = doc_[ piece ] || ( doc_[ piece ] = {} );\n      }\n    }\n  }\n};",
     "ctx": {
       "type": "method",
@@ -3353,8 +3765,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1849,
-    "codeStart": 1853,
+    "line": 1854,
+    "codeStart": 1858,
     "code": "Document.ValidationError = ValidationError;\nmodule.exports = Document;",
     "ctx": {
       "type": "property",
@@ -3870,8 +4282,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 4,
-    "codeStart": 11,
+    "line": 3,
+    "codeStart": 10,
     "code": "function StorageError ( msg ) {\n  this.message = msg;\n  this.name = 'StorageError';\n}\nStorageError.prototype = new Error();",
     "ctx": {
       "type": "function",
@@ -3890,8 +4302,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 18,
-    "codeStart": 21,
+    "line": 17,
+    "codeStart": 20,
     "code": "StorageError.prototype.formatMessage = function (msg, path, type, val) {\n  if (!msg) throw new TypeError('message is required');\n\n  return msg.replace(/{PATH}/, path)\n            .replace(/{VALUE}/, String(val||''))\n            .replace(/{TYPE}/, type || 'declared type');\n};",
     "ctx": {
       "type": "method",
@@ -3912,8 +4324,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 29,
-    "codeStart": 33,
+    "line": 28,
+    "codeStart": 31,
     "code": "module.exports = StorageError;",
     "ctx": {
       "type": "property",
@@ -3943,8 +4355,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 35,
-    "codeStart": 42,
+    "line": 33,
+    "codeStart": 39,
     "code": "StorageError.messages = require('./error/messages');",
     "ctx": {
       "type": "property",
@@ -3965,9 +4377,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 44,
-    "codeStart": 48,
-    "code": "StorageError.CastError = require('./error/cast');\nStorageError.ValidationError = require('./error/validation');\nStorageError.ValidatorError = require('./error/validator');\n//todo:\n//StorageError.VersionError = require('./error/version');\n//StorageError.OverwriteModelError = require('./error/overwriteModel');\nStorageError.MissingSchemaError = require('./error/missingSchema');\n//StorageError.DivergentArrayError = require('./error/divergentArray');",
+    "line": 41,
+    "codeStart": 44,
+    "code": "StorageError.CastError = require('./error/cast');\nStorageError.ValidationError = require('./error/validation');\nStorageError.ValidatorError = require('./error/validator');\n//todo:\n//StorageError.OverwriteModelError = require('./error/overwriteModel');\nStorageError.MissingSchemaError = require('./error/missingSchema');\n//StorageError.DivergentArrayError = require('./error/divergentArray');",
     "ctx": {
       "type": "property",
       "receiver": "StorageError",
@@ -4434,7 +4846,7 @@
           "string"
         ],
         "name": "name",
-        "description": "",
+        "description": "- collection name",
         "optional": false
       },
       {
@@ -4463,6 +4875,10 @@
           "undefined"
         ],
         "description": ""
+      },
+      {
+        "type": "api",
+        "visibility": "public"
       }
     ],
     "description": {
@@ -4475,14 +4891,50 @@
     "isEvent": false,
     "ignore": false,
     "line": 39,
-    "codeStart": 49,
-    "code": "Storage.prototype.createCollection = function( name, schema, api ){\n  if ( this[ name ] ){\n    console.info('storage::collection: `' + name + '` already exist');\n    return this[ name ];\n  }\n\n  if ( 'Schema' !== utils.getFunctionName( schema.constructor ) ){\n    throw new TypeError('`schema` must be Schema instance');\n  }\n\n  this.collectionNames.push( name );\n\n  this[ name ] = new Collection( name, schema, api );\n\n  return this[ name ];\n};",
+    "codeStart": 50,
+    "code": "Storage.prototype.createCollection = function( name, schema, api ){\n  if ( this[ name ] ){\n    console.info('storage::collection: `' + name + '` already exist');\n    return this[ name ];\n  }\n\n  if ( name == null ){\n    throw new TypeError('storage.createCollection( name, schema ) - `name` must be exist, `schema` must be Schema instance');\n  }\n\n  if ( schema == null || 'Schema' !== utils.getFunctionName( schema.constructor ) ){\n    throw new TypeError('storage.createCollection( name, schema ) - `schema` must be Schema instance');\n  }\n\n  this.collectionNames.push( name );\n\n  this[ name ] = new Collection( name, schema, api );\n\n  return this[ name ];\n};",
     "ctx": {
       "type": "method",
       "constructor": "Storage",
       "cons": "Storage",
       "name": "createCollection",
       "string": "Storage.prototype.createCollection()"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "see",
+        "local": "Storage.createCollection #index_Storage-createCollection"
+      },
+      {
+        "type": "method",
+        "string": "createCollection"
+      },
+      {
+        "type": "api",
+        "visibility": "public"
+      }
+    ],
+    "description": {
+      "full": "<p>Alias for createCollection</p>",
+      "summary": "<p>Alias for createCollection</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 71,
+    "codeStart": 78,
+    "code": "Storage.prototype.addCollection = Storage.prototype.createCollection;",
+    "ctx": {
+      "type": "property",
+      "constructor": "Storage",
+      "cons": "Storage",
+      "name": "addCollection",
+      "value": "Storage.prototype.createCollection",
+      "string": "Storage.prototype.addCollection"
     }
   },
   {
@@ -4504,8 +4956,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 66,
-    "codeStart": 71,
+    "line": 80,
+    "codeStart": 85,
     "code": "Storage.prototype.getCollectionNames = function(){\n  return this.collectionNames;\n};",
     "ctx": {
       "type": "method",
@@ -4535,8 +4987,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 75,
-    "codeStart": 81,
+    "line": 89,
+    "codeStart": 95,
     "code": "Storage.prototype.Collection = Collection;",
     "ctx": {
       "type": "property",
@@ -4572,8 +5024,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 83,
-    "codeStart": 89,
+    "line": 97,
+    "codeStart": 103,
     "code": "Storage.prototype.version = pkg.version;",
     "ctx": {
       "type": "property",
@@ -4604,8 +5056,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 91,
-    "codeStart": 103,
+    "line": 105,
+    "codeStart": 117,
     "code": "Storage.prototype.Storage = Storage;",
     "ctx": {
       "type": "property",
@@ -4636,8 +5088,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 105,
-    "codeStart": 116,
+    "line": 119,
+    "codeStart": 130,
     "code": "Storage.prototype.Schema = Schema;",
     "ctx": {
       "type": "property",
@@ -4668,8 +5120,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 118,
-    "codeStart": 124,
+    "line": 132,
+    "codeStart": 138,
     "code": "Storage.prototype.SchemaType = SchemaType;",
     "ctx": {
       "type": "property",
@@ -4709,8 +5161,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 126,
-    "codeStart": 137,
+    "line": 140,
+    "codeStart": 151,
     "code": "Storage.prototype.SchemaTypes = Schema.Types;",
     "ctx": {
       "type": "property",
@@ -4741,8 +5193,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 139,
-    "codeStart": 145,
+    "line": 153,
+    "codeStart": 159,
     "code": "Storage.prototype.VirtualType = VirtualType;",
     "ctx": {
       "type": "property",
@@ -4778,8 +5230,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 147,
-    "codeStart": 170,
+    "line": 161,
+    "codeStart": 184,
     "code": "Storage.prototype.Types = Types;",
     "ctx": {
       "type": "property",
@@ -4810,8 +5262,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 172,
-    "codeStart": 178,
+    "line": 186,
+    "codeStart": 192,
     "code": "Storage.prototype.Document = Document;",
     "ctx": {
       "type": "property",
@@ -4842,9 +5294,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 180,
-    "codeStart": 186,
-    "code": "Storage.prototype.Error = require('./error');\n\n\n\nStorage.prototype.StateMachine = require('./statemachine');\nStorage.prototype.utils = utils;\nStorage.prototype.ObjectId = Types.ObjectId;\nStorage.prototype.schemas = Schema.schemas;\n\nStorage.prototype.setAdapter = function( adapterHooks ){\n  Document.prototype.adapterHooks = adapterHooks;\n};",
+    "line": 194,
+    "codeStart": 200,
+    "code": "Storage.prototype.Error = require('./error');\n\n\nStorage.prototype.Deferred = require('./deferred');\nStorage.prototype.events = require('./events');\nStorage.prototype.StateMachine = require('./statemachine');\nStorage.prototype.utils = utils;\nStorage.prototype.ObjectId = Types.ObjectId;\nStorage.prototype.schemas = Schema.schemas;\n\nStorage.prototype.setAdapter = function( adapterHooks ){\n  Document.prototype.adapterHooks = adapterHooks;\n};",
     "ctx": {
       "type": "property",
       "constructor": "Storage",
@@ -4870,8 +5322,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 200,
-    "codeStart": 205,
+    "line": 215,
+    "codeStart": 220,
     "code": "module.exports = new Storage();\n\nwindow.Buffer = Buffer;",
     "ctx": {
       "type": "property",
@@ -4957,7 +5409,7 @@
     "isEvent": false,
     "ignore": false,
     "line": 3,
-    "codeStart": 31,
+    "codeStart": 30,
     "code": "exports.get = function (path, o, special, map) {\n  var lookup;\n\n  if ('function' === typeof special) {\n    if (special.length < 2) {\n      map = special;\n      special = undefined;\n    } else {\n      lookup = special;\n      special = undefined;\n    }\n  }\n\n  map || (map = K);\n\n  var parts = 'string' === typeof path\n    ? path.split('.')\n    : path;\n\n  if (!Array.isArray(parts)) {\n    throw new TypeError('Invalid `path`. Must be either string or array');\n  }\n\n  var obj = o\n    , part;\n\n  for (var i = 0; i < parts.length; ++i) {\n    part = parts[i];\n\n    if (Array.isArray(obj) && !/^\\d+$/.test(part)) {\n      // reading a property from the array items\n      var paths = parts.slice(i);\n\n      return obj.map(function (item) {\n        return item\n          ? exports.get(paths, item, special || lookup, map)\n          : map(undefined);\n      });\n    }\n\n    if (lookup) {\n      obj = lookup(obj, part);\n    } else {\n      obj = special && obj[special]\n        ? obj[special][part]\n        : obj[part];\n    }\n\n    if (!obj) return map(obj);\n  }\n\n  return map(obj);\n};",
     "ctx": {
       "type": "method",
@@ -5023,8 +5475,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 85,
-    "codeStart": 95,
+    "line": 84,
+    "codeStart": 93,
     "code": "exports.set = function (path, val, o, special, map, _copying) {\n  var lookup;\n\n  if ('function' === typeof special) {\n    if (special.length < 2) {\n      map = special;\n      special = undefined;\n    } else {\n      lookup = special;\n      special = undefined;\n    }\n  }\n\n  map || (map = K);\n\n  var parts = 'string' === typeof path\n    ? path.split('.')\n    : path;\n\n  if (!Array.isArray(parts)) {\n    throw new TypeError('Invalid `path`. Must be either string or array');\n  }\n\n  if (null == o) return;\n\n  // the existance of $ in a path tells us if the user desires\n  // the copying of an array instead of setting each value of\n  // the array to the one by one to matching positions of the\n  // current array.\n  var copy = _copying || /\\$/.test(path)\n    , obj = o\n    , part;\n\n  for (var i = 0, len = parts.length - 1; i < len; ++i) {\n    part = parts[i];\n\n    if ('$' === part) {\n      if (i == len - 1) {\n        break;\n      } else {\n        continue;\n      }\n    }\n\n    if (Array.isArray(obj) && !/^\\d+$/.test(part)) {\n      var paths = parts.slice(i);\n      if (!copy && Array.isArray(val)) {\n        for (var j = 0; j < obj.length && j < val.length; ++j) {\n          // assignment of single values of array\n          exports.set(paths, val[j], obj[j], special || lookup, map, copy);\n        }\n      } else {\n        for (var j = 0; j < obj.length; ++j) {\n          // assignment of entire value\n          exports.set(paths, val, obj[j], special || lookup, map, copy);\n        }\n      }\n      return;\n    }\n\n    if (lookup) {\n      obj = lookup(obj, part);\n    } else {\n      obj = special && obj[special]\n        ? obj[special][part]\n        : obj[part];\n    }\n\n    if (!obj) return;\n  }\n\n  // process the last property of the path\n\n  part = parts[len];\n\n  // use the special property if exists\n  if (special && obj[special]) {\n    obj = obj[special];\n  }\n\n  // set the value on the last branch\n  if (Array.isArray(obj) && !/^\\d+$/.test(part)) {\n    if (!copy && Array.isArray(val)) {\n      for (var item, j = 0; j < obj.length && j < val.length; ++j) {\n        item = obj[j];\n        if (item) {\n          if (lookup) {\n            lookup(item, part, map(val[j]));\n          } else {\n            if (item[special]) item = item[special];\n            item[part] = map(val[j]);\n          }\n        }\n      }\n    } else {\n      for (var j = 0; j < obj.length; ++j) {\n        item = obj[j];\n        if (item) {\n          if (lookup) {\n            lookup(item, part, map(val));\n          } else {\n            if (item[special]) item = item[special];\n            item[part] = map(val);\n          }\n        }\n      }\n    }\n  } else {\n    if (lookup) {\n      lookup(obj, part, map(val));\n    } else {\n      obj[part] = map(val);\n    }\n  }\n};",
     "ctx": {
       "type": "method",
@@ -5044,8 +5496,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 211,
-    "codeStart": 215,
+    "line": 209,
+    "codeStart": 212,
     "code": "function K (v) {\n  return v;\n}",
     "ctx": {
       "type": "function",
@@ -6047,7 +6499,7 @@
     "ignore": false,
     "line": 109,
     "codeStart": 118,
-    "code": "DocumentArray.prototype.cast = function (value, doc, init, prev) {\n  var selected\n    , subdoc\n    , i;\n\n  if (!Array.isArray(value)) {\n    return this.cast([value], doc, init, prev);\n  }\n\n  // Если два массива примерно одинаковые - не надо перезаписывать\n  if ( prev && approximatelyEqual( value, prev ) ){\n    return prev;\n  }\n\n  if (!(value.isStorageDocumentArray)) {\n    value = new StorageDocumentArray(value, this.path, doc);\n    if (prev && prev._handlers) {\n      for (var key in prev._handlers) {\n        doc.off(key, prev._handlers[key]);\n      }\n    }\n  }\n\n  i = value.length;\n\n  while (i--) {\n    if (!(value[i] instanceof Subdocument) && value[i]) {\n      if (init) {\n        selected || (selected = scopePaths(this, doc.$__.selected, init));\n        subdoc = new this.casterConstructor(null, value, true, selected);\n        value[i] = subdoc.init(value[i]);\n      } else {\n        try {\n          subdoc = prev.id(value[i]._id);\n        } catch(e) {}\n\n        if (prev && subdoc) {\n          // handle resetting doc with existing id but differing data\n          // doc.array = [{ doc: 'val' }]\n          subdoc.set(value[i]);\n        } else {\n          subdoc = new this.casterConstructor(value[i], value);\n\n          restorePopulatedFields( subdoc, this.schema.tree, value[i], prev );\n        }\n\n        // if set() is hooked it will have no return value\n        // see gh-746\n        value[i] = subdoc;\n      }\n    }\n  }\n\n  return value;\n};",
+    "code": "DocumentArray.prototype.cast = function (value, doc, init, prev) {\n  var selected\n    , subdoc\n    , i;\n\n  if (!Array.isArray(value)) {\n    return this.cast([value], doc, init, prev);\n  }\n\n  // Если два массива примерно (кроме _id) одинаковые - не надо перезаписывать\n  if ( prev && approximatelyEqual( value, prev ) ){\n    return prev;\n  }\n\n  if (!(value.isStorageDocumentArray)) {\n    value = new StorageDocumentArray(value, this.path, doc);\n    if (prev && prev._handlers) {\n      for (var key in prev._handlers) {\n        doc.off(key, prev._handlers[key]);\n      }\n    }\n  }\n\n  i = value.length;\n\n  while (i--) {\n    if (!(value[i] instanceof Subdocument) && value[i]) {\n      if (init) {\n        selected || (selected = scopePaths(this, doc.$__.selected, init));\n        subdoc = new this.casterConstructor(null, value, true, selected);\n        value[i] = subdoc.init(value[i]);\n      } else {\n        try {\n          subdoc = prev.id(value[i]._id);\n        } catch(e) {}\n\n        if (prev && subdoc) {\n          // handle resetting doc with existing id but differing data\n          // doc.array = [{ doc: 'val' }]\n          subdoc.set(value[i]);\n        } else {\n          subdoc = new this.casterConstructor(value[i], value);\n\n          restorePopulatedFields( subdoc, this.schema.tree, value[i], prev );\n        }\n\n        // if set() is hooked it will have no return value\n        // see gh-746\n        value[i] = subdoc;\n      }\n    }\n  }\n\n  return value;\n};",
     "ctx": {
       "type": "method",
       "constructor": "DocumentArray",
@@ -6085,16 +6537,16 @@
       }
     ],
     "description": {
-      "full": "<p>Приблизительное сравнение двух массивов</p><p>Это нужно для populated полей - их мы преобразовываем в id.<br />Так же в сравнении не участвует id существующих Embedded документов,<br />Если на сервере _id: false, а на клиенте по умолчанию есть _id.</p>",
+      "full": "<p>Приблизительное сравнение двух массивов</p><p>Это нужно для populated полей - их мы преобразовываем в id.</p><p>Так же в сравнении не участвует id существующих Embedded документов,<br />Если на сервере _id: false, а на клиенте по умолчанию есть _id.</p>",
       "summary": "<p>Приблизительное сравнение двух массивов</p>",
-      "body": "<p>Это нужно для populated полей - их мы преобразовываем в id.<br />Так же в сравнении не участвует id существующих Embedded документов,<br />Если на сервере _id: false, а на клиенте по умолчанию есть _id.</p>"
+      "body": "<p>Это нужно для populated полей - их мы преобразовываем в id.</p><p>Так же в сравнении не участвует id существующих Embedded документов,<br />Если на сервере _id: false, а на клиенте по умолчанию есть _id.</p>"
     },
     "isPrivate": false,
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
     "line": 174,
-    "codeStart": 185,
+    "codeStart": 186,
     "code": "function approximatelyEqual ( value, prev ) {\n  prev = prev.toObject({depopulate: 1});\n\n  // Не сравнивать по subdoc _id\n  var i = value.length;\n  if ( i === prev.length ){\n    _.forEach( value, function( subdoc, i ){\n      if ( !subdoc._id ){\n        delete prev[ i ]._id;\n      }\n    });\n  }\n\n  return utils.deepEqual( value, prev );\n}",
     "ctx": {
       "type": "function",
@@ -6150,8 +6602,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 201,
-    "codeStart": 209,
+    "line": 202,
+    "codeStart": 210,
     "code": "function restorePopulatedFields ( subdoc, schemaTree, value, prev ) {\n  var props;\n  _.forEach( schemaTree, function( prop, key ){\n    var curVal;\n\n    if ( prop.ref ){\n      props = {};\n      curVal = value[ key ];\n\n      if ( curVal && oid.isValid( curVal ) ){\n\n        _.forEach( prev, function( prevDoc ){\n          var prevDocProp = prevDoc[ key ];\n\n          if ( prevDocProp instanceof Document ){\n            if ( prevDocProp._id.equals( curVal ) ){\n              subdoc[ key ] = prevDocProp;\n            }\n          }\n        });\n      }\n    }\n  });\n}",
     "ctx": {
       "type": "function",
@@ -6200,8 +6652,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 234,
-    "codeStart": 242,
+    "line": 235,
+    "codeStart": 243,
     "code": "function scopePaths (array, fields, init) {\n  if (!(init && fields)) return undefined;\n\n  var path = array.path + '.'\n    , keys = Object.keys(fields)\n    , i = keys.length\n    , selected = {}\n    , hasKeys\n    , key;\n\n  while (i--) {\n    key = keys[i];\n    if (0 === key.indexOf(path)) {\n      hasKeys || (hasKeys = true);\n      selected[key.substring(path.length)] = fields[key];\n    }\n  }\n\n  return hasKeys && selected || undefined;\n}",
     "ctx": {
       "type": "function",
@@ -6220,7 +6672,7 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 263,
+    "line": 264,
     "codeStart": 267,
     "code": "module.exports = DocumentArray;",
     "ctx": {
@@ -7614,7 +8066,7 @@
     "ignore": false,
     "line": 157,
     "codeStart": 164,
-    "code": "Schema.prototype.defaultOptions = function (options) {\n  options = $.extend({\n      strict: true\n    , versionKey: '__v'\n    , discriminatorKey: '__t'\n    , minimize: true\n    // the following are only applied at construction time\n    , _id: true\n    , id: true\n  }, options );\n\n  return options;\n};",
+    "code": "Schema.prototype.defaultOptions = function (options) {\n  options = _.assign({\n      strict: true\n    , versionKey: '__v'\n    , discriminatorKey: '__t'\n    , minimize: true\n    // the following are only applied at construction time\n    , _id: true\n    , id: true\n  }, options );\n\n  return options;\n};",
     "ctx": {
       "type": "method",
       "constructor": "Schema",
@@ -8525,7 +8977,7 @@
     "isEvent": false,
     "ignore": true,
     "line": 3,
-    "codeStart": 7,
+    "codeStart": 6,
     "code": "var error = require('./error')\n  , utils = require('./utils');\n\nvar errorMessages = error.messages;\nvar CastError = error.CastError;\nvar ValidatorError = error.ValidatorError;",
     "ctx": {
       "type": "declaration",
@@ -8577,8 +9029,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 14,
-    "codeStart": 23,
+    "line": 13,
+    "codeStart": 21,
     "code": "function SchemaType (path, options, instance) {\n  this.path = path;\n  this.instance = instance;\n  this.validators = [];\n  this.setters = [];\n  this.getters = [];\n  this.options = options;\n\n  for (var i in options) if (this[i] && 'function' === typeof this[i]) {\n    var opts = Array.isArray(options[i])\n      ? options[i]\n      : [options[i]];\n\n    this[i].apply(this, opts);\n  }\n}",
     "ctx": {
       "type": "function",
@@ -8619,8 +9071,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 40,
-    "codeStart": 82,
+    "line": 38,
+    "codeStart": 80,
     "code": "SchemaType.prototype.default = function (val) {\n  if (1 === arguments.length) {\n    this.defaultValue = typeof val === 'function'\n      ? val\n      : this.cast( val );\n\n    return this;\n\n  } else if ( arguments.length > 1 ) {\n    this.defaultValue = _.toArray( arguments );\n  }\n  return this.defaultValue;\n};",
     "ctx": {
       "type": "method",
@@ -8662,8 +9114,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 96,
-    "codeStart": 168,
+    "line": 94,
+    "codeStart": 166,
     "code": "SchemaType.prototype.set = function (fn) {\n  if ('function' !== typeof fn)\n    throw new TypeError('A setter must be a function.');\n  this.setters.push(fn);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -8705,8 +9157,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 175,
-    "codeStart": 236,
+    "line": 173,
+    "codeStart": 234,
     "code": "SchemaType.prototype.get = function (fn) {\n  if ('function' !== typeof fn)\n    throw new TypeError('A getter must be a function.');\n  this.getters.push(fn);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -8759,9 +9211,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 243,
-    "codeStart": 314,
-    "code": "SchemaType.prototype.validate = function (obj, message, type) {\n  if ('function' === typeof obj || obj && 'RegExp' === utils.getFunctionName( obj.constructor )) {\n    if (!message) message = errorMessages.general.default;\n    if (!type) type = 'user defined';\n    this.validators.push([obj, message, type]);\n    return this;\n  }\n\n  var i = arguments.length\n    , arg;\n\n  while (i--) {\n    arg = arguments[i];\n    if (!(arg && 'Object' === utils.getFunctionName( arg.constructor ) )) {\n      var msg = 'Invalid validator. Received (' + typeof arg + ') '\n        + arg\n        + '. See http://mongoosejs.com/docs/api.html#schematype_SchemaType-validate';\n\n      throw new Error(msg);\n    }\n    this.validate(arg.validator, arg.msg, arg.type);\n  }\n\n  return this;\n};\n\n/**\n * Adds a required validator to this schematype.\n *\n * ####Example:\n *\n *     var s = new Schema({ born: { type: Date, required: true })\n *\n *     // or with custom error message\n *\n *     var s = new Schema({ born: { type: Date, required: '{PATH} is required!' })\n *\n *     // or through the path API\n *\n *     Schema.path('name').required(true);\n *\n *     // with custom error messaging\n *\n *     Schema.path('name').required(true, 'grrr :( ');\n *\n *\n * @param {Boolean} required enable/disable the validator\n * @param {String} [message] optional custom error message\n * @return {SchemaType} this\n * @see Customized Error Messages #error_messages_StorageError-messages\n * @api public\n */\nSchemaType.prototype.required = function (required, message) {\n  if (false === required) {\n    this.validators = this.validators.filter(function (v) {\n      return v[0] != this.requiredValidator;\n    }, this);\n\n    this.isRequired = false;\n    return this;\n  }\n\n  var self = this;\n  this.isRequired = true;\n\n  this.requiredValidator = function (v) {\n    // in here, `this` refers to the validating document.\n    // no validation when this path wasn't selected in the query.\n    if (this !== undefined && // специальная проверка из-за strict mode и особенности .call(undefined)\n        'isSelected' in this &&\n        !this.isSelected(self.path) &&\n        !this.isModified(self.path)) return true;\n\n    return self.checkRequired(v, this);\n  };\n\n  if ('string' === typeof required) {\n    message = required;\n    required = undefined;\n  }\n\n  var msg = message || errorMessages.general.required;\n  this.validators.push([this.requiredValidator, msg, 'required']);\n\n  return this;\n};\n\n\n/**\n * Gets the default value\n *\n * @param {Object} scope the scope which callback are executed\n * @param {Boolean} init\n * @api private\n */\nSchemaType.prototype.getDefault = function (scope, init) {\n  var ret = 'function' === typeof this.defaultValue\n    ? this.defaultValue.call(scope)\n    : this.defaultValue;\n\n  if (null !== ret && undefined !== ret) {\n    return this.cast(ret, scope, init);\n  } else {\n    return ret;\n  }\n};\n\n/**\n * Applies setters\n *\n * @param {*} value\n * @param {Object} scope\n * @param {Boolean} init\n * @param {*} priorVal\n * @api private\n */\n\nSchemaType.prototype.applySetters = function (value, scope, init, priorVal) {\n  if (SchemaType._isRef( this, value )) {\n    return init\n      ? value\n      : this.cast(value, scope, init, priorVal);\n  }\n\n  var v = value\n    , setters = this.setters\n    , len = setters.length\n    , caster = this.caster;\n\n  if (Array.isArray(v) && caster && caster.setters) {\n    for (var i = 0; i < v.length; i++) {\n      v[i] = caster.applySetters(v[i], scope, init, priorVal);\n    }\n  }\n\n  if (!len) {\n    if (null === v || undefined === v) return v;\n    return this.cast(v, scope, init, priorVal);\n  }\n\n  while (len--) {\n    v = setters[len].call(scope, v, this);\n  }\n\n  if (null === v || undefined === v) return v;\n\n  // do not cast until all setters are applied #665\n  v = this.cast(v, scope, init, priorVal);\n\n  return v;\n};\n\n/**\n * Applies getters to a value\n *\n * @param {Object} value\n * @param {Object} scope\n * @api private\n */\nSchemaType.prototype.applyGetters = function( value, scope ){\n  if ( SchemaType._isRef( this, value ) ) return value;\n\n  var v = value\n    , getters = this.getters\n    , len = getters.length;\n\n  if ( !len ) {\n    return v;\n  }\n\n  while ( len-- ) {\n    v = getters[ len ].call(scope, v, this);\n  }\n\n  return v;\n};\n\n/**\n * Performs a validation of `value` using the validators declared for this SchemaType.\n *\n * @param {*} value\n * @param {Function} callback\n * @param {Object} scope\n * @api private\n */\nSchemaType.prototype.doValidate = function (value, callback, scope) {\n  var err = false\n    , path = this.path\n    , count = this.validators.length;\n\n  if (!count) return callback(null);\n\n  function validate (ok, message, type, val) {\n    if (err) return;\n    if (ok === undefined || ok) {\n      --count || callback(null);\n    } else {\n      callback(err = new ValidatorError(path, message, type, val));\n    }\n  }\n\n  this.validators.forEach(function (v) {\n    var validator = v[0]\n      , message = v[1]\n      , type = v[2];\n\n    if (validator instanceof RegExp) {\n      validate(validator.test(value), message, type, value);\n    } else if ('function' === typeof validator) {\n      if (2 === validator.length) {\n        validator.call(scope, value, function (ok) {\n          validate(ok, message, type, value);\n        });\n      } else {\n        validate(validator.call(scope, value), message, type, value);\n      }\n    }\n  });\n};\n\n/**\n * Determines if value is a valid Reference.\n *\n * На клиенте в качестве ссылки можно хранить как id, так и полные документы\n *\n * @param {SchemaType} self\n * @param {Object} value\n * @return {Boolean}\n * @api private\n */\nSchemaType._isRef = function( self, value ){\n  // fast path\n  var ref = self.options && self.options.ref;\n\n  if ( ref ) {\n    if ( null == value ) return true;\n    if ( _.isObject( value ) ) {\n      return true;\n    }\n  }\n\n  return false;\n};\n\n/*!\n * Module exports.\n */\n\nmodule.exports = SchemaType;\n\nSchemaType.CastError = CastError;\n\nSchemaType.ValidatorError = ValidatorError;",
+    "line": 241,
+    "codeStart": 312,
+    "code": "SchemaType.prototype.validate = function (obj, message, type) {\n  if ('function' === typeof obj || obj && 'RegExp' === utils.getFunctionName( obj.constructor )) {\n    if (!message) message = errorMessages.general.default;\n    if (!type) type = 'user defined';\n    this.validators.push([obj, message, type]);\n    return this;\n  }\n\n  var i = arguments.length\n    , arg;\n\n  while (i--) {\n    arg = arguments[i];\n    if (!(arg && 'Object' === utils.getFunctionName( arg.constructor ) )) {\n      var msg = 'Invalid validator. Received (' + typeof arg + ') '\n        + arg\n        + '. See http://mongoosejs.com/docs/api.html#schematype_SchemaType-validate';\n\n      throw new Error(msg);\n    }\n    this.validate(arg.validator, arg.msg, arg.type);\n  }\n\n  return this;\n};\n\n/**\n * Adds a required validator to this schematype.\n *\n * ####Example:\n *\n *     var s = new Schema({ born: { type: Date, required: true })\n *\n *     // or with custom error message\n *\n *     var s = new Schema({ born: { type: Date, required: '{PATH} is required!' })\n *\n *     // or through the path API\n *\n *     Schema.path('name').required(true);\n *\n *     // with custom error messaging\n *\n *     Schema.path('name').required(true, 'grrr :( ');\n *\n *\n * @param {Boolean} required enable/disable the validator\n * @param {String} [message] optional custom error message\n * @return {SchemaType} this\n * @see Customized Error Messages #error_messages_StorageError-messages\n * @api public\n */\nSchemaType.prototype.required = function (required, message) {\n  if (false === required) {\n    this.validators = this.validators.filter(function (v) {\n      return v[0] != this.requiredValidator;\n    }, this);\n\n    this.isRequired = false;\n    return this;\n  }\n\n  var self = this;\n  this.isRequired = true;\n\n  this.requiredValidator = function (v) {\n    // in here, `this` refers to the validating document.\n    // no validation when this path wasn't selected in the query.\n    if (this !== undefined && // специальная проверка из-за strict mode и особенности .call(undefined)\n        'isSelected' in this &&\n        !this.isSelected(self.path) &&\n        !this.isModified(self.path)) return true;\n\n    return self.checkRequired(v, this);\n  };\n\n  if ('string' === typeof required) {\n    message = required;\n    required = undefined;\n  }\n\n  var msg = message || errorMessages.general.required;\n  this.validators.push([this.requiredValidator, msg, 'required']);\n\n  return this;\n};\n\n\n/**\n * Gets the default value\n *\n * @param {Object} scope the scope which callback are executed\n * @param {Boolean} init\n * @api private\n */\nSchemaType.prototype.getDefault = function (scope, init) {\n  var ret = 'function' === typeof this.defaultValue\n    ? this.defaultValue.call(scope)\n    : this.defaultValue;\n\n  if (null !== ret && undefined !== ret) {\n    return this.cast(ret, scope, init);\n  } else {\n    return ret;\n  }\n};\n\n/**\n * Applies setters\n *\n * @param {*} value\n * @param {Object} scope\n * @param {Boolean} init\n * @param {*} priorVal\n * @api private\n */\nSchemaType.prototype.applySetters = function (value, scope, init, priorVal) {\n  if (SchemaType._isRef( this, value )) {\n    return init\n      ? value\n      : this.cast(value, scope, init, priorVal);\n  }\n\n  var v = value\n    , setters = this.setters\n    , len = setters.length\n    , caster = this.caster;\n\n  if (Array.isArray(v) && caster && caster.setters) {\n    for (var i = 0; i < v.length; i++) {\n      v[i] = caster.applySetters(v[i], scope, init, priorVal);\n    }\n  }\n\n  if (!len) {\n    if (null === v || undefined === v) return v;\n    return this.cast(v, scope, init, priorVal);\n  }\n\n  while (len--) {\n    v = setters[len].call(scope, v, this);\n  }\n\n  if (null === v || undefined === v) return v;\n\n  // do not cast until all setters are applied #665\n  v = this.cast(v, scope, init, priorVal);\n\n  return v;\n};\n\n/**\n * Applies getters to a value\n *\n * @param {Object} value\n * @param {Object} scope\n * @api private\n */\nSchemaType.prototype.applyGetters = function( value, scope ){\n  if ( SchemaType._isRef( this, value ) ) return value;\n\n  var v = value\n    , getters = this.getters\n    , len = getters.length;\n\n  if ( !len ) {\n    return v;\n  }\n\n  while ( len-- ) {\n    v = getters[ len ].call(scope, v, this);\n  }\n\n  return v;\n};\n\n/**\n * Performs a validation of `value` using the validators declared for this SchemaType.\n *\n * @param {*} value\n * @param {Function} callback\n * @param {Object} scope\n * @api private\n */\nSchemaType.prototype.doValidate = function (value, callback, scope) {\n  var err = false\n    , path = this.path\n    , count = this.validators.length;\n\n  if (!count) return callback(null);\n\n  function validate (ok, message, type, val) {\n    if (err) return;\n    if (ok === undefined || ok) {\n      --count || callback(null);\n    } else {\n      callback(err = new ValidatorError(path, message, type, val));\n    }\n  }\n\n  this.validators.forEach(function (v) {\n    var validator = v[0]\n      , message = v[1]\n      , type = v[2];\n\n    if (validator instanceof RegExp) {\n      validate(validator.test(value), message, type, value);\n    } else if ('function' === typeof validator) {\n      if (2 === validator.length) {\n        validator.call(scope, value, function (ok) {\n          validate(ok, message, type, value);\n        });\n      } else {\n        validate(validator.call(scope, value), message, type, value);\n      }\n    }\n  });\n};\n\n/**\n * Determines if value is a valid Reference.\n *\n * На клиенте в качестве ссылки можно хранить как id, так и полные документы\n *\n * @param {SchemaType} self\n * @param {Object} value\n * @return {Boolean}\n * @api private\n */\nSchemaType._isRef = function( self, value ){\n  // fast path\n  var ref = self.options && self.options.ref;\n\n  if ( ref ) {\n    if ( null == value ) return true;\n    if ( _.isObject( value ) ) {\n      return true;\n    }\n  }\n\n  return false;\n};\n\n/*!\n * Module exports.\n */\nmodule.exports = SchemaType;\n\nSchemaType.CastError = CastError;\n\nSchemaType.ValidatorError = ValidatorError;",
     "ctx": {
       "type": "method",
       "constructor": "SchemaType",
@@ -8790,7 +9242,7 @@
     "isEvent": false,
     "ignore": true,
     "line": 3,
-    "codeStart": 10,
+    "codeStart": 9,
     "code": "var StateMachine = module.exports = function StateMachine () {\n  this.paths = {};\n  this.states = {};\n};",
     "ctx": {
       "type": "declaration",
@@ -8840,8 +9292,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 15,
-    "codeStart": 29,
+    "line": 14,
+    "codeStart": 27,
     "code": "StateMachine.ctor = function () {\n  var states = _.toArray(arguments);\n\n  var ctor = function () {\n    StateMachine.apply(this, arguments);\n    this.stateNames = states;\n\n    var i = states.length\n      , state;\n\n    while (i--) {\n      state = states[i];\n      this.states[state] = {};\n    }\n  };\n\n  ctor.prototype = Object.create( StateMachine.prototype );\n  ctor.prototype.constructor = ctor;\n\n  states.forEach(function (state) {\n    // Changes the `path`'s state to `state`.\n    ctor.prototype[state] = function (path) {\n      this._changeState(path, state);\n    };\n  });\n\n  return ctor;\n};",
     "ctx": {
       "type": "method",
@@ -8866,8 +9318,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 58,
-    "codeStart": 68,
+    "line": 56,
+    "codeStart": 65,
     "code": "StateMachine.prototype._changeState = function _changeState (path, nextState) {\n  var prevBucket = this.states[this.paths[path]];\n  if (prevBucket) delete prevBucket[path];\n\n  this.paths[path] = nextState;\n  this.states[nextState][path] = true;\n};",
     "ctx": {
       "type": "method",
@@ -8888,8 +9340,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 76,
-    "codeStart": 80,
+    "line": 73,
+    "codeStart": 76,
     "code": "StateMachine.prototype.clear = function clear (state) {\n  var keys = Object.keys(this.states[state])\n    , i = keys.length\n    , path;\n\n  while (i--) {\n    path = keys[i];\n    delete this.states[state][path];\n    delete this.paths[path];\n  }\n};",
     "ctx": {
       "type": "method",
@@ -8924,8 +9376,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 92,
-    "codeStart": 100,
+    "line": 88,
+    "codeStart": 95,
     "code": "StateMachine.prototype.some = function some () {\n  var self = this;\n  var what = arguments.length ? arguments : this.stateNames;\n  return Array.prototype.some.call(what, function (state) {\n    return Object.keys(self.states[state]).length;\n  });\n};",
     "ctx": {
       "type": "method",
@@ -8967,8 +9419,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 108,
-    "codeStart": 117,
+    "line": 103,
+    "codeStart": 111,
     "code": "StateMachine.prototype._iter = function _iter (iterMethod) {\n  return function () {\n    var numArgs = arguments.length\n      , states = _.toArray(arguments).slice(0, numArgs-1)\n      , callback = arguments[numArgs-1];\n\n    if (!states.length) states = this.stateNames;\n\n    var self = this;\n\n    var paths = states.reduce(function (paths, state) {\n      return paths.concat(Object.keys(self.states[state]));\n    }, []);\n\n    return paths[iterMethod](function (path, i, paths) {\n      return callback(path, i, paths);\n    });\n  };\n};",
     "ctx": {
       "type": "method",
@@ -9021,8 +9473,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 137,
-    "codeStart": 151,
+    "line": 131,
+    "codeStart": 144,
     "code": "StateMachine.prototype.forEach = function forEach () {\n  this.forEach = this._iter('forEach');\n  return this.forEach.apply(this, arguments);\n};",
     "ctx": {
       "type": "method",
@@ -9082,8 +9534,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 156,
-    "codeStart": 171,
+    "line": 149,
+    "codeStart": 163,
     "code": "StateMachine.prototype.map = function map () {\n  this.map = this._iter('map');\n  return this.map.apply(this, arguments);\n};",
     "ctx": {
       "type": "method",
@@ -10139,7 +10591,7 @@
     "isEvent": false,
     "ignore": true,
     "line": 3,
-    "codeStart": 7,
+    "codeStart": 6,
     "code": "var StorageArray = require('./array')\n  , ObjectId = require('./objectid')\n  , ObjectIdSchema = require('../schema/objectid')\n  , Document = require('../document');",
     "ctx": {
       "type": "declaration",
@@ -10207,8 +10659,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 12,
-    "codeStart": 26,
+    "line": 11,
+    "codeStart": 25,
     "code": "function StorageDocumentArray (values, path, doc) {\n  var arr = [];\n\n  // Values always have to be passed to the constructor to initialize, since\n  // otherwise StorageArray#push will mark the array as modified to the parent.\n  arr.push.apply(arr, values);\n  _.mixin( arr, StorageDocumentArray.mixin );\n\n  arr.validators = [];\n  arr._path = path;\n  arr.isStorageArray = true;\n  arr.isStorageDocumentArray = true;\n\n  if (doc) {\n    arr._parent = doc;\n    arr._schema = doc.schema.path(path);\n    arr._handlers = {\n      isNew: arr.notify('isNew'),\n      save: arr.notify('save')\n    };\n\n    // Проброс изменения состояния в поддокумент\n    doc.on('save', arr._handlers.save);\n    doc.on('isNew', arr._handlers.isNew);\n  }\n\n  return arr;\n}",
     "ctx": {
       "type": "function",
@@ -10227,8 +10679,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 55,
-    "codeStart": 58,
+    "line": 54,
+    "codeStart": 57,
     "code": "StorageDocumentArray.mixin = Object.create( StorageArray.mixin );",
     "ctx": {
       "type": "property",
@@ -10254,8 +10706,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 60,
-    "codeStart": 65,
+    "line": 59,
+    "codeStart": 64,
     "code": "StorageDocumentArray.mixin._cast = function (value) {\n  if (value instanceof this._schema.casterConstructor) {\n    if (!(value.__parent && value.__parentArray)) {\n      // value may have been created using array.create()\n      value.__parent = this._parent;\n      value.__parentArray = this;\n    }\n    return value;\n  }\n\n  // handle cast('string') or cast(ObjectId) etc.\n  // only objects are permitted so we can safely assume that\n  // non-objects are to be interpreted as _id\n  if ( value instanceof ObjectId || !_.isObject(value) ) {\n    value = { _id: value };\n  }\n\n  return new this._schema.casterConstructor(value, this);\n};",
     "ctx": {
       "type": "method",
@@ -10303,8 +10755,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 85,
-    "codeStart": 97,
+    "line": 84,
+    "codeStart": 96,
     "code": "StorageDocumentArray.mixin.id = function (id) {\n  var casted\n    , sid\n    , _id;\n\n  try {\n    var casted_ = ObjectIdSchema.prototype.cast.call({}, id);\n    if (casted_) casted = String(casted_);\n  } catch (e) {\n    casted = null;\n  }\n\n  for (var i = 0, l = this.length; i < l; i++) {\n    _id = this[i].get('_id');\n\n    if (_id instanceof Document) {\n      sid || (sid = String(id));\n      if (sid == _id._id) return this[i];\n    } else if (!(_id instanceof ObjectId)) {\n      sid || (sid = String(id));\n      if (sid == _id) return this[i];\n    } else if (casted == _id) {\n      return this[i];\n    }\n  }\n\n  return null;\n};",
     "ctx": {
       "type": "method",
@@ -10345,8 +10797,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 126,
-    "codeStart": 138,
+    "line": 125,
+    "codeStart": 137,
     "code": "StorageDocumentArray.mixin.toObject = function (options) {\n  return this.map(function (doc) {\n    return doc && doc.toObject(options) || null;\n  });\n};",
     "ctx": {
       "type": "method",
@@ -10380,8 +10832,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 144,
-    "codeStart": 153,
+    "line": 143,
+    "codeStart": 152,
     "code": "StorageDocumentArray.mixin.create = function (obj) {\n  return new this._schema.casterConstructor(obj);\n};",
     "ctx": {
       "type": "method",
@@ -10422,8 +10874,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 157,
-    "codeStart": 164,
+    "line": 156,
+    "codeStart": 163,
     "code": "StorageDocumentArray.mixin.notify = function notify (event) {\n  var self = this;\n  return function notify (val) {\n    var i = self.length;\n    while (i--) {\n      if (!self[i]) continue;\n      self[i].trigger(event, val);\n    }\n  };\n};",
     "ctx": {
       "type": "method",
@@ -10443,8 +10895,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 175,
-    "codeStart": 179,
+    "line": 174,
+    "codeStart": 178,
     "code": "module.exports = StorageDocumentArray;",
     "ctx": {
       "type": "property",
@@ -10470,7 +10922,7 @@
     "ignore": true,
     "line": 3,
     "codeStart": 7,
-    "code": "var Document = require('../document');",
+    "code": "var Document = require('../document');\nvar Deferred = require('../deferred');",
     "ctx": {
       "type": "declaration",
       "name": "Document",
@@ -10516,8 +10968,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 9,
-    "codeStart": 17,
+    "line": 10,
+    "codeStart": 18,
     "code": "function EmbeddedDocument ( data, parentArr ) {\n  if (parentArr) {\n    this.__parentArray = parentArr;\n    this.__parent = parentArr._parent;\n  } else {\n    this.__parentArray = undefined;\n    this.__parent = undefined;\n  }\n\n  Document.call( this, data, undefined );\n\n  // Нужно для проброса изменения значения из родительского документа, например при сохранении\n  var self = this;\n  this.on('isNew', function (val) {\n    self.isNew = val;\n  });\n}",
     "ctx": {
       "type": "function",
@@ -10536,8 +10988,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 35,
-    "codeStart": 38,
+    "line": 36,
+    "codeStart": 39,
     "code": "EmbeddedDocument.prototype = Object.create( Document.prototype );\nEmbeddedDocument.prototype.constructor = EmbeddedDocument;",
     "ctx": {
       "type": "property",
@@ -10572,8 +11024,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 41,
-    "codeStart": 53,
+    "line": 42,
+    "codeStart": 54,
     "code": "EmbeddedDocument.prototype.markModified = function (path) {\n  if (!this.__parentArray) return;\n\n  this.$__.activePaths.modify(path);\n\n  if (this.isNew) {\n    // Mark the WHOLE parent array as modified\n    // if this is a new document (i.e., we are initializing\n    // a document),\n    this.__parentArray._markModified();\n  } else\n    this.__parentArray._markModified(this, path);\n};",
     "ctx": {
       "type": "method",
@@ -10615,9 +11067,9 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 67,
-    "codeStart": 79,
-    "code": "EmbeddedDocument.prototype.save = function (fn) {\n  var promise = $.Deferred().done(fn);\n  promise.resolve();\n  return promise;\n};",
+    "line": 68,
+    "codeStart": 80,
+    "code": "EmbeddedDocument.prototype.save = function (fn) {\n  var promise = new Deferred().done(fn);\n  promise.resolve();\n  return promise;\n};",
     "ctx": {
       "type": "method",
       "constructor": "EmbeddedDocument",
@@ -10651,8 +11103,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 85,
-    "codeStart": 91,
+    "line": 86,
+    "codeStart": 92,
     "code": "EmbeddedDocument.prototype.remove = function (fn) {\n  if (!this.__parentArray) return this;\n\n  var _id;\n  if (!this.willRemove) {\n    _id = this._doc._id;\n    if (!_id) {\n      throw new Error('For your own good, Storage does not know ' +\n                      'how to remove an EmbeddedDocument that has no _id');\n    }\n    this.__parentArray.pull({ _id: _id });\n    this.willRemove = true;\n  }\n\n  if (fn)\n    fn(null);\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -10678,8 +11130,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 111,
-    "codeStart": 115,
+    "line": 112,
+    "codeStart": 116,
     "code": "EmbeddedDocument.prototype.update = function () {\n  throw new Error('The #update method is not available on EmbeddedDocuments');\n};",
     "ctx": {
       "type": "method",
@@ -10731,8 +11183,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 119,
-    "codeStart": 127,
+    "line": 120,
+    "codeStart": 128,
     "code": "EmbeddedDocument.prototype.invalidate = function (path, err, val, first) {\n  if (!this.__parent) {\n    var msg = 'Unable to invalidate a subdocument that has not been added to an array.';\n    throw new Error(msg);\n  }\n\n  var index = this.__parentArray.indexOf(this);\n  var parentPath = this.__parentArray._path;\n  var fullPath = [parentPath, index, path].join('.');\n\n  // sniffing arguments:\n  // need to check if user passed a value to keep\n  // our error message clean.\n  if (2 < arguments.length) {\n    this.__parent.invalidate(fullPath, err, val);\n  } else {\n    this.__parent.invalidate(fullPath, err);\n  }\n\n  if (first)\n    this.$__.validationError = this.ownerDocument().$__.validationError;\n  return true;\n};",
     "ctx": {
       "type": "method",
@@ -10761,8 +11213,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 151,
-    "codeStart": 156,
+    "line": 152,
+    "codeStart": 157,
     "code": "EmbeddedDocument.prototype.ownerDocument = function () {\n  if (this.$__.ownerDocument) {\n    return this.$__.ownerDocument;\n  }\n\n  var parent = this.__parent;\n  if (!parent) return this;\n\n  while (parent.__parent) {\n    parent = parent.__parent;\n  }\n\n  this.$__.ownerDocument = parent;\n\n  return this.$__.ownerDocument;\n};",
     "ctx": {
       "type": "method",
@@ -10812,8 +11264,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 173,
-    "codeStart": 182,
+    "line": 174,
+    "codeStart": 183,
     "code": "EmbeddedDocument.prototype.$__fullPath = function (path) {\n  if (!this.$__.fullPath) {\n    var parent = this;\n    if (!parent.__parent) return path;\n\n    var paths = [];\n    while (parent.__parent) {\n      paths.unshift(parent.__parentArray._path);\n      parent = parent.__parent;\n    }\n\n    this.$__.fullPath = paths.join('.');\n\n    if (!this.$__.ownerDocument) {\n      // optimization\n      this.$__.ownerDocument = parent;\n    }\n  }\n\n  return path\n    ? this.$__.fullPath + '.' + path\n    : this.$__.fullPath;\n};",
     "ctx": {
       "type": "method",
@@ -10839,8 +11291,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 206,
-    "codeStart": 211,
+    "line": 207,
+    "codeStart": 212,
     "code": "EmbeddedDocument.prototype.parent = function () {\n  return this.__parent;\n};",
     "ctx": {
       "type": "method",
@@ -10866,8 +11318,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 215,
-    "codeStart": 220,
+    "line": 216,
+    "codeStart": 221,
     "code": "EmbeddedDocument.prototype.parentArray = function () {\n  return this.__parentArray;\n};",
     "ctx": {
       "type": "method",
@@ -10888,8 +11340,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 224,
-    "codeStart": 228,
+    "line": 225,
+    "codeStart": 229,
     "code": "module.exports = EmbeddedDocument;",
     "ctx": {
       "type": "property",
@@ -11986,7 +12438,7 @@
     "ignore": true,
     "line": 326,
     "codeStart": 334,
-    "code": "exports.setValue = function (path, val, obj, map) {\n  mpath.set(path, val, obj, '_doc', map);\n};\n\nvar rFunctionName = /^function\\s*([^\\s(]+)/;\n\nfunction getFunctionName( ctor ){\n  if (ctor.name) {\n    return ctor.name;\n  }\n  return (ctor.toString().trim().match( rFunctionName ) || [])[1];\n}\n\nexports.getFunctionName = getFunctionName;\n\nexports.setImmediate = (function() {\n  // Для поддержки тестов (окружение node.js)\n  if ( typeof global === 'object' && process.nextTick ) return process.nextTick;\n  // Если в браузере уже реализован этот метод\n  if ( window.setImmediate ) return window.setImmediate;\n\n  var head = { }, tail = head; // очередь вызовов, 1-связный список\n\n  var ID = Math.random(); // уникальный идентификатор\n\n  function onmessage(e) {\n    if(e.data != ID) return; // не наше сообщение\n    head = head.next;\n    var func = head.func;\n    delete head.func;\n    func();\n  }\n\n  if(window.addEventListener) { // IE9+, другие браузеры\n    window.addEventListener('message', onmessage, false);\n  } else { // IE8\n    window.attachEvent( 'onmessage', onmessage );\n  }\n\n  return window.postMessage ? function(func) {\n    tail = tail.next = { func: func };\n    window.postMessage(ID, '*');\n  } :\n  function(func) { // IE<8\n    setTimeout(func, 0);\n  };\n}());\n\n// PhantomJS doesn't support bind yet\nif (!Function.prototype.bind) {\n  Function.prototype.bind = function(oThis) {\n    if (typeof this !== 'function') {\n      // ближайший аналог внутренней функции\n      // IsCallable в ECMAScript 5\n      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');\n    }\n\n    var aArgs = Array.prototype.slice.call(arguments, 1),\n      fToBind = this,\n      fNOP    = function() {},\n      fBound  = function() {\n        return fToBind.apply(this instanceof fNOP && oThis\n            ? this\n            : oThis,\n          aArgs.concat(Array.prototype.slice.call(arguments)));\n      };\n\n    fNOP.prototype = this.prototype;\n    fBound.prototype = new fNOP();\n\n    return fBound;\n  };\n}",
+    "code": "exports.setValue = function (path, val, obj, map) {\n  mpath.set(path, val, obj, '_doc', map);\n};\n\nvar rFunctionName = /^function\\s*([^\\s(]+)/;\nfunction getFunctionName( ctor ){\n  if (ctor.name) {\n    return ctor.name;\n  }\n  return (ctor.toString().trim().match( rFunctionName ) || [])[1];\n}\nexports.getFunctionName = getFunctionName;\n\nexports.setImmediate = (function() {\n  // Для поддержки тестов (окружение node.js)\n  if ( typeof global === 'object' && process.nextTick ) return process.nextTick;\n  // Если в браузере уже реализован этот метод\n  if ( window.setImmediate ) return window.setImmediate;\n\n  var head = { }, tail = head; // очередь вызовов, 1-связный список\n\n  var ID = Math.random(); // уникальный идентификатор\n\n  function onmessage(e) {\n    if(e.data != ID) return; // не наше сообщение\n    head = head.next;\n    var func = head.func;\n    delete head.func;\n    func();\n  }\n\n  if(window.addEventListener) { // IE9+, другие браузеры\n    window.addEventListener('message', onmessage, false);\n  } else { // IE8\n    window.attachEvent( 'onmessage', onmessage );\n  }\n\n  return window.postMessage ? function(func) {\n    tail = tail.next = { func: func };\n    window.postMessage(ID, '*');\n  } :\n  function(func) { // IE<8\n    setTimeout(func, 0);\n  };\n}());\n\n// PhantomJS doesn't support bind yet\nif (!Function.prototype.bind) {\n  Function.prototype.bind = function(oThis) {\n    if (typeof this !== 'function') {\n      // ближайший аналог внутренней функции\n      // IsCallable в ECMAScript 5\n      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');\n    }\n\n    var aArgs = Array.prototype.slice.call(arguments, 1),\n      fToBind = this,\n      Noop    = function() {},\n      fBound  = function() {\n        return fToBind.apply(this instanceof Noop && oThis\n            ? this\n            : oThis,\n          aArgs.concat(Array.prototype.slice.call(arguments)));\n      };\n\n    Noop.prototype = this.prototype;\n    fBound.prototype = new Noop();\n\n    return fBound;\n  };\n}",
     "ctx": {
       "type": "method",
       "receiver": "exports",
