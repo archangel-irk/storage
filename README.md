@@ -330,14 +330,14 @@ var BossSchema = new Schema('Boss', PersonSchema, { department: String });
 
         grunt
 
-    Now you'll find the built file in `./storage.js`.
+    Now you'll find the built file in `dist/storage.js`.
     
 ## Running the tests
 After `npm install` you have the [karma test runner](https://github.com/karma-runner/karma) locally, now run:
 
 	grunt test
 
-Also you can see the code coverage in `./test/coverage/`.
+Also you can see the code coverage in `test/coverage/`.
 
 ## License
 MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
