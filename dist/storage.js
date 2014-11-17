@@ -10284,6 +10284,8 @@ module.exports={
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
 
+    "lodash": "latest",
+
     "browserify": "latest",
 
     "dox": "latest",

@@ -4,9 +4,9 @@ module.exports = function (config) {
   config.set({
     // list of files / patterns to load in the browser
     files: [
-      './node_modules/lodash/dist/lodash.js',
-      './storage.js',
-      './test/*.js'
+      'node_modules/lodash/dist/lodash.js',
+      'dist/storage.js',
+      'test/*.js'
     ],
 
     // frameworks to use

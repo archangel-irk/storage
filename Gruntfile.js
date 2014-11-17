@@ -20,7 +20,7 @@ module.exports = function (grunt) {
           }
         },
         src: 'lib/index.js',
-        dest: 'storage.debug.js'
+        dest: 'dist/storage.debug.js'
       },
 
       // browserify lib/ --standalone storage > storage.js
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
           }
         },
         src: 'lib/index.js',
-        dest: 'storage.js'
+        dest: 'dist/storage.js'
       }
     },
 
@@ -41,7 +41,7 @@ module.exports = function (grunt) {
           mangle: false
         },
         files: {
-          'storage.min.js': ['storage.js']
+          'dist/storage.min.js': ['dist/storage.js']
         }
       }
     },
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
           // source files, that you wanna generate coverage for
           // do not include tests or libraries
           // (these files will be instrumented by Istanbul)
-          './storage.js': ['coverage']
+          'dist/storage.js': ['coverage']
         },
         // coverage reporter generates the coverage
         reporters: [
@@ -100,7 +100,7 @@ module.exports = function (grunt) {
           // source files, that you wanna generate coverage for
           // do not include tests or libraries
           // (these files will be instrumented by Istanbul)
-          './storage.js': ['coverage']
+          'dist/storage.js': ['coverage']
         },
         // coverage reporter generates the coverage
         reporters: [
