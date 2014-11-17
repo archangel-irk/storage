@@ -6,7 +6,7 @@
 
 Use mongoose-like schema validation, collections and documents on browser.  
 
-The library provides the most complete compatibility with [mongoose](http://mongoosejs.com/)  ([repo](https://github.com/LearnBoost/mongoose)).
+The library provides the most complete compatibility with [mongoose](http://mongoosejs.com/).
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/archangel_irk.svg)](https://saucelabs.com/u/archangel_irk)
 
