@@ -894,21 +894,21 @@ Promise = (function() {
   the new deferred object as a parameter and this is also set to the
   same object.
 */
-function Deferred() {
-  //this.then = __bind(this.then, this);
-  //this.resolveWith = __bind(this.resolveWith, this);
-  //this.resolve = __bind(this.resolve, this);
-  //this.rejectWith = __bind(this.rejectWith, this);
-  //this.reject = __bind(this.reject, this);
-  //this.promise = __bind(this.promise, this);
-  //this.progress = __bind(this.progress, this);
-  //this.pipe = __bind(this.pipe, this);
-  //this.notifyWith = __bind(this.notifyWith, this);
-  //this.notify = __bind(this.notify, this);
-  //this.fail = __bind(this.fail, this);
- // this.done = __bind(this.done, this);
- // this.always = __bind(this.always, this);
-  //if (typeof fn === 'function') fn.call(this, this);
+function Deferred(fn) {
+  this.then = __bind(this.then, this);
+  this.resolveWith = __bind(this.resolveWith, this);
+  this.resolve = __bind(this.resolve, this);
+  this.rejectWith = __bind(this.rejectWith, this);
+  this.reject = __bind(this.reject, this);
+  this.promise = __bind(this.promise, this);
+  this.progress = __bind(this.progress, this);
+  this.pipe = __bind(this.pipe, this);
+  this.notifyWith = __bind(this.notifyWith, this);
+  this.notify = __bind(this.notify, this);
+  this.fail = __bind(this.fail, this);
+  this.done = __bind(this.done, this);
+  this.always = __bind(this.always, this);
+  if (typeof fn === 'function') fn.call(this, this);
 
   this._state = 'pending';
 }
@@ -9706,7 +9706,7 @@ Buffer.prototype.copy = function (target, target_start, start, end) {
 
   var len = end - start
 
-  if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+  if (len < 100 || !Buffer.TYPED_ARRAY_SUPPORT) {
     for (var i = 0; i < len; i++) {
       target[i + target_start] = this[i + start]
     }
@@ -9775,7 +9775,6 @@ var BP = Buffer.prototype
  * Augment a Uint8Array *instance* (not the Uint8Array class!) with Buffer methods
  */
 Buffer._augment = function (arr) {
-  arr.constructor = Buffer
   arr._isBuffer = true
 
   // save reference to original Uint8Array get/set methods before overwriting
@@ -10170,8 +10169,6 @@ var process = module.exports = {};
 process.nextTick = (function () {
     var canSetImmediate = typeof window !== 'undefined'
     && window.setImmediate;
-    var canMutationObserver = typeof window !== 'undefined'
-    && window.MutationObserver;
     var canPost = typeof window !== 'undefined'
     && window.postMessage && window.addEventListener
     ;
@@ -10180,29 +10177,8 @@ process.nextTick = (function () {
         return function (f) { return window.setImmediate(f) };
     }
 
-    var queue = [];
-
-    if (canMutationObserver) {
-        var hiddenDiv = document.createElement("div");
-        var observer = new MutationObserver(function () {
-            var queueList = queue.slice();
-            queue.length = 0;
-            queueList.forEach(function (fn) {
-                fn();
-            });
-        });
-
-        observer.observe(hiddenDiv, { attributes: true });
-
-        return function nextTick(fn) {
-            if (!queue.length) {
-                hiddenDiv.setAttribute('yes', 'no');
-            }
-            queue.push(fn);
-        };
-    }
-
     if (canPost) {
+        var queue = [];
         window.addEventListener('message', function (ev) {
             var source = ev.source;
             if ((source === window || source === null) && ev.data === 'process-tick') {
@@ -10242,7 +10218,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-};
+}
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
