@@ -1,13 +1,13 @@
 {
-  "name": "storage.js",
+  "name": "storage",
   "version": "0.2.0",
-  "description": "storage.js",
+  "description": "Mongoose-like schema validation, collections and documents on browser (client-side)",
   "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
-  "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/archangel-irk/storage.git"
   },
+  "main": "dist/storage.min.js",
   "scripts": {
     "test": "grunt test"
   },
