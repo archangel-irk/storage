@@ -409,7 +409,7 @@ describe('document', function(){
   });
 
   // m-gh-2340
-  it.only('doesnt use custom toObject options on save', function( done ){
+  it('doesnt use custom toObject options on save', function( done ){
     var schema = new Schema({
       name: String,
       iWillNotBeDelete: Boolean,
