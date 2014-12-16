@@ -408,6 +408,40 @@ describe('document', function(){
     done();
   });
 
+  // m-gh-2340
+  it.only('doesnt use custom toObject options on save', function( done ){
+    var schema = new Schema({
+      name: String,
+      iWillNotBeDelete: Boolean,
+      nested: {
+        iWillNotBeDeleteToo: Boolean
+      }
+    });
+
+    // transform didn't execute
+    schema.set('toObject', {
+      transform: function ( doc, ret ) {
+        delete ret.iWillNotBeDelete;
+        delete ret.nested.iWillNotBeDeleteToo;
+
+        return ret;
+      }
+    });
+    var Test = storage.createCollection('TestToObject', schema );
+
+    var doc = Test.add({ name: 'chetverikov', iWillNotBeDelete: true, 'nested.iWillNotBeDeleteToo': true});
+
+    doc.save(function( docObj ){
+      assert.equal( docObj.iWillNotBeDelete, true );
+      assert.equal( docObj.nested.iWillNotBeDeleteToo, true );
+
+      done();
+
+    }).fail(function( err ){
+      assert.ifError( err );
+    });
+  });
+
   it('toJSON options', function(done){
     var doc = new TestDocument();
 
