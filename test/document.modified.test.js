@@ -101,7 +101,7 @@ describe('document modified', function(){
       }).fail(function( e ){
         console.log( e );
       });
-    })
+    });
   });
 
   describe('isModified', function(){
@@ -149,7 +149,7 @@ describe('document modified', function(){
       post.init({
           title       : 'Test'
         , slug        : 'test'
-        , date        : new Date
+        , date        : new Date()
       });
 
       assert.equal(false, post.isModified('title'));
@@ -165,7 +165,7 @@ describe('document modified', function(){
         post.init({
             title       : 'Test'
           , slug        : 'test'
-          , comments    : [ { title: 'Test', date: new Date, body: 'Test' } ]
+          , comments    : [ { title: 'Test', date: new Date(), body: 'Test' } ]
         });
 
         assert.equal(false, post.isModified('comments.0.title'));
@@ -224,49 +224,49 @@ describe('document modified', function(){
       var doc = B.add({
           title       : 'Test'
         , slug        : 'test'
-        , date        : new Date
+        , date        : new Date()
         , meta        : {
-              date      : new Date
+              date      : new Date()
             , visitors  : 5
           }
         , published   : true
         , mixed       : { x: [ { y: [1,'yes', 2] } ] }
         , numbers     : []
-        , owners      : [new DocumentObjectId, new DocumentObjectId]
+        , owners      : [new DocumentObjectId(), new DocumentObjectId()]
         , comments    : [
-            { title: 'Test', date: new Date, body: 'Test' }
-          , { title: 'Super', date: new Date, body: 'Cool' }
+            { title: 'Test', date: new Date(), body: 'Test' }
+          , { title: 'Super', date: new Date(), body: 'Cool' }
           ]
       });
 
-      doc.save(function(post){
+      doc.save(function( postObj ){
         //set the same data again back to the document.
         //expected result, nothing should be set to modified
-        assert.equal(false, post.isModified('comments'));
-        assert.equal(false, post.isNew);
-        post.set(post.toObject());
+        assert.equal(false, doc.isModified('comments'));
+        assert.equal(false, doc.isNew);
+        doc.set(doc.toObject());
 
-        assert.equal(false, post.isModified('title'));
-        assert.equal(false, post.isModified('slug'));
-        assert.equal(false, post.isModified('date'));
-        assert.equal(false, post.isModified('meta.date'));
-        assert.equal(false, post.isModified('meta.visitors'));
-        assert.equal(false, post.isModified('published'));
-        assert.equal(false, post.isModified('mixed'));
-        assert.equal(false, post.isModified('numbers'));
-        assert.equal(false, post.isModified('owners'));
-        assert.equal(false, post.isModified('comments'));
+        assert.equal(false, doc.isModified('title'));
+        assert.equal(false, doc.isModified('slug'));
+        assert.equal(false, doc.isModified('date'));
+        assert.equal(false, doc.isModified('meta.date'));
+        assert.equal(false, doc.isModified('meta.visitors'));
+        assert.equal(false, doc.isModified('published'));
+        assert.equal(false, doc.isModified('mixed'));
+        assert.equal(false, doc.isModified('numbers'));
+        assert.equal(false, doc.isModified('owners'));
+        assert.equal(false, doc.isModified('comments'));
 
-        var arr = post.comments.slice();
-        arr[2] = post.comments.create({ title: 'index' });
-        post.comments = arr;
+        var arr = doc.comments.slice();
+        arr[2] = doc.comments.create({ title: 'index' });
+        doc.comments = arr;
 
-        assert.equal(true, post.isModified('comments'));
+        assert.equal(true, doc.isModified('comments'));
         done();
       }, true );
     });
 
-    it('should support setting mixed paths by string (gh-1418)', function(done){
+    it('should support setting mixed paths by string (gh-1418)', function( done ){
       var BlogPost = storage.createCollection('1418', new Schema({ mixed: {} }));
       var b = BlogPost.add();
       b.init({ mixed: {} });
@@ -286,14 +286,14 @@ describe('document modified', function(){
       assert.equal(4, b.get(path));
 
       b = BlogPost.add({ mixed: {} });
-      b.save(function(){
+      b.save(function( bObj ){
         path = 'mixed.9a.x';
         b.set(path, 8);
         assert.ok(b.isModified(path));
         assert.equal(8, b.get(path));
 
-        b.save(function (doc) {
-          assert.equal(8, doc.get(path));
+        b.save(function( docObj ) {
+          assert.equal(8, b.get(path));
           done();
         });
       });

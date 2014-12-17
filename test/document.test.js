@@ -233,7 +233,7 @@ describe('document', function(){
       , oids    : []
       , nested  : {
             age   : 5
-          , cool  : new DocumentObjectId
+          , cool  : new DocumentObjectId()
         }
     });
 
@@ -341,7 +341,7 @@ describe('document', function(){
     doc.schema.options.toObject = {};
     doc.schema.options.toObject.transform = function xform (doc, ret, options) {
 
-      if ('function' == typeof doc.ownerDocument)
+      if ('function' === typeof doc.ownerDocument)
         // ignore embedded docs
         return;
 
@@ -362,7 +362,7 @@ describe('document', function(){
     // transform with return value
     var out = { myid: doc._id.toString() };
     doc.schema.options.toObject.transform = function (doc, ret, options) {
-      if ('function' == typeof doc.ownerDocument)
+      if ('function' === typeof doc.ownerDocument)
         // ignore embedded docs
         return;
 
@@ -499,7 +499,7 @@ describe('document', function(){
     // transform
     doc.schema.options.toJSON = {};
     doc.schema.options.toJSON.transform = function xform (doc, ret, options) {
-      if ('function' == typeof doc.ownerDocument)
+      if ('function' === typeof doc.ownerDocument)
         // ignore embedded docs
         return;
 
@@ -585,7 +585,7 @@ describe('document', function(){
   it('jsonifying an objects populated items works (gh-1376)', function(done){
     var userSchema, User, groupSchema, Group;
 
-    userSchema = Schema({name: String});
+    userSchema = new Schema({name: String});
     // includes virtual path when 'toJSON'
     userSchema.set('toJSON', {getters: true});
     userSchema.virtual('hello').get(function() {
@@ -593,7 +593,7 @@ describe('document', function(){
     });
     User = storage.createCollection('User', userSchema);
 
-    groupSchema = Schema({
+    groupSchema = new Schema({
       name: String,
       _users: [{type: Schema.ObjectId, ref: 'User'}]
     });
@@ -1158,8 +1158,8 @@ describe('document', function(){
           });
           done();
         });
-      })
-    })
+      });
+    });
 
   });
 
@@ -1198,22 +1198,32 @@ describe('document', function(){
         var m = M.add({ thang: '3'});
         assert.deepEqual('3', val);
         done();
-      })
-    })
+      });
+    });
   });
 
-  describe('gh-2082', function() {
-    it('works', function(done) {
+  describe('m-gh-2082', function() {
+    it('works', function( done ){
       var Parent = storage.createCollection('gh2082', parentSchema);
 
       var parent = Parent.add({name: 'Hello'});
-      parent.save(function(parent) {
+      parent.save(function( parentObj ){
+        assert.equal(parentObj.name, 'Hello');
+
         parent.children.push( {counter: 0} );
-        parent.save(function(parent) {
+
+        parent.save(function( parentObj1 ){
+          assert.equal(parentObj1.children[0].counter, 0);
+
           parent.children[0].counter += 1;
-          parent.save(function(parent) {
+
+          parent.save(function( parentObj2 ){
+            assert.equal(parentObj2['children.0.counter'], 1);
+
             parent.children[0].counter += 1;
-            parent.save(function(parent) {
+
+            parent.save(function( parentObj3 ){
+              assert.equal(parentObj3['children.0.counter'], 2);
               assert.equal(2, parent.children[0].counter);
               done();
             });

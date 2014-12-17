@@ -13,7 +13,7 @@ var Document = storage.Document
   , ObjectId = SchemaTypes.ObjectId
   , Mixed = SchemaTypes.Mixed
   , DocumentObjectId = storage.Types.ObjectId
-  , StorageArray = storage.Types.Array
+  , StorageArray = storage.Types.Array;
 
 /**
  * Test Document constructor.
@@ -40,7 +40,7 @@ SchemaTestDocument.prototype.$__setSchema(new Schema({
  */
 describe('schema', function(){
   it('can be created without the "new" keyword', function(done){
-    var schema = Schema({ name: String });
+    var schema = new Schema({ name: String });
     assert.ok(schema instanceof Schema);
     done();
   });
@@ -96,20 +96,20 @@ describe('schema', function(){
     assert.ok(Checkin1.path('location.lng') instanceof SchemaTypes.Number);
 
     var Ferret1 = new Schema({
-        name      : "string"
-      , owner     : "oid"
-      , fur       : { type: "string" }
-      , color     : { type: "String" }
+        name      : 'string'
+      , owner     : 'oid'
+      , fur       : { type: 'string' }
+      , color     : { type: 'String' }
       , checkins  : [Checkin]
       , friends   : Array
-      , likes     : "array"
-      , alive     : "Bool"
-      , alive1    : "bool"
-      , alive2    : "boolean"
-      , extra     : "mixed"
-      , obj       : "object"
-      , buf       : "buffer"
-      , Buf       : "Buffer"
+      , likes     : 'array'
+      , alive     : 'Bool'
+      , alive1    : 'bool'
+      , alive2    : 'boolean'
+      , extra     : 'mixed'
+      , obj       : 'object'
+      , buf       : 'buffer'
+      , Buf       : 'Buffer'
     });
 
     assert.ok(Ferret1.path('name') instanceof SchemaTypes.String);
@@ -173,7 +173,7 @@ describe('schema', function(){
         simple    : { type: String, default: 'a' }
       , array     : { type: Array, default: [1,2,3,4,5] }
       , arrayX    : { type: Array, default: 9 }
-      , arrayFn   : { type: Array, default: function () { return [8] } }
+      , arrayFn   : { type: Array, default: function () { return [8]; } }
       , callback  : { type: Number, default: function(){
           assert.equal('b', this.a);
           return '3';
@@ -186,12 +186,12 @@ describe('schema', function(){
     assert.equal(Test.path('simple').getDefault(), 'a');
     assert.equal((+Test.path('callback').getDefault({ a: 'b' })), 3);
     assert.equal(typeof Test.path('array').defaultValue, 'function');
-    assert.equal(Test.path('array').getDefault(new SchemaTestDocument)[3], 4);
-    assert.equal(Test.path('arrayX').getDefault(new SchemaTestDocument)[0], 9);
+    assert.equal(Test.path('array').getDefault( new SchemaTestDocument() )[3], 4);
+    assert.equal(Test.path('arrayX').getDefault( new SchemaTestDocument() )[0], 9);
     assert.equal(typeof Test.path('arrayFn').defaultValue, 'function');
-    assert.ok(Test.path('arrayFn').getDefault(new SchemaTestDocument).isStorageArray);
+    assert.ok(Test.path('arrayFn').getDefault( new SchemaTestDocument() ).isStorageArray);
     done();
-  })
+  });
 
   it('Mixed defaults can be empty arrays', function(done){
     var Test = new Schema({
@@ -204,7 +204,7 @@ describe('schema', function(){
     assert.ok(Test.path('mixed2').getDefault() instanceof Array);
     assert.equal(Test.path('mixed2').getDefault().length, 0);
     done();
-  })
+  });
 
   describe('casting', function(){
     it('number', function(done){
@@ -227,7 +227,7 @@ describe('schema', function(){
             nickname: String
         });
 
-        function Test(){};
+        function Test(){}
         Test.prototype.toString = function(){
           return 'woot';
         };
@@ -237,8 +237,8 @@ describe('schema', function(){
         assert.equal('0', Tobi.path('nickname').cast(0));
 
         // test any object that implements toString
-        assert.equal('string', typeof Tobi.path('nickname').cast(new Test));
-        assert.equal('woot', Tobi.path('nickname').cast(new Test));
+        assert.equal('string', typeof Tobi.path('nickname').cast( new Test() ));
+        assert.equal('woot', Tobi.path('nickname').cast( new Test() ));
         done();
       });
 
@@ -271,7 +271,7 @@ describe('schema', function(){
 
       assert.ok(Loki.path('birth_date').cast(1294525628301) instanceof Date);
       assert.ok(Loki.path('birth_date').cast('8/24/2000') instanceof Date);
-      assert.ok(Loki.path('birth_date').cast(new Date) instanceof Date);
+      assert.ok(Loki.path('birth_date').cast(new Date()) instanceof Date);
       done();
     });
 
@@ -307,7 +307,7 @@ describe('schema', function(){
         , mixed       : [Mixed]
       });
 
-      var oids = Loki.path('oids').cast(['4c54f3453e688c000000001a', new DocumentObjectId]);
+      var oids = Loki.path('oids').cast(['4c54f3453e688c000000001a', new DocumentObjectId()]);
 
       assert.ok(oids[0] instanceof DocumentObjectId);
       assert.ok(oids[1] instanceof DocumentObjectId);
@@ -330,7 +330,7 @@ describe('schema', function(){
       assert.equal(typeof strings[1], 'string');
       assert.equal('123', strings[1]);
 
-      var buffers = Loki.path('buffers').cast(['\0\0\0', new Buffer("abc")]);
+      var buffers = Loki.path('buffers').cast(['\0\0\0', new Buffer('abc')]);
 
       assert.ok(Buffer.isBuffer( buffers[0] ));
       assert.ok(Buffer.isBuffer( buffers[1] ));
@@ -343,7 +343,7 @@ describe('schema', function(){
       assert.equal(typeof nocasts[1], 'number');
       assert.equal(123, nocasts[1]);
 
-      var mixed = Loki.path('mixed').cast(['test', 123, '123', {}, new Date, new DocumentObjectId]);
+      var mixed = Loki.path('mixed').cast(['test', 123, '123', {}, new Date(), new DocumentObjectId()]);
 
       assert.equal(typeof mixed[0], 'string');
       assert.equal(typeof mixed[1], 'number');
@@ -375,7 +375,7 @@ describe('schema', function(){
   });
 
   it('methods declaration', function(done){
-    var a = new Schema;
+    var a = new Schema();
     a.method('test', function(){});
     a.method({
         a: function(){}
@@ -386,7 +386,7 @@ describe('schema', function(){
   });
 
   it('static declaration', function(done){
-    var a = new Schema;
+    var a = new Schema();
     a.static('test', function(){});
     a.static({
         a: function(){}
@@ -394,7 +394,7 @@ describe('schema', function(){
       , c: function(){}
     });
 
-    assert.equal(Object.keys(a.statics).length, 4)
+    assert.equal(Object.keys(a.statics).length, 4);
     done();
   });
 
@@ -424,14 +424,14 @@ describe('schema', function(){
       function extract (v, self) {
         return (v && v._id)
           ? v._id
-          : v
+          : v;
       }
 
       var Tobi = new Schema({
           name: { type: Schema.ObjectId, set: extract }
       });
 
-      var id = new DocumentObjectId
+      var id = new DocumentObjectId()
         , sid = id.toString()
         , _id = { _id: id };
 
@@ -541,7 +541,7 @@ describe('schema', function(){
       assert.ok(g);
       assert.equal(g.message,'A setter must be a function.');
       done();
-    })
+    });
   });
 
   describe('getters', function(){
@@ -563,7 +563,7 @@ describe('schema', function(){
       function format (v, self) {
         return v
           ? '$' + v
-          : v
+          : v;
       }
 
       var Tobi = new Schema({
@@ -598,7 +598,7 @@ describe('schema', function(){
 
       function first (v) {
         return 0;
-      };
+      }
 
       var Tobi = new Schema({
           name: { type: String, get: last }
@@ -680,7 +680,7 @@ describe('schema', function(){
       assert.equal(undefined, schema.virtualpath('id'));
 
       done();
-    })
+    });
   });
 
   describe('hooks', function(){
@@ -701,7 +701,7 @@ describe('schema', function(){
 
   describe('plugins', function(){
     it('work', function(done){
-      var Tobi = new Schema
+      var Tobi = new Schema()
         , called = false;
 
       Tobi.plugin(function(schema){
@@ -711,7 +711,7 @@ describe('schema', function(){
 
       assert.equal(true, called);
       done();
-    })
+    });
   });
 
   describe('options', function(){
@@ -779,22 +779,22 @@ describe('schema', function(){
 
     describe('getter', function(){
       it('scope', function(done){
-        var Tobi = new Schema;
+        var Tobi = new Schema();
 
         Tobi.virtual('name').get(function (v, self) {
           assert.equal('b', this.a);
           assert.equal('name', self.path);
           return v.toLowerCase();
-        })
+        });
 
         assert.equal('yep', Tobi.virtualpath('name').applyGetters('YEP', { a: 'b' }));
         done();
-      })
+      });
     });
 
     describe('setter', function(){
       it('scope', function(done){
-        var Tobi = new Schema;
+        var Tobi = new Schema();
 
         Tobi.virtual('name').set(function (v, self) {
           assert.equal('b', this.a);
@@ -872,19 +872,19 @@ describe('schema', function(){
         assert.equal(found.a.b.bar,'qux');
         done();
       });
-    })
+    });
   });
 
   it('debugging msgs', function(done){
     var err;
     try {
-      new Schema({ name: { first: null } })
+      new Schema({ name: { first: null } });
     } catch (e) {
       err = e;
     }
     assert.equal(err.message,'Invalid value for schema path `name.first`')
     try {
-      new Schema({ age: undefined })
+      new Schema({ age: undefined });
     } catch (e) {
       err = e;
     }
@@ -978,9 +978,16 @@ describe('schema', function(){
 
       var ele = Element.add({ title : 'thing' });
 
-      ele.save(function () {
+      ele.save(function( eleObj ){
+        assert.ok( eleObj._id );
+        assert.equal( eleObj.title, 'thing' );
+
         var s = Some.add({ obj : ele.toObject() });
-        s.save(function ( s ) {
+
+        s.save(function( sObj ){
+          assert.ok( sObj._id );
+          assert.equal( sObj.obj, ele.id );
+
           var ss = Some.findOne({ id : s.id });
           var ssObject = ss.toObject({depopulate: 1});
 
@@ -1108,7 +1115,7 @@ describe('schema', function(){
         assert.equal('real', schema.pathType('docs.0.x.3.y'));
         assert.equal('real', schema.pathType('mixed'));
         done();
-      })
+      });
     });
 
     describe('when called on a virtual', function(){

@@ -367,12 +367,12 @@ describe('types.documentarray', function(){
     var M = storage.createCollection('gh-2159', schema);
 
     var m = M.add({ docs: [{v: 900}] });
-    m.save(function( m ){
+    m.save(function( mObj ){
       m.shouldPrint = true;
       var numListeners = m._events.save.length;
       assert.ok(numListeners > 0);
       m.docs = [{ v: 9000 }];
-      m.save(function( m ) {
+      m.save(function( mObj2 ) {
         assert.equal(numListeners, m._events.save.length);
         done();
       });

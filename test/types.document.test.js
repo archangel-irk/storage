@@ -18,12 +18,12 @@ function Dummy () {
 Dummy.prototype = Object.create( storage.Document.prototype );
 Dummy.prototype.constructor = Dummy;
 
-Dummy.prototype.$__setSchema(new Schema);
+Dummy.prototype.$__setSchema(new Schema());
 
 function Subdocument () {
-  var arr = new DocumentArray;
+  var arr = new DocumentArray();
   arr._path = 'jsconf.ar';
-  arr._parent = new Dummy;
+  arr._parent = new Dummy();
   arr[0] = this;
   EmbeddedDocument.call(this, {}, arr);
 }
@@ -107,13 +107,13 @@ describe('types.document', function(){
 
     assert.equal(m.id, m.$__._id);
     var old = m.id;
-    m._id = new storage.Types.ObjectId;
+    m._id = new storage.Types.ObjectId();
     assert.equal(m.id, m.$__._id);
     assert.strictEqual(true, old !== m.$__._id);
 
     var m2= Movie.add();
     delete m2._doc._id;
-    m2.init({ _id: new storage.Types.ObjectId });
+    m2.init({ _id: new storage.Types.ObjectId() });
     assert.equal(m2.id, m2.$__._id);
     assert.strictEqual(true, m.$__._id !== m2.$__._id);
     assert.strictEqual(true, m.id !== m2.id);
@@ -136,40 +136,40 @@ describe('types.document', function(){
     super8.ratings.push({ stars: 7, _id: id3 });
     super8.ratings.push({ stars: 6, _id: id4 });
 
-    super8.save(function ( movie ) {
-      assert.equal(movie.title, 'Super 8');
-      assert.equal(movie.ratings.id(id1).stars.valueOf(), 9);
-      assert.equal(movie.ratings.id(id2).stars.valueOf(), 8);
-      assert.equal(movie.ratings.id(id3).stars.valueOf(), 7);
-      assert.equal(movie.ratings.id(id4).stars.valueOf(), 6);
+    super8.save(function ( movieObj ) {
+      assert.equal(movieObj.title, 'Super 8');
+      assert.equal(movieObj.ratings[0].stars.valueOf(), 9);
+      assert.equal(movieObj.ratings[1].stars.valueOf(), 8);
+      assert.equal(movieObj.ratings[2].stars.valueOf(), 7);
+      assert.equal(movieObj.ratings[3].stars.valueOf(), 6);
 
-      movie.ratings.id(id1).stars = 5;
-      movie.ratings.id(id2).remove();
-      movie.ratings.id(id3).stars = 4;
-      movie.ratings.id(id4).stars = 3;
+      super8.ratings.id(id1).stars = 5;
+      super8.ratings.id(id2).remove();
+      super8.ratings.id(id3).stars = 4;
+      super8.ratings.id(id4).stars = 3;
 
-      movie.save(function ( movie ) {
-        assert.equal(movie.title, 'Super 8');
-        assert.equal(movie.ratings.length,3);
-        assert.equal(movie.ratings.id(id1).stars.valueOf(), 5);
-        assert.equal(movie.ratings.id(id3).stars.valueOf(), 4);
-        assert.equal(movie.ratings.id(id4).stars.valueOf(), 3);
+      super8.save(function ( movieObj1 ) {
+        assert.equal(movieObj1.title, undefined);
+        assert.equal(movieObj1.ratings.length,3);
+        assert.equal(movieObj1.ratings[0].stars.valueOf(), 5);
+        assert.equal(movieObj1.ratings[1].stars.valueOf(), 4);
+        assert.equal(movieObj1.ratings[2].stars.valueOf(), 3);
 
-        movie.ratings.id(id1).stars = 2;
-        movie.ratings.id(id3).remove();
-        movie.ratings.id(id4).stars = 1;
+        super8.ratings.id(id1).stars = 2;
+        super8.ratings.id(id3).remove();
+        super8.ratings.id(id4).stars = 1;
 
-        movie.save(function ( movie ) {
-          assert.equal(movie.ratings.length,2);
-          assert.equal(movie.ratings.id(id1).stars.valueOf(), 2);
-          assert.equal(movie.ratings.id(id4).stars.valueOf(), 1);
+        super8.save(function ( movieObj2 ) {
+          assert.equal(movieObj2.ratings.length,2);
+          assert.equal(movieObj2.ratings[0].stars.valueOf(), 2);
+          assert.equal(movieObj2.ratings[1].stars.valueOf(), 1);
 
           // gh-531
-          movie.ratings[0].remove();
-          movie.ratings[0].remove();
+          super8.ratings[0].remove();
+          super8.ratings[0].remove();
 
-          movie.save(function ( movie ) {
-            assert.equal(0, movie.ratings.length);
+          super8.save(function ( movieObj3 ) {
+            assert.equal(0, movieObj3.ratings.length);
             done();
           });
         });
@@ -187,31 +187,31 @@ describe('types.document', function(){
           description: {
             source: {
               url: 'http://www.imdb.com/title/tt0454876/',
-              time: new Date
+              time: new Date()
             }
           }
         }]
       });
 
-      LifeOfPi.save(function ( movie ) {
-        assert.ok(movie.ratings[0].description.source.time instanceof Date);
-        movie.ratings[0].description.source = { url: 'http://www.lifeofpimovie.com/' };
+      LifeOfPi.save(function ( movieObj ) {
+        assert.ok( movieObj.ratings[0].description.source.time instanceof Date );
+        LifeOfPi.ratings[0].description.source = { url: 'http://www.lifeofpimovie.com/' };
 
-        movie.save(function ( movie ) {
-          assert.equal('http://www.lifeofpimovie.com/', movie.ratings[0].description.source.url);
+        LifeOfPi.save(function ( movieObj1 ) {
+          assert.equal('http://www.lifeofpimovie.com/', movieObj1['ratings.0.description.source'].url);
 
           // overwritten date
-          assert.equal(undefined, movie.ratings[0].description.source.time);
+          assert.equal( undefined, movieObj1['ratings.0.description.source'].time );
 
-          var newDate = new Date;
-          movie.ratings[0].set('description.source.time', newDate, { merge: true });
-          movie.save(function ( movie ) {
-            assert.equal(String(newDate), movie.ratings[0].description.source.time);
+          var newDate = new Date();
+          LifeOfPi.ratings[0].set('description.source.time', newDate, { merge: true });
+          LifeOfPi.save(function ( movieObj2 ) {
+            assert.equal(String(newDate), movieObj2['ratings.0.description.source'].time);
             // url not overwritten using merge
-            assert.equal('http://www.lifeofpimovie.com/', movie.ratings[0].description.source.url);
+            assert.equal('http://www.lifeofpimovie.com/', movieObj2['ratings.0.description.source'].url);
             done();
           });
-        })
+        });
       });
     });
   });
