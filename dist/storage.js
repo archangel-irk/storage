@@ -1359,6 +1359,19 @@ function Document ( data, collectionName, schema, fields, init ){
     this.set( data, undefined, true );
   }
 
+  // m-gh-2439
+  // define getters for data.prop properties with non-strict schemas
+  if ( schema.options.strict === false && data ) {
+    var self = this
+      , keys = Object.keys( this._doc );
+
+    keys.forEach(function( key ) {
+      if (!(key in schema.tree)) {
+        define( self, key, null, self );
+      }
+    });
+  }
+
   // apply methods
   for ( var m in schema.methods ){
     this[ m ] = schema.methods[ m ];
@@ -3024,7 +3037,7 @@ Document.prototype.toJSON = function (options) {
   }
   options.json = true;
 
-  return this.toObject(options);
+  return this.toObject( options );
 };
 
 /**
@@ -3039,14 +3052,14 @@ Document.prototype.toJSON = function (options) {
  * @api public
  */
 
-Document.prototype.equals = function (doc) {
+Document.prototype.equals = function( doc ){
   var tid = this.get('_id');
   var docid = doc.get('_id');
   if (!tid && !docid) {
     return deepEqual(this, doc);
   }
   return tid && tid.equals
-    ? tid.equals(docid)
+    ? (docid ? tid.equals(docid) : false)
     : tid === docid;
 };
 
@@ -3066,7 +3079,7 @@ Document.prototype.equals = function (doc) {
  * @return {Array|ObjectId|Number|Buffer|String|undefined}
  * @api public
  */
-Document.prototype.populated = function (path, val, options) {
+Document.prototype.populated = function( path, val, options ){
   // val and options are internal
 
   //TODO: доделать эту проверку, она должна опираться не на $__.populated, а на то, что наш объект имеет родителя
@@ -10327,7 +10340,7 @@ process.chdir = function (dir) {
 },{}],42:[function(require,module,exports){
 module.exports={
   "name": "storage",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Mongoose-like schema validation, collections and documents on browser (client-side)",
   "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
   "repository": {
