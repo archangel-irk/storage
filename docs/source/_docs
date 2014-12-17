@@ -5374,8 +5374,8 @@
   {
     "tags": [],
     "description": {
-      "full": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.16)</p><p>Storage implementation<br /><a href=\"http://docs.meteor.com/#selectors\">http://docs.meteor.com/#selectors</a><br /><a href=\"https://github.com/meteor/meteor/tree/master/packages/minimongo\">https://github.com/meteor/meteor/tree/master/packages/minimongo</a></p><p>проследить за багом gh-1638 (3.8.16)</p>",
-      "summary": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.16)</p>",
+      "full": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.18)</p><p>Storage implementation<br /><a href=\"http://docs.meteor.com/#selectors\">http://docs.meteor.com/#selectors</a><br /><a href=\"https://github.com/meteor/meteor/tree/master/packages/minimongo\">https://github.com/meteor/meteor/tree/master/packages/minimongo</a></p><p>проследить за багом gh-1638 (3.8.16)</p>",
+      "summary": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.18)</p>",
       "body": "<p>Storage implementation<br /><a href=\"http://docs.meteor.com/#selectors\">http://docs.meteor.com/#selectors</a><br /><a href=\"https://github.com/meteor/meteor/tree/master/packages/minimongo\">https://github.com/meteor/meteor/tree/master/packages/minimongo</a></p><p>проследить за багом gh-1638 (3.8.16)</p>"
     },
     "isPrivate": false,
@@ -8858,7 +8858,7 @@
     "ignore": false,
     "line": 13,
     "codeStart": 45,
-    "code": "function Schema ( name, baseSchema, obj, options ) {\n  if ( !(this instanceof Schema) ) {\n    return new Schema( name, baseSchema, obj, options );\n  }\n\n  // Если это именованая схема\n  if ( typeof name === 'string' ){\n    this.name = name;\n    schemas[ name ] = this;\n  } else {\n    options = obj;\n    obj = baseSchema;\n    baseSchema = name;\n    name = undefined;\n  }\n\n  if ( !(baseSchema instanceof Schema) ){\n    options = obj;\n    obj = baseSchema;\n    baseSchema = undefined;\n  }\n\n  // Сохраним описание схемы для поддержки дискриминаторов\n  this.source = obj;\n\n  this.paths = {};\n  this.subpaths = {};\n  this.virtuals = {};\n  this.nested = {};\n  this.inherits = {};\n  this.callQueue = [];\n  this.methods = {};\n  this.statics = {};\n  this.tree = {};\n  this._requiredpaths = undefined;\n  this.discriminatorMapping = undefined;\n\n  this.options = this.defaultOptions( options );\n\n  if ( baseSchema instanceof Schema ){\n    baseSchema.discriminator( name, this );\n  }\n\n  // build paths\n  if ( obj ) {\n    this.add( obj );\n  }\n\n  // ensure the documents get an auto _id unless disabled\n  var auto_id = !this.paths['_id'] && (!this.options.noId && this.options._id);\n  if (auto_id) {\n    this.add({ _id: {type: Schema.ObjectId, auto: true} });\n  }\n\n  // ensure the documents receive an id getter unless disabled\n  var autoid = !this.paths['id'] && this.options.id;\n  if ( autoid ) {\n    this.virtual('id').get( idGetter );\n  }\n}",
+    "code": "function Schema ( name, baseSchema, obj, options ) {\n  if ( !(this instanceof Schema) ) {\n    return new Schema( name, baseSchema, obj, options );\n  }\n\n  // Если это именованая схема\n  if ( typeof name === 'string' ){\n    this.name = name;\n    schemas[ name ] = this;\n  } else {\n    options = obj;\n    obj = baseSchema;\n    baseSchema = name;\n    name = undefined;\n  }\n\n  if ( !(baseSchema instanceof Schema) ){\n    options = obj;\n    obj = baseSchema;\n    baseSchema = undefined;\n  }\n\n  // Сохраним описание схемы для поддержки дискриминаторов\n  this.source = obj;\n\n  this.paths = {};\n  this.subpaths = {};\n  this.virtuals = {};\n  this.nested = {};\n  this.inherits = {};\n  this.callQueue = [];\n  this.methods = {};\n  this.statics = {};\n  this.tree = {};\n  this._requiredpaths = undefined;\n  this.discriminatorMapping = undefined;\n\n  this.options = this.defaultOptions( options );\n\n  if ( baseSchema instanceof Schema ){\n    baseSchema.discriminator( name, this );\n  }\n\n  // build paths\n  if ( obj ) {\n    this.add( obj );\n  }\n\n  // check if _id's value is a subdocument (m-gh-2276)\n  var _idSubDoc = obj && obj._id && _.isObject( obj._id );\n\n  // ensure the documents get an auto _id unless disabled\n  var auto_id = !this.paths['_id'] && (!this.options.noId && this.options._id) && !_idSubDoc;\n\n  if (auto_id) {\n    this.add({ _id: {type: Schema.ObjectId, auto: true} });\n  }\n\n  // ensure the documents receive an id getter unless disabled\n  var autoid = !this.paths['id'] && this.options.id;\n  if ( autoid ) {\n    this.virtual('id').get( idGetter );\n  }\n}",
     "ctx": {
       "type": "function",
       "name": "Schema",
@@ -8876,8 +8876,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 106,
-    "codeStart": 109,
+    "line": 110,
+    "codeStart": 113,
     "code": "function idGetter () {\n  if (this.$__._id) {\n    return this.$__._id;\n  }\n\n  this.$__._id = null == this._id\n    ? null\n    : String(this._id);\n\n  return this.$__._id;\n}",
     "ctx": {
       "type": "function",
@@ -8896,8 +8896,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 121,
-    "codeStart": 124,
+    "line": 125,
+    "codeStart": 128,
     "code": "Schema.prototype = Object.create( Events.prototype );\nSchema.prototype.constructor = Schema;",
     "ctx": {
       "type": "property",
@@ -8936,8 +8936,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 127,
-    "codeStart": 139,
+    "line": 131,
+    "codeStart": 143,
     "code": "Schema.prototype.paths;",
     "ctx": {
       "type": "property",
@@ -8976,8 +8976,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 141,
-    "codeStart": 155,
+    "line": 145,
+    "codeStart": 159,
     "code": "Schema.prototype.tree;",
     "ctx": {
       "type": "property",
@@ -9028,8 +9028,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 157,
-    "codeStart": 164,
+    "line": 161,
+    "codeStart": 168,
     "code": "Schema.prototype.defaultOptions = function (options) {\n  options = _.assign({\n      strict: true\n    , versionKey: '__v'\n    , discriminatorKey: '__t'\n    , minimize: true\n    // the following are only applied at construction time\n    , _id: true\n    , id: true\n  }, options );\n\n  return options;\n};",
     "ctx": {
       "type": "method",
@@ -9081,8 +9081,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 178,
-    "codeStart": 190,
+    "line": 182,
+    "codeStart": 194,
     "code": "Schema.prototype.add = function add ( obj, prefix ) {\n  prefix = prefix || '';\n  var keys = Object.keys( obj );\n\n  for (var i = 0; i < keys.length; ++i) {\n    var key = keys[i];\n\n    if (null == obj[ key ]) {\n      throw new TypeError('Invalid value for schema path `'+ prefix + key +'`');\n    }\n\n    if ( _.isPlainObject(obj[key] )\n      && ( !obj[ key ].constructor || 'Object' === utils.getFunctionName(obj[key].constructor) )\n      && ( !obj[ key ].type || obj[ key ].type.type ) ){\n\n      if ( Object.keys(obj[ key ]).length ) {\n        // nested object { last: { name: String }}\n        this.nested[ prefix + key ] = true;\n        this.add( obj[ key ], prefix + key + '.');\n\n      } else {\n        this.path( prefix + key, obj[ key ] ); // mixed type\n      }\n\n    } else {\n      this.path( prefix + key, obj[ key ] );\n    }\n  }\n};",
     "ctx": {
       "type": "method",
@@ -9103,8 +9103,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 220,
-    "codeStart": 232,
+    "line": 224,
+    "codeStart": 236,
     "code": "Schema.reserved = Object.create( null );\nvar reserved = Schema.reserved;\nreserved.on =\nreserved.db =\nreserved.get =\nreserved.set =\nreserved.init =\nreserved.isNew =\nreserved.errors =\nreserved.schema =\nreserved.options =\nreserved.modelName =\nreserved.collection =\nreserved.toObject =\nreserved.domain =\nreserved.emit =    // EventEmitter\nreserved._events = // EventEmitter\nreserved._pres = reserved._posts = 1; // hooks.js",
     "ctx": {
       "type": "property",
@@ -9156,8 +9156,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 251,
-    "codeStart": 266,
+    "line": 255,
+    "codeStart": 270,
     "code": "Schema.prototype.path = function (path, obj) {\n  if (obj == undefined) {\n    if (this.paths[path]) return this.paths[path];\n    if (this.subpaths[path]) return this.subpaths[path];\n\n    // subpaths?\n    return /\\.\\d+\\.?.*$/.test(path)\n      ? getPositionalPath(this, path)\n      : undefined;\n  }\n\n  // some path names conflict with document methods\n  if (reserved[path]) {\n    throw new Error('`' + path + '` may not be used as a schema pathname');\n  }\n\n  // update the tree\n  var subpaths = path.split(/\\./)\n    , last = subpaths.pop()\n    , branch = this.tree;\n\n  subpaths.forEach(function(sub, i) {\n    if (!branch[sub]) branch[sub] = {};\n    if ('object' !== typeof branch[sub]) {\n      var msg = 'Cannot set nested path `' + path + '`. '\n              + 'Parent path `'\n              + subpaths.slice(0, i).concat([sub]).join('.')\n              + '` already set to type ' + branch[sub].name\n              + '.';\n      throw new Error(msg);\n    }\n    branch = branch[sub];\n  });\n\n  branch[last] = utils.clone(obj);\n\n  this.paths[path] = Schema.interpretAsType(path, obj);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9209,8 +9209,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 306,
-    "codeStart": 313,
+    "line": 310,
+    "codeStart": 317,
     "code": "Schema.interpretAsType = function (path, obj) {\n  var constructorName = utils.getFunctionName(obj.constructor);\n  if (constructorName !== 'Object'){\n    obj = { type: obj };\n  }\n\n  // Get the type making sure to allow keys named \"type\"\n  // and default to mixed if not specified.\n  // { type: { type: String, default: 'freshcut' } }\n  var type = obj.type && !obj.type.type\n    ? obj.type\n    : {};\n\n  if ('Object' === utils.getFunctionName(type.constructor) || 'mixed' == type) {\n    return new Types.Mixed(path, obj);\n  }\n\n  if (Array.isArray(type) || Array == type || 'array' == type) {\n    // if it was specified through { type } look for `cast`\n    var cast = (Array == type || 'array' == type)\n      ? obj.cast\n      : type[0];\n\n    if (cast instanceof Schema) {\n      return new Types.DocumentArray(path, cast, obj);\n    }\n\n    if ('string' == typeof cast) {\n      cast = Types[cast.charAt(0).toUpperCase() + cast.substring(1)];\n    } else if (cast && (!cast.type || cast.type.type)\n                    && 'Object' === utils.getFunctionName(cast.constructor)\n                    && Object.keys(cast).length) {\n      return new Types.DocumentArray(path, new Schema(cast), obj);\n    }\n\n    return new Types.Array(path, cast || Types.Mixed, obj);\n  }\n\n  var name = 'string' === typeof type\n    ? type\n    // If not string, `type` is a function. Outside of IE, function.name\n    // gives you the function name. In IE, you need to compute it\n    : utils.getFunctionName(type);\n\n  if (name) {\n    name = name.charAt(0).toUpperCase() + name.substring(1);\n  }\n\n  if (undefined == Types[name]) {\n    throw new TypeError('Undefined type at `' + path +\n        '`\\n  Did you try nesting Schemas? ' +\n        'You can only nest using refs or arrays.');\n  }\n\n  return new Types[name](path, obj);\n};",
     "ctx": {
       "type": "method",
@@ -9260,8 +9260,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 370,
-    "codeStart": 379,
+    "line": 374,
+    "codeStart": 383,
     "code": "Schema.prototype.eachPath = function (fn) {\n  var keys = Object.keys(this.paths)\n    , len = keys.length;\n\n  for (var i = 0; i < len; ++i) {\n    fn(keys[i], this.paths[keys[i]]);\n  }\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9299,8 +9299,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 390,
-    "codeStart": 396,
+    "line": 394,
+    "codeStart": 400,
     "code": "Schema.prototype.requiredPaths = function requiredPaths () {\n  if (this._requiredpaths) return this._requiredpaths;\n\n  var paths = Object.keys(this.paths)\n    , i = paths.length\n    , ret = [];\n\n  while (i--) {\n    var path = paths[i];\n    if (this.paths[path].isRequired) ret.push(path);\n  }\n\n  this._requiredpaths = ret;\n\n  return this._requiredpaths;\n};",
     "ctx": {
       "type": "method",
@@ -9351,8 +9351,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 413,
-    "codeStart": 422,
+    "line": 417,
+    "codeStart": 426,
     "code": "Schema.prototype.pathType = function (path) {\n  if (path in this.paths) return 'real';\n  if (path in this.virtuals) return 'virtual';\n  if (path in this.nested) return 'nested';\n  if (path in this.subpaths) return 'real';\n\n  if (/\\.\\d+\\.|\\.\\d+$/.test(path) && getPositionalPath(this, path)) {\n    return 'real';\n  } else {\n    return 'adhocOrUndefined';\n  }\n};",
     "ctx": {
       "type": "method",
@@ -9373,8 +9373,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 435,
-    "codeStart": 438,
+    "line": 439,
+    "codeStart": 442,
     "code": "function getPositionalPath (self, path) {\n  var subpaths = path.split(/\\.(\\d+)\\.|\\.(\\d+)$/).filter(Boolean);\n  if (subpaths.length < 2) {\n    return self.paths[subpaths[0]];\n  }\n\n  var val = self.path(subpaths[0]);\n  if (!val) return val;\n\n  var last = subpaths.length - 1\n    , subpath\n    , i = 1;\n\n  for (; i < subpaths.length; ++i) {\n    subpath = subpaths[i];\n\n    if (i === last && val && !val.schema && !/\\D/.test(subpath)) {\n      if (val instanceof Types.Array) {\n        // StringSchema, NumberSchema, etc\n        val = val.caster;\n      } else {\n        val = undefined;\n      }\n      break;\n    }\n\n    // ignore if its just a position segment: path.0.subpath\n    if (!/\\D/.test(subpath)) continue;\n\n    if (!(val && val.schema)) {\n      val = undefined;\n      break;\n    }\n\n    val = val.schema.path(subpath);\n  }\n\n  self.subpaths[ path ] = val;\n\n  return self.subpaths[ path ];\n}",
     "ctx": {
       "type": "function",
@@ -9424,8 +9424,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 480,
-    "codeStart": 487,
+    "line": 484,
+    "codeStart": 491,
     "code": "Schema.prototype.queue = function(name, args){\n  this.callQueue.push([name, args]);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9482,8 +9482,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 492,
-    "codeStart": 514,
+    "line": 496,
+    "codeStart": 518,
     "code": "Schema.prototype.pre = function(){\n  return this.queue('pre', arguments);\n};",
     "ctx": {
       "type": "method",
@@ -9540,8 +9540,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 518,
-    "codeStart": 540,
+    "line": 522,
+    "codeStart": 544,
     "code": "Schema.prototype.post = function(method, fn){\n  return this.queue('on', arguments);\n};",
     "ctx": {
       "type": "method",
@@ -9597,8 +9597,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 544,
-    "codeStart": 552,
+    "line": 548,
+    "codeStart": 556,
     "code": "Schema.prototype.plugin = function (fn, opts) {\n  fn(this, opts);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9651,8 +9651,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 557,
-    "codeStart": 588,
+    "line": 561,
+    "codeStart": 592,
     "code": "Schema.prototype.method = function (name, fn) {\n  if ('string' !== typeof name) {\n    for (var i in name) {\n      this.methods[i] = name[i];\n    }\n  } else {\n    this.methods[name] = fn;\n  }\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9704,8 +9704,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 600,
-    "codeStart": 621,
+    "line": 604,
+    "codeStart": 625,
     "code": "Schema.prototype.static = function(name, fn) {\n  if ('string' !== typeof name) {\n    for (var i in name) {\n      this.statics[i] = name[i];\n    }\n  } else {\n    this.statics[name] = fn;\n  }\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9757,8 +9757,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 633,
-    "codeStart": 640,
+    "line": 637,
+    "codeStart": 644,
     "code": "Schema.prototype.set = function (key, value) {\n  if (1 === arguments.length) {\n    return this.options[key];\n  }\n\n  this.options[key] = value;\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -9797,8 +9797,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 650,
-    "codeStart": 657,
+    "line": 654,
+    "codeStart": 661,
     "code": "Schema.prototype.get = function (key) {\n  return this.options[key];\n};",
     "ctx": {
       "type": "method",
@@ -9858,8 +9858,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 661,
-    "codeStart": 669,
+    "line": 665,
+    "codeStart": 673,
     "code": "Schema.prototype.virtual = function (name, options) {\n  var virtuals = this.virtuals;\n  var parts = name.split('.');\n\n  virtuals[name] = parts.reduce(function (mem, part, i) {\n    mem[part] || (mem[part] = (i === parts.length-1)\n      ? new VirtualType(options, name)\n      : {});\n    return mem[part];\n  }, this.tree);\n\n  return virtuals[name];\n};",
     "ctx": {
       "type": "method",
@@ -9906,8 +9906,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 683,
-    "codeStart": 690,
+    "line": 687,
+    "codeStart": 694,
     "code": "Schema.prototype.virtualpath = function (name) {\n  return this.virtuals[name];\n};",
     "ctx": {
       "type": "method",
@@ -9946,8 +9946,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 694,
-    "codeStart": 700,
+    "line": 698,
+    "codeStart": 704,
     "code": "Schema.discriminators;"
   },
   {
@@ -9992,8 +9992,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 702,
-    "codeStart": 718,
+    "line": 706,
+    "codeStart": 722,
     "code": "Schema.prototype.discriminator = function discriminator (name, schema) {\n  if (!(schema instanceof Schema)) {\n    throw new Error('You must pass a valid discriminator Schema');\n  }\n\n  if ( this.discriminatorMapping && !this.discriminatorMapping.isRoot ) {\n    throw new Error('Discriminator \"' + name + '\" can only be a discriminator of the root model');\n  }\n\n  var key = this.options.discriminatorKey;\n  if ( schema.path(key) ) {\n    throw new Error('Discriminator \"' + name + '\" cannot have field with name \"' + key + '\"');\n  }\n\n  // merges base schema into new discriminator schema and sets new type field.\n  (function mergeSchemas(schema, baseSchema) {\n    utils.merge(schema, baseSchema);\n\n    var obj = {};\n    obj[key] = { type: String, default: name };\n    schema.add(obj);\n    schema.discriminatorMapping = { key: key, value: name, isRoot: false };\n\n    if (baseSchema.options.collection) {\n      schema.options.collection = baseSchema.options.collection;\n    }\n\n      // throws error if options are invalid\n    (function validateOptions(a, b) {\n      a = utils.clone(a);\n      b = utils.clone(b);\n      delete a.toJSON;\n      delete a.toObject;\n      delete b.toJSON;\n      delete b.toObject;\n\n      if (!utils.deepEqual(a, b)) {\n        throw new Error(\"Discriminator options are not customizable (except toJSON & toObject)\");\n      }\n    })(schema.options, baseSchema.options);\n\n    var toJSON = schema.options.toJSON\n      , toObject = schema.options.toObject;\n\n    schema.options = utils.clone(baseSchema.options);\n    if (toJSON)   schema.options.toJSON = toJSON;\n    if (toObject) schema.options.toObject = toObject;\n\n    //schema.callQueue = baseSchema.callQueue.concat(schema.callQueue);\n    schema._requiredpaths = undefined; // reset just in case Schema#requiredPaths() was called on either schema\n  })(schema, this);\n\n  if (!this.discriminators) {\n    this.discriminators = {};\n  }\n\n  if (!this.discriminatorMapping) {\n    this.discriminatorMapping = { key: key, value: null, isRoot: true };\n  }\n\n  if (this.discriminators[name]) {\n    throw new Error('Discriminator with name \"' + name + '\" already exists');\n  }\n\n  this.discriminators[name] = schema;\n};",
     "ctx": {
       "type": "method",
@@ -10014,8 +10014,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 785,
-    "codeStart": 789,
+    "line": 789,
+    "codeStart": 793,
     "code": "module.exports = Schema;\nwindow.Schema = Schema;\n\n// require down here because of reference issues",
     "ctx": {
       "type": "property",
@@ -10041,8 +10041,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": false,
-    "line": 794,
-    "codeStart": 819,
+    "line": 798,
+    "codeStart": 823,
     "code": "Schema.Types = require('./schema/index');\n\n// Хранилище схем\nSchema.schemas = schemas = {};",
     "ctx": {
       "type": "property",
@@ -10063,8 +10063,8 @@
     "isConstructor": false,
     "isEvent": false,
     "ignore": true,
-    "line": 825,
-    "codeStart": 829,
+    "line": 829,
+    "codeStart": 833,
     "code": "Types = Schema.Types;\nSchema.ObjectId = Types.ObjectId;"
   }
 ]
