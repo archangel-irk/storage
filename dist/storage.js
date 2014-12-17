@@ -3642,7 +3642,7 @@ module.exports = Events;
 
 /*!
  * Storage documents using schema
- * inspired by mongoose 3.8.4 (fixed bugs for 3.8.16)
+ * inspired by mongoose 3.8.4 (fixed bugs for 3.8.18)
  *
  * Storage implementation
  * http://docs.meteor.com/#selectors
@@ -4209,8 +4209,12 @@ function Schema ( name, baseSchema, obj, options ) {
     this.add( obj );
   }
 
+  // check if _id's value is a subdocument (m-gh-2276)
+  var _idSubDoc = obj && obj._id && _.isObject( obj._id );
+
   // ensure the documents get an auto _id unless disabled
-  var auto_id = !this.paths['_id'] && (!this.options.noId && this.options._id);
+  var auto_id = !this.paths['_id'] && (!this.options.noId && this.options._id) && !_idSubDoc;
+
   if (auto_id) {
     this.add({ _id: {type: Schema.ObjectId, auto: true} });
   }
