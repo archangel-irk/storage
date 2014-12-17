@@ -2527,7 +2527,14 @@ Document.prototype.$__handleSave = function(){
 
   if ( this.isNew ) {
     // send entire doc
-    var obj = this.toObject({ depopulate: 1 });
+
+    var toObjectOptions = {};
+    if ( this.schema.options.toObject && this.schema.options.toObject.retainKeyOrder ) {
+      toObjectOptions.retainKeyOrder = true;
+    }
+
+    toObjectOptions.depopulate = 1;
+    var obj = this.toObject( toObjectOptions );
 
     if ( ( obj || {} ).hasOwnProperty('_id') === false ) {
       // documents must have an _id else mongoose won't know
@@ -2539,10 +2546,9 @@ Document.prototype.$__handleSave = function(){
       return innerPromise;
     }
 
-    // Проверка на окружение тестов
-    // Хотя можно таким образом просто делать валидацию, даже если нет коллекции или api
+    // Без ресурса можно просто делать валидацию (подготовить данные к отправке), даже если нет коллекции
     if ( !resource ){
-      innerPromise.resolve( this );
+      innerPromise.resolve( obj );
     } else {
       resource.create( obj ).always( innerPromise.resolve );
     }
@@ -2562,10 +2568,9 @@ Document.prototype.$__handleSave = function(){
 
     if ( !_.isEmpty( delta ) ) {
       this.$__reset();
-      // Проверка на окружение тестов
-      // Хотя можно таким образом просто делать валидацию, даже если нет коллекции или api
+      // Без ресурса можно просто делать валидацию (подготовить данные к отправке), даже если нет коллекции
       if ( !resource ){
-        innerPromise.resolve( this );
+        innerPromise.resolve( delta );
       } else {
         resource( this.id ).update( delta ).always( innerPromise.resolve );
       }
@@ -2583,6 +2588,17 @@ Document.prototype.$__handleSave = function(){
 /**
  * @description Saves this document.
  *
+ * Если апи-клиента нет и документ новый, то в колбэке будет plain object со всеми данными для сохранения на сервер.
+ * Если апи-клиента нет и документ старое, то в колбэке будет plain object только с изменёнными данными.
+ *
+ * Если апи-клиент есть и не важно новый документ или старый, в колбэке всегда будет ответ от rest-api-client
+ *
+ * // todo: доописать это дело
+ * Сейчас если есть ресурс (апи клиент), то:
+ * если документ новый, то после ответа создастся новый документ на основе ответа, и обовляется!!! (получше объяснить это) ссылка (id) внутри коллекции
+ * если документ старый, то после ответа ищется этот документ по id и делается set
+ *
+ *
  * @example:
  *
  *     product.sold = Date.now();
@@ -2594,26 +2610,43 @@ Document.prototype.$__handleSave = function(){
  *
  * The `fn` callback is optional. If no `fn` is passed and validation fails, the validation error will be emitted on the connection used to create this model.
  * @example:
- *     var db = mongoose.createConnection(..);
  *     var schema = new Schema(..);
- *     var Product = db.model('Product', schema);
+ *     var Product = storage.createCollection('Product', schema );
+ *     var doc = Product.add();
  *
- *     db.on('error', handleError);
- *
- * @description However, if you desire more local error handling you can add an `error` listener to the model and handle errors there instead.
- * @example:
- *     Product.on('error', handleError);
+ *     // todo: реализовать это
+ *     doc.on('error', handleError);
  *
  * @description As an extra measure of flow control, save will return a Promise (bound to `fn` if passed) so it could be chained, or hook to recive errors
  * @example:
- *     product.save().then(function (product, numberAffected) {
+ *     product.save().done(function( product ){
  *        ...
- *     }).onRejected(function (err) {
- *        assert.ok(err)
+ *     }).fail(function( err ){
+ *        assert.ok( err )
  *     })
  *
- * @param {function(err, product, Number)} [done] optional callback
- * @return {Promise} Promise
+ * @description retainKeyOrder - keep the key order of the doc save
+ * @example:
+ *     var Checkin = new Schema({
+ *       date: Date,
+ *       location: {
+ *         lat: Number,
+ *         lng: Number
+ *       }
+ *     }, {
+ *       toObject: {
+ *         retainKeyOrder: true
+ *       }
+ *     });
+ *     var Checkins = storage.createCollection('Product', schema );
+ *     var doc = Checkins.add();
+ *
+ *     doc.save().done(function( objToSave ){
+ *       // in `objToSave` followed the correct order of the keys of doc
+ *     });
+ *
+ * @param {function( object )} [done] optional callback, object - objToSave
+ * @return {Deferred} Deferred
  * @api public
  * @see middleware http://mongoosejs.com/docs/middleware.html
  */
@@ -2670,10 +2703,12 @@ Document.prototype.save = function ( done ) {
   // Handle save and results
   p1.done(function(){
     self.$__handleSave().done(function(){
-      finalPromise.resolve( self );
+      //todo: надо проверять, нужно ли писать проверку на наличие ресурса, если он есть - отдавать self, если нет, отдавать как сейчас написано
+      // возможно и скорее всего, api и так отдаёт всё в правильном порядке (doc, meta, jqxhr)
+      finalPromise.resolve.apply( finalPromise, arguments );
 
     }).fail(function(){
-      finalPromise.reject( arguments );
+      finalPromise.reject.apply( finalPromise, arguments );
     });
   });
 
@@ -2790,6 +2825,34 @@ Document.prototype.save = function ( done ) {
  * See [schema options](/docs/guide.html#toObject) for some more details.
  *
  * _During save, no custom options are applied to the document before being sent to the database._
+ *
+ * retainKeyOrder - keep the key order of the doc save
+ *
+ *     var Checkin = new Schema({ ... }, {
+ *       toObject: {
+ *         retainKeyOrder: true
+ *       }
+ *     });
+ *
+ *     doc.toObject(); // object with correct order of the keys of doc
+ *
+ *     // or inline
+ *
+ *     doc.toObject({ retainKeyOrder: true });
+ *
+ *     // or if use toJSON();
+ *
+ *     var Checkin = new Schema({ ... }, {
+ *       toJSON: {
+ *         retainKeyOrder: true
+ *       }
+ *     });
+ *
+ *     doc.toJSON(); // JSON string with correct order of the keys of doc
+ *
+ *     // or inline
+ *
+ *     doc.toJSON({ retainKeyOrder: true });
  *
  * @param {Object} [options]
  * @return {Object} js object
@@ -9224,7 +9287,7 @@ function base64Write (buf, string, offset, length) {
 }
 
 function utf16leWrite (buf, string, offset, length) {
-  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length)
+  var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length, 2)
   return charsWritten
 }
 
@@ -9908,7 +9971,8 @@ function base64ToBytes (str) {
   return base64.toByteArray(str)
 }
 
-function blitBuffer (src, dst, offset, length) {
+function blitBuffer (src, dst, offset, length, unitSize) {
+  if (unitSize) length -= length % unitSize;
   for (var i = 0; i < length; i++) {
     if ((i + offset >= dst.length) || (i >= src.length))
       break
@@ -10258,15 +10322,15 @@ process.chdir = function (dir) {
 
 },{}],42:[function(require,module,exports){
 module.exports={
-  "name": "storage.js",
+  "name": "storage",
   "version": "0.2.0",
-  "description": "storage.js",
+  "description": "Mongoose-like schema validation, collections and documents on browser (client-side)",
   "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
-  "maintainers": "Constantine Melnikov <ka.melnikov@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/archangel-irk/storage.git"
   },
+  "main": "dist/storage.min.js",
   "scripts": {
     "test": "grunt test"
   },
