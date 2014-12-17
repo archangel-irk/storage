@@ -15,61 +15,81 @@ var SchemaType = storage.SchemaType
   , EmbeddedDocument = storage.Types.Embedded;
 
 describe('document: strict mode:', function(){
-  it('should work', function(done){
-    var raw = {
+  describe.only('should work', function(){
+    var Lax, Strict;
+
+    before(function() {
+      var raw = {
         ts  : { type: Date, default: Date.now }
-      , content: String
-      , mixed: {}
-      , deepMixed: { '4a': {}}
-      , arrayMixed: []
-    };
+        , content: String
+        , mixed: {}
+        , deepMixed: { '4a': {}}
+        , arrayMixed: []
+      };
 
-    var lax = new Schema(raw, { strict: false });
-    var strict = new Schema(raw);
+      var lax = new Schema(raw, { strict: false });
+      var strict = new Schema(raw);
 
-    var Lax = storage.createCollection('Lax', lax);
-    var Strict = storage.createCollection('Strict', strict);
+      Lax = storage.createCollection('Lax', lax);
+      Strict = storage.createCollection('Strict', strict);
+    });
 
-    var l = Lax.add({content: 'sample', rouge: 'data'});
-    assert.equal(false, l.$__.strictMode);
-    l = l.toObject();
-    assert.ok('ts' in l);
-    assert.equal('sample', l.content);
-    assert.equal('data', l.rouge);
+    it('when creating models with non-strict schemas', function(done) {
+      var l = Lax.add({content: 'sample', rouge: 'data'});
+      assert.equal(false, l.$__.strictMode);
+      var lo = l.toObject();
+      assert.ok('ts' in l);
+      assert.ok('ts' in lo);
+      assert.equal('sample', l.content);
+      assert.equal('sample', lo.content);
+      assert.equal('data', l.rouge);
+      assert.equal('data', lo.rouge);
+      done();
+    });
 
-    var s = Strict.add({content: 'sample', rouge: 'data'});
-    assert.equal(true, s.$__.strictMode);
-    s = s.toObject();
-    assert.ok('ts' in s);
-    assert.equal('sample', s.content);
-    assert.ok(!('rouge' in s));
-    assert.ok(!s.rouge);
+    it('when creating models with strict schemas', function(done) {
+      var s = Strict.add({content: 'sample', rouge: 'data'});
+      assert.equal(true, s.$__.strictMode);
 
-    // instance override
-    var instance = Lax.add({content: 'sample', rouge: 'data'}, true);
-    assert.ok(instance.$__.strictMode);
-    instance = instance.toObject();
-    assert.equal('sample', instance.content);
-    assert.ok(!instance.rouge);
-    assert.ok('ts' in instance);
+      var so = s.toObject();
+      assert.ok('ts' in s);
+      assert.ok('ts' in so);
+      assert.equal('sample', s.content);
+      assert.equal('sample', so.content);
+      assert.ok(!('rouge' in s));
+      assert.ok(!('rouge' in so));
+      assert.ok(!s.rouge);
+      assert.ok(!so.rouge);
+      done();
+    });
 
-    // hydrate works as normal, but supports the schema level flag.
-    var s2 = Strict.add({content: 'sample', rouge: 'data'}, false);
-    assert.equal(false, s2.$__.strictMode);
-    s2 = s2.toObject();
-    assert.ok('ts' in s2);
-    assert.equal('sample', s2.content);
-    assert.ok('rouge' in s2);
+    it('when overriding strictness', function(done) {
+      // instance override
+      var instance = Lax.add({content: 'sample', rouge: 'data'}, true);
+      assert.ok(instance.$__.strictMode);
 
-    // testing init
-    var s3 = Strict.add();
-    s3.init({content: 'sample', rouge: 'data'});
-    var s3obj = s3.toObject();
-    assert.equal('sample', s3.content);
-    assert.ok(!('rouge' in s3));
-    assert.ok(!s3.rouge);
+      instance = instance.toObject();
+      assert.equal('sample', instance.content);
+      assert.ok(!instance.rouge);
+      assert.ok('ts' in instance);
 
-    done();
+      // hydrate works as normal, but supports the schema level flag.
+      var s2 = Strict.add({content: 'sample', rouge: 'data'}, false);
+      assert.equal(false, s2.$__.strictMode);
+      s2 = s2.toObject();
+      assert.ok('ts' in s2);
+      assert.equal('sample', s2.content);
+      assert.ok('rouge' in s2);
+
+      // testing init
+      var s3 = Strict.add();
+      s3.init({content: 'sample', rouge: 'data'});
+      var s3obj = s3.toObject();
+      assert.equal('sample', s3.content);
+      assert.ok(!('rouge' in s3));
+      assert.ok(!s3.rouge);
+      done();
+    });
   });
 
   it('nested doc', function(done){
