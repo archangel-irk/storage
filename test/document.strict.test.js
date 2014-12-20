@@ -15,7 +15,7 @@ var SchemaType = storage.SchemaType
   , EmbeddedDocument = storage.Types.Embedded;
 
 describe('document: strict mode:', function(){
-  describe.only('should work', function(){
+  describe('should work', function(){
     var Lax, Strict;
 
     before(function() {
