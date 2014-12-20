@@ -135,7 +135,7 @@ module.exports = function (grunt) {
 
     coveralls: {
       options: {
-        coverage_dir: 'test/coverage',
+        coverageDir: 'test/coverage',
         recursive: true
       }
     }
