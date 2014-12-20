@@ -33,7 +33,7 @@ TestDocument.prototype.constructor = TestDocument;
 
 var em = new Schema({ title: String, body: String });
 em.virtual('works').get(function () {
-  return 'em virtual works'
+  return 'em virtual works';
 });
 var schema = new Schema({
     test    : String
@@ -316,7 +316,7 @@ describe('document', function(){
       , numbers : [4,5,6,7]
       , nested  : {
             age   : 5
-          , cool  : DocumentObjectId('4c6c2d6240ced95d0e00003c')
+          , cool  : new DocumentObjectId('4c6c2d6240ced95d0e00003c')
           , path  : 'my path'
           , deep  : { x: 'a string' }
         }
@@ -330,5 +330,5 @@ describe('document', function(){
     assert.ok(!doc.isSelected('numbers'));
 
     done();
-  })
+  });
 });
