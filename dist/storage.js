@@ -3655,7 +3655,7 @@ module.exports = Events;
 
 /*!
  * Storage documents using schema
- * inspired by mongoose 3.8.4 (fixed bugs for 3.8.19)
+ * inspired by mongoose 3.8.4 (fixed bugs for 3.8.20)
  *
  * Storage implementation
  * http://docs.meteor.com/#selectors
@@ -10352,7 +10352,7 @@ process.chdir = function (dir) {
 },{}],42:[function(require,module,exports){
 module.exports={
   "name": "storage",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Mongoose-like schema validation, collections and documents on browser (client-side)",
   "author": "Constantine Melnikov <ka.melnikov@gmail.com>",
   "repository": {
