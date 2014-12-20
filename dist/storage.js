@@ -1372,11 +1372,11 @@ function Document ( data, collectionName, schema, fields, init ){
     });
   }
 
-  // apply methods
+  // Register methods
   for ( var m in schema.methods ){
     this[ m ] = schema.methods[ m ];
   }
-  // apply statics
+  // Register statics
   for ( var s in schema.statics ){
     this[ s ] = schema.statics[ s ];
   }
@@ -4156,7 +4156,6 @@ var Events = require('./events')
  *
  * ####Options:
  *
- * - [collection](/docs/guide.html#collection): string - no default
  * - [id](/docs/guide.html#id): bool - defaults to true
  * - `minimize`: bool - controls [document#toObject](#document_Document-toObject) behavior when called manually - defaults to true
  * - [strict](/docs/guide.html#strict): bool - defaults to true
@@ -4196,8 +4195,11 @@ function Schema ( name, baseSchema, obj, options ) {
     baseSchema = undefined;
   }
 
+  //todo: зачем оно нужно? проблема: obj становится как у прошлой схемы + текущее, из-за этого source,
+  // потому что оно копируется из старой схемы в текущий source, а так как он ссылается на obj,
+  // и в js у нас разделение памяти, то obj расширяется полями source из старой схемы.
   // Сохраним описание схемы для поддержки дискриминаторов
-  this.source = obj;
+  //this.source = obj;
 
   this.paths = {};
   this.subpaths = {};
@@ -4358,7 +4360,7 @@ Schema.prototype.add = function add ( obj, prefix ) {
  *
  * Keys in this object are names that are rejected in schema declarations b/c they conflict with mongoose functionality. Using these key name will throw an error.
  *
- *      on, emit, _events, db, get, set, init, isNew, errors, schema, options, modelName, collection, _pres, _posts, toObject
+ *      on, emit, _events, db, get, set, init, isNew, errors, schema, options, _pres, _posts, toObject
  *
  * _NOTE:_ Use of these terms as method names is permitted, but play at your own risk, as they may be existing mongoose document methods you are stomping on.
  *
@@ -4368,7 +4370,6 @@ Schema.prototype.add = function add ( obj, prefix ) {
 Schema.reserved = Object.create( null );
 var reserved = Schema.reserved;
 reserved.on =
-reserved.db =
 reserved.get =
 reserved.set =
 reserved.init =
@@ -4376,13 +4377,10 @@ reserved.isNew =
 reserved.errors =
 reserved.schema =
 reserved.options =
-reserved.modelName =
-reserved.collection =
 reserved.toObject =
-reserved.domain =
-reserved.emit =    // EventEmitter
-reserved._events = // EventEmitter
-reserved._pres = reserved._posts = 1; // hooks.js
+reserved.trigger =    // Events
+reserved.off =    // Events
+reserved._events = // Events
 
 /**
  * Gets/sets schema paths.
@@ -4400,7 +4398,7 @@ reserved._pres = reserved._posts = 1; // hooks.js
  * @api public
  */
 Schema.prototype.path = function (path, obj) {
-  if (obj == undefined) {
+  if (obj === undefined) {
     if (this.paths[path]) return this.paths[path];
     if (this.subpaths[path]) return this.subpaths[path];
 
@@ -4836,8 +4834,8 @@ Schema.prototype.virtualpath = function (name) {
 Schema.discriminators;
 
 /**
- * Наследование от схемы.
- * this - базовая схема!!!
+ * Schema inheritance
+ * this - baseSchema
  *
  * ####Example:
  *     var PersonSchema = new Schema('Person', {
@@ -4874,10 +4872,6 @@ Schema.prototype.discriminator = function discriminator (name, schema) {
     schema.add(obj);
     schema.discriminatorMapping = { key: key, value: name, isRoot: false };
 
-    if (baseSchema.options.collection) {
-      schema.options.collection = baseSchema.options.collection;
-    }
-
       // throws error if options are invalid
     (function validateOptions(a, b) {
       a = utils.clone(a);
@@ -4888,7 +4882,7 @@ Schema.prototype.discriminator = function discriminator (name, schema) {
       delete b.toObject;
 
       if (!utils.deepEqual(a, b)) {
-        throw new Error("Discriminator options are not customizable (except toJSON & toObject)");
+        throw new Error('Discriminator options are not customizable (except toJSON & toObject)');
       }
     })(schema.options, baseSchema.options);
 
@@ -4916,6 +4910,16 @@ Schema.prototype.discriminator = function discriminator (name, schema) {
   }
 
   this.discriminators[name] = schema;
+
+  // Register methods and statics
+  for ( var m in this.methods ){
+    schema.methods[ m ] = this.methods[ m ];
+  }
+  for ( var s in this.statics ){
+    schema.statics[ s ] = this.methods[ s ];
+  }
+
+  return this.discriminators[name];
 };
 
 /*!
@@ -7157,7 +7161,13 @@ StorageArray.mixin = {
         value = { _id: value };
       }
 
-      value = new Model(value);
+      // gh-2399
+      // we should cast model only when it's not a discriminator
+      var isDisc = value.schema && value.schema.discriminatorMapping &&
+        value.schema.discriminatorMapping.key !== undefined;
+      if (!isDisc) {
+        value = new Model(value);
+      }
       return this._schema.caster.cast(value, this._parent, true);
     }
 
@@ -8719,10 +8729,12 @@ exports.merge = function merge (to, from) {
 
   while (i--) {
     key = keys[i];
-    if ('undefined' === typeof to[key]) {
+
+    if ( typeof to[key] === 'undefined' ){
       to[key] = from[key];
-    } else if ( _.isObject(from[key]) ) {
-      merge(to[key], from[key]);
+
+    } else if ( _.isObject( from[key] ) ){
+      merge( to[key], from[key] );
     }
   }
 };
