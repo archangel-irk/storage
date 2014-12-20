@@ -1,3 +1,5 @@
+/* jshint strict: false */
+/* global describe, it */
 'use strict';
 
 var Schema = storage.Schema

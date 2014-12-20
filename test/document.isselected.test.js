@@ -1,3 +1,6 @@
+/* jshint strict: false */
+/* global describe, before, it */
+
 // Полностью портирован
 var Schema = storage.Schema
   , utils = storage.utils

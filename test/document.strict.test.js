@@ -4,6 +4,8 @@
 var Schema = storage.Schema
   , utils = storage.utils
   , random = utils.random;
+/* jshint strict: false */
+/* global describe, before, it */
 
 var SchemaType = storage.SchemaType
   , CastError = storage.Error.CastError
