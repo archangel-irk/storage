@@ -3655,7 +3655,7 @@ module.exports = Events;
 
 /*!
  * Storage documents using schema
- * inspired by mongoose 3.8.4 (fixed bugs for 3.8.18)
+ * inspired by mongoose 3.8.4 (fixed bugs for 3.8.19)
  *
  * Storage implementation
  * http://docs.meteor.com/#selectors
