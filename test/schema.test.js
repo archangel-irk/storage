@@ -1016,27 +1016,9 @@ describe('schema', function(){
 
       assert.throws(function(){
         new Schema({
-           collection: String
-        });
-      }, /`collection` may not be used as a schema pathname/);
-
-      assert.throws(function(){
-        new Schema({
             schema: String
         });
       }, /`schema` may not be used as a schema pathname/);
-
-      assert.throws(function(){
-        new Schema({
-            db: String
-        });
-      }, /`db` may not be used as a schema pathname/);
-
-      assert.throws(function(){
-        new Schema({
-            modelName: String
-        });
-      }, /`modelName` may not be used as a schema pathname/);
 
       assert.throws(function(){
         new Schema({
