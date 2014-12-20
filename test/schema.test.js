@@ -852,9 +852,7 @@ describe('schema', function(){
         }
       });
 
-      storage.createCollection('Merged', MergedSchema);
-
-      var Merged = storage.createCollection('Merged', 'merged_' + Math.random());
+      var Merged = storage.createCollection('Merged_' + Math.random(), MergedSchema );
 
       var merged = Merged.add({
         a: {
