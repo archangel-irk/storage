@@ -170,7 +170,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test', [
-    'browserify:dist',
+    'browserify:dev',
     'karma:local'
   ]);
 
