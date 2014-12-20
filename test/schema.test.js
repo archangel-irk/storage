@@ -1051,21 +1051,21 @@ describe('schema', function(){
       });
 
       assert.doesNotThrow(function(){
-        Schema({ child: [{parent: String}] });
+        new Schema({ child: [{parent: String}] });
       });
 
       assert.doesNotThrow(function(){
-        Schema({ child: [{parentArray: String}] });
+        new Schema({ child: [{parentArray: String}] });
       });
 
       assert.doesNotThrow(function(){
-        var s = Schema({ docs: [{ path: String }] });
+        var s = new Schema({ docs: [{ path: String }] });
         var M = storage.createCollection('gh-1245', s);
         var m = M.add({ docs: [{ path: 'works' }] });
       });
 
       assert.doesNotThrow(function () {
-        var s = Schema({ setMaxListeners: String });
+        var s = new Schema({ setMaxListeners: String });
         var M = storage.createCollection('setMaxListeners-as-property-name', s);
         var m = M.add({ setMaxListeners: 'works' });
       });
@@ -1078,7 +1078,7 @@ describe('schema', function(){
     var schema;
 
     before(function(){
-      schema = Schema({
+      schema = new Schema({
           n: String
         , nest: { thing: { nests: Boolean }}
         , docs:[{ x: [{ y:String }] }]
