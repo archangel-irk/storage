@@ -314,6 +314,8 @@ var PersonSchema = new Schema('Person', {
 
 var BossSchema = new Schema('Boss', PersonSchema, { department: String });
  ```
+ Реализован не до конца, и немного по-другому. Так как у нас нет моделей, дискриминатор реализован внутри схем, это позволяет использовать более приятный синтаксис. Пример с его использованием есть в моделях place и в jsdoc самого метода.
+Что не реализовано: поиск по коллекции в соответствии с discriminatorKey. (решение смотреть в query.js с поиском по "discriminator" и метод prepareDiscriminatorCriteria)
 
 ## Building from sources
 1. **Clone the repo from GitHub**
