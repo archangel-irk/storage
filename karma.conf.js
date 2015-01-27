@@ -5,7 +5,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/lodash/dist/lodash.js',
-      'dist/storage.debug.js',
+      'dist/storage.min.js',
       'test/*.js'
     ],
 
