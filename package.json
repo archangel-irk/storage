@@ -31,7 +31,7 @@
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
 
-    "lodash": "latest",
+    "lodash": "2.4.1",
 
     "browserify": "latest",
 
