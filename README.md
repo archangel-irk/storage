@@ -347,5 +347,5 @@ Also you can see the code coverage in `test/coverage/`.
 MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
 
 ## Todo
-* tests and docs for schema inheritance (discriminator)
+* eng docs for schema inheritance (discriminator)
 * assert.ifError(err) -> move to .fail(function( err ){});
