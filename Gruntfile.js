@@ -134,6 +134,7 @@ module.exports = function (grunt) {
       },
 
       phantom: {
+        browserNoActivityTimeout: 15000,
         browsers: [
           'PhantomJS'
         ],
