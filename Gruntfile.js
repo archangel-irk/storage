@@ -155,11 +155,10 @@ module.exports = function (grunt) {
       },
 
       sauce: {
-        files: [
-          'node_modules/lodash/dist/lodash.js',
-          'dist/storage.min.debug.js',
-          'test/*.js'
-        ],
+        webpack: webpack_karma,
+        preprocessors: {
+          'lib/index.js': ['webpack', 'sourcemap']
+        },
         reporters: [
           'dots',
           'saucelabs'
