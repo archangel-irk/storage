@@ -330,7 +330,7 @@ var BossSchema = new Schema('Boss', PersonSchema, { department: String });
 
     The first `npm` command sets up the popular [Grunt](http://gruntjs.com/) build tool. You might need to run this command with `sudo` if you're on Linux or Mac OS X, or in an Administrator command prompt on Windows. The second `npm` command fetches the remaining build dependencies.
 
-3. **Run the build tool**
+3. **Run the build and test tools**
 
         grunt
 

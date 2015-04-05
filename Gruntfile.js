@@ -1,48 +1,91 @@
 'use strict';
 
 module.exports = function (grunt) {
+  var webpack = require('webpack');
   require('time-grunt')(grunt);
 
-  grunt.initConfig({
-    //pkg: grunt.file.readJSON('package.json'),
-    watch: {
-      files: ['lib/**/*.js'],
-      tasks: ['browserify:dev']
+  var webpack_karma = {
+    output: {
+      library: 'storage',
+      libraryTarget: 'umd',
+      pathinfo: true
     },
+    devtool: 'inline-source-map',
+    module: {
+      postLoaders: [{
+        test: /\.js$/,
+        exclude: /(node_modules)\//,
+        loader: 'istanbul-instrumenter'
+      }]
+    },
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        mangle: false
+      }),
+      new webpack.DefinePlugin({
+        NODE_ENV: JSON.stringify('production')
+      })
+    ]
+  };
 
-    browserify: {
-      //browserify lib/ --standalone storage > storage.js -d
-      dev: {
-        options: {
-          browserifyOptions: {
-            debug: true,
-            standalone: 'storage'
-          }
-        },
-        src: 'lib/index.js',
-        dest: 'dist/storage.debug.js'
+  grunt.initConfig({
+    webpack: {
+      options: {
+        entry: './lib/index.js',
+        plugins: [
+          new webpack.optimize.UglifyJsPlugin({
+            mangle: false
+          }),
+          new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify('production')
+          })
+        ]
       },
 
-      // browserify lib/ --standalone storage > storage.js
-      dist: {
-        options: {
-          browserifyOptions: {
-            standalone: 'storage'
-          }
-        },
-        src: 'lib/index.js',
-        dest: 'dist/storage.js'
-      }
-    },
-
-    uglify: {
-      main: {
-        options: {
-          mangle: false
-        },
-        files: {
-          'dist/storage.min.js': ['dist/storage.js']
+      min: {
+        output: {
+          filename: './dist/storage.min.js',
+          library: 'storage',
+          libraryTarget: 'umd'
         }
+      },
+
+      dev: {
+        output: {
+          filename: './dist/storage.min.debug.js',
+          library: 'storage',
+          libraryTarget: 'umd',
+          pathinfo: true
+        },
+        devtool: 'inline-source-map',
+        stats: {
+          // Configure the console output
+          colors: true,
+          modules: true,
+          reasons: true
+        }
+      },
+
+      watch: {
+        output: {
+          filename: './dist/storage.min.debug.js',
+          library: 'storage',
+          libraryTarget: 'umd',
+          pathinfo: true
+        },
+        devtool: 'inline-source-map',
+        stats: {
+          // Configure the console output
+          colors: true,
+          modules: true,
+          reasons: true
+        },
+
+        watch: true,  // Use this in combination with the watch option
+        // You need to keep the grunt process alive
+
+        keepalive: true // don't finish the grunt task
+        // Use this in combination with the watch option
       }
     },
 
@@ -75,11 +118,9 @@ module.exports = function (grunt) {
           'Chrome'
         ],
         preprocessors: {
-          // source files, that you wanna generate coverage for
-          // do not include tests or libraries
-          // (these files will be instrumented by Istanbul)
-          'dist/storage.js': ['coverage']
+          'lib/index.js': ['webpack']
         },
+        webpack: webpack_karma,
         // coverage reporter generates the coverage
         reporters: [
           'dots',
@@ -97,11 +138,9 @@ module.exports = function (grunt) {
           'PhantomJS'
         ],
         preprocessors: {
-          // source files, that you wanna generate coverage for
-          // do not include tests or libraries
-          // (these files will be instrumented by Istanbul)
-          'dist/storage.js': ['coverage']
+          'lib/index.js': ['webpack']
         },
+        webpack: webpack_karma,
         // coverage reporter generates the coverage
         reporters: [
           'dots',
@@ -141,12 +180,10 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');
+  grunt.loadNpmTasks("grunt-webpack");
 
   grunt.registerTask('default', [
     'build',
@@ -160,17 +197,15 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     //'lint',
     //'complexity',
-    'browserify',
-    'uglify'
+    'webpack:min',
+    'webpack:dev'
   ]);
 
-  grunt.registerTask('dev', [
-    'browserify:dev',
-    'watch'
+  grunt.registerTask('watch', [
+    'webpack:watch'
   ]);
 
   grunt.registerTask('test', [
-    'browserify:dev',
     'karma:local'
   ]);
 

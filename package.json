@@ -15,11 +15,9 @@
     "grunt": "latest",
     "time-grunt": "latest",
     "grunt-contrib-jshint": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-browserify": "latest",
     "grunt-karma": "latest",
     "grunt-karma-coveralls": "latest",
+    "grunt-webpack": "latest",
     "karma": "latest",
     "karma-coverage": "latest",
     "karma-mocha": "latest",
@@ -30,10 +28,13 @@
     "karma-ie-launcher": "latest",
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
+    "karma-webpack": "latest",
 
     "lodash": "2.4.1",
 
-    "browserify": "latest",
+    "webpack": "latest",
+    "json-loader": "latest",
+    "istanbul-instrumenter-loader": "latest",
 
     "dox": "latest",
     "highlight.js": "latest",

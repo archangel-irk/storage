@@ -5,7 +5,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/lodash/dist/lodash.js',
-      'dist/storage.min.js',
+      'lib/index.js',
       'test/*.js'
     ],
 
@@ -16,6 +16,13 @@ module.exports = function (config) {
       'chai'
     ],
 
+    // test results reporter to use
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: [
+      'progress'
+    ],
+
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
@@ -24,14 +31,6 @@ module.exports = function (config) {
       'Firefox',
       'Safari',
       'IE'
-    ],
-    /*'karma-opera-launcher',*/
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: [
-      'progress'
     ],
 
     // enable / disable colors in the output (reporters and logs)
