@@ -134,11 +134,7 @@ module.exports = function (grunt) {
       },
 
       phantom: {
-        // Avoid DISCONNECTED messages
-        // See https://github.com/karma-runner/karma/issues/598
-        browserDisconnectTimeout : 10000, // default 2000
-        browserDisconnectTolerance : 1, // default 0
-        browserNoActivityTimeout : 60000, //default 10000
+        //browserNoActivityTimeout : 60000, //default 10000
         browsers: [
           'PhantomJS'
         ],
@@ -159,6 +155,10 @@ module.exports = function (grunt) {
       },
 
       sauce: {
+        webpack: webpack_karma,
+        preprocessors: {
+          'lib/index.js': ['webpack', 'sourcemap']
+        },
         reporters: [
           'dots',
           'saucelabs'
