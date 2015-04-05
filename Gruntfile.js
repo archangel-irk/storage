@@ -118,7 +118,7 @@ module.exports = function (grunt) {
           'Chrome'
         ],
         preprocessors: {
-          'lib/index.js': ['webpack']
+          'lib/index.js': ['webpack', 'sourcemap']
         },
         webpack: webpack_karma,
         // coverage reporter generates the coverage

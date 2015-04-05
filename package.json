@@ -28,6 +28,7 @@
     "karma-ie-launcher": "latest",
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
+    "karma-sourcemap-loader": "latest",
     "karma-webpack": "latest",
 
     "lodash": "2.4.1",
