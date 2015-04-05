@@ -134,7 +134,11 @@ module.exports = function (grunt) {
       },
 
       phantom: {
-        browserNoActivityTimeout: 60000,
+        // Avoid DISCONNECTED messages
+        // See https://github.com/karma-runner/karma/issues/598
+        browserDisconnectTimeout : 10000, // default 2000
+        browserDisconnectTolerance : 1, // default 0
+        browserNoActivityTimeout : 60000, //default 10000
         browsers: [
           'PhantomJS'
         ],
