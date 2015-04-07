@@ -117,12 +117,6 @@ module.exports = function (grunt) {
         browsers: [
           'Chrome'
         ],
-        // list of files / patterns to load in the browser
-        files: [
-          { src: 'node_modules/lodash/dist/lodash.js'},
-          { src: 'lib/index.js'},
-          { src: 'test/*.js'}
-        ],
         preprocessors: {
           'lib/index.js': ['webpack', 'sourcemap']
         },
@@ -143,12 +137,6 @@ module.exports = function (grunt) {
         browserNoActivityTimeout : 60000, //default 10000
         browsers: [
           'PhantomJS'
-        ],
-        // list of files / patterns to load in the browser
-        files: [
-          { src: 'node_modules/lodash/dist/lodash.js'},
-          { src: 'lib/index.js'},
-          { src: 'test/*.js'}
         ],
         preprocessors: {
           'lib/index.js': ['webpack']

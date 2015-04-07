@@ -2,6 +2,13 @@ module.exports = function (config) {
   'use strict';
 
   config.set({
+    // list of files / patterns to load in the browser
+    files: [
+      'node_modules/lodash/dist/lodash.js',
+      'lib/index.js',
+      'test/*.js'
+    ],
+
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: [
