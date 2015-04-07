@@ -155,6 +155,7 @@ module.exports = function (grunt) {
       },
 
       sauce: {
+        browserNoActivityTimeout : 60000, //default 10000
         webpack: webpack_karma,
         preprocessors: {
           'lib/index.js': ['webpack', 'sourcemap']
