@@ -119,9 +119,9 @@ module.exports = function (grunt) {
         ],
         // list of files / patterns to load in the browser
         files: [
-          'node_modules/lodash/dist/lodash.js',
-          'lib/index.js',
-          'test/*.js'
+          { src: 'node_modules/lodash/dist/lodash.js'},
+          { src: 'lib/index.js'},
+          { src: 'test/*.js'}
         ],
         preprocessors: {
           'lib/index.js': ['webpack', 'sourcemap']
@@ -146,9 +146,9 @@ module.exports = function (grunt) {
         ],
         // list of files / patterns to load in the browser
         files: [
-          'node_modules/lodash/dist/lodash.js',
-          'lib/index.js',
-          'test/*.js'
+          { src: 'node_modules/lodash/dist/lodash.js'},
+          { src: 'lib/index.js'},
+          { src: 'test/*.js'}
         ],
         preprocessors: {
           'lib/index.js': ['webpack']
@@ -169,9 +169,9 @@ module.exports = function (grunt) {
       sauce: {
         // list of files / patterns to load in the browser
         files: [
-          'node_modules/lodash/dist/lodash.js',
-          'dist/storage.min.debug.js',
-          'test/*.js'
+          { src: 'node_modules/lodash/dist/lodash.js'},
+          { src: 'dist/storage.min.debug.js'},
+          { src: 'test/*.js'}
         ],
         reporters: [
           'dots',
