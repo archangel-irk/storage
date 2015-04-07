@@ -307,15 +307,32 @@ console.log( person.toObject() ); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max
 
 ## Storage has Schema Inheritance via Discriminator functionality:
 ```javascript
+// in Storage
 var PersonSchema = new Schema('Person', {
   name: String,
   createdAt: Date
 });
 
 var BossSchema = new Schema('Boss', PersonSchema, { department: String });
+
+// in Mongoose
+function BaseSchema() {
+  Schema.apply(this, arguments);
+
+  this.add({
+    name: String,
+    createdAt: Date
+  });
+}
+util.inherits(BaseSchema, Schema);
+
+var PersonSchema = new BaseSchema();
+var BossSchema = new BaseSchema({ department: String });
+
+var Person = mongoose.model('Person', PersonSchema);
+var Boss = Person.discriminator('Boss', BossSchema);
  ```
- Реализован не до конца, и немного по-другому. Так как у нас нет моделей, дискриминатор реализован внутри схем, это позволяет использовать более приятный синтаксис. Пример с его использованием есть в моделях place и в jsdoc самого метода.
-Что не реализовано: поиск по коллекции в соответствии с discriminatorKey. (решение смотреть в query.js с поиском по "discriminator" и метод prepareDiscriminatorCriteria)
+Differences from mongoose: since we have no models, the discriminator is implemented inside of the schemes, this allows the use of more pleasant syntax.
 
 ## Building from sources
 1. **Clone the repo from GitHub**
@@ -347,5 +364,7 @@ Also you can see the code coverage in `test/coverage/`.
 MIT license - [http://www.opensource.org/licenses/mit-license.php](http://www.opensource.org/licenses/mit-license.php)
 
 ## Todo
+* It was written that the discriminator is implemented incompletely, check it out.
+* collection.find() by discriminatorKey (see mongoose query.js prepareDiscriminatorCriteria method)
 * eng docs for schema inheritance (discriminator)
 * assert.ifError(err) -> move to .fail(function( err ){});
