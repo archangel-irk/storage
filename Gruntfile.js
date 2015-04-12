@@ -114,6 +114,27 @@ module.exports = function (grunt) {
       },
 
       local: {
+        // list of files / patterns to load in the browser
+        files: [
+          { src: 'node_modules/lodash/dist/lodash.js'},
+          { src: 'dist/storage.min.debug.js'},
+          { src: 'test/*.js'}
+        ],
+        browsers: [
+          'Chrome'
+        ],
+        // coverage reporter generates the coverage
+        reporters: [
+          'dots'
+        ],
+        // optionally, configure the reporter
+        coverageReporter: {
+          type: 'html',
+          dir: 'test/coverage'
+        }
+      },
+
+      cov: {
         browsers: [
           'Chrome'
         ],
@@ -213,7 +234,12 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test', [
+    'webpack:dev',
     'karma:local'
+  ]);
+
+  grunt.registerTask('cov', [
+    'karma:cov'
   ]);
 
   grunt.registerTask('travis', [
