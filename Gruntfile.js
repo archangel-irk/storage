@@ -10,7 +10,7 @@ module.exports = function (grunt) {
       libraryTarget: 'umd',
       pathinfo: true
     },
-    devtool: 'inline-source-map',
+    devtool: 'eval',
     module: {
       postLoaders: [{
         test: /\.js$/,
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
           libraryTarget: 'umd',
           pathinfo: true
         },
-        devtool: 'inline-source-map',
+        devtool: 'eval',
         stats: {
           // Configure the console output
           colors: true,
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
           libraryTarget: 'umd',
           pathinfo: true
         },
-        devtool: 'inline-source-map',
+        devtool: 'eval',
         stats: {
           // Configure the console output
           colors: true,
