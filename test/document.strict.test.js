@@ -340,8 +340,7 @@ describe('document: strict mode:', function(){
           name: { type: String }
       }, {strict: "throw"});
 
-      // Create the model
-      var Foo = storage.createCollection('Foo', FooSchema);
+      var Foo = storage.createCollection('fails_with_extra_fields', FooSchema);
 
       assert.doesNotThrow(function(){
         Foo.add({name: 'bar'});
@@ -351,6 +350,23 @@ describe('document: strict mode:', function(){
         // The extra baz field should throw
         Foo.add({name: 'bar', baz: 'bam'});
       }, /Field `baz` is not in schema/);
+
+      done();
+    });
+
+    it('doesnt throw with refs (m-gh-2665)', function(done) {
+
+      // Simple schema with throws option
+      var FooSchema = Schema({
+        name: { type: Schema.Types.ObjectId, ref: 'test', required: false, default: null },
+        father: { name: { full: String } }
+      }, {strict: "throw"});
+
+      var Foo = storage.createCollection('m-gh-2665', FooSchema);
+
+      assert.doesNotThrow(function(){
+        Foo.add({name: Schema.Types.ObjectId(), father: { name: { full: 'bacon' } } });
+      });
 
       done();
     });
