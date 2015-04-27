@@ -17,7 +17,8 @@ The library provides the most complete compatibility with [mongoose](http://mong
 
 ## Differences from mongoose
 
-coming soon
+1. [Discriminator](https://github.com/archangel-irk/storage#storage-has-schema-inheritance-via-discriminator-functionality)  
+2. coming soon
 
 ## Installation
 Dependencies:
