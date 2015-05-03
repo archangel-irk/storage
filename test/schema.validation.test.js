@@ -198,25 +198,75 @@ describe('schema', function(){
         done();
       });
 
-    it('number required', function(done){
-      var Edwald = new Schema({
-          friends: { type: Number, required: true }
+      it('string conditional required', function (done) {
+        var Test = new Schema({
+          simple: String
+        });
+
+        var required = true,
+          isRequired = function () {
+            return required;
+          };
+
+        Test.path('simple').required(isRequired);
+        assert.equal(Test.path('simple').validators.length, 1);
+
+        Test.path('simple').doValidate(null, function (err) {
+          assert.ok(err instanceof ValidatorError);
+        });
+
+        Test.path('simple').doValidate(undefined, function (err) {
+          assert.ok(err instanceof ValidatorError);
+        });
+
+        Test.path('simple').doValidate('', function (err) {
+          assert.ok(err instanceof ValidatorError);
+        });
+
+        Test.path('simple').doValidate('woot', function (err) {
+          assert.ifError(err);
+        });
+
+        required = false;
+
+        Test.path('simple').doValidate(null, function (err) {
+          assert.ifError(err);
+        });
+
+        Test.path('simple').doValidate(undefined, function (err) {
+          assert.ifError(err);
+        });
+
+        Test.path('simple').doValidate('', function (err) {
+          assert.ifError(err);
+        });
+
+        Test.path('simple').doValidate('woot', function (err) {
+          assert.ifError(err);
+        });
+
+        done();
       });
 
-      Edwald.path('friends').doValidate(null, function(err){
-        assert.ok(err instanceof ValidatorError);
-      });
+      it('number required', function(done){
+        var Edward = new Schema({
+            friends: { type: Number, required: true }
+        });
 
-      Edwald.path('friends').doValidate(undefined, function(err){
-        assert.ok(err instanceof ValidatorError);
-      });
+        Edward.path('friends').doValidate(null, function(err){
+          assert.ok(err instanceof ValidatorError);
+        });
 
-      Edwald.path('friends').doValidate(0, function(err){
-        assert.ifError(err);
-      });
+        Edward.path('friends').doValidate(undefined, function(err){
+          assert.ok(err instanceof ValidatorError);
+        });
 
-      done();
-    });
+        Edward.path('friends').doValidate(0, function(err){
+          assert.ifError(err);
+        });
+
+        done();
+      });
 
       it('date required', function(done){
         var Loki = new Schema({
