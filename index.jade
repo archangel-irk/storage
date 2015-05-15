@@ -13,7 +13,7 @@ html(lang='en')
     #links
       #header
         h1
-          a(href="./storage/index.html")
+          a(href="/storage/index.html")
             .storage Storage
       hr
       .doclinks
@@ -60,7 +60,7 @@ html(lang='en')
       ul
         each item in docs
           li.module(class=item.hasPublic ? '' : 'private')
-            a(href=github + package.version + '/' + item.fulltitle, id=item.cleantitle)= item.title
+            a(href=github + 'v' + package.version + '/' + item.fulltitle, id=item.cleantitle)= item.title
             each method in item.methods
               div.item.method(class= method.isPrivate ? 'private' : 'public')
                 if method.ctx

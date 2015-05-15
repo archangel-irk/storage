@@ -1,6 +1,6 @@
 var fs= require('fs');
 var jade = require('jade');
-var package = require('./package');
+var pkg = require('./package.json');
 var hl = require('./docs/helpers/highlight');
 var linktype = require('./docs/helpers/linktype');
 var href = require('./docs/helpers/href');
@@ -27,7 +27,7 @@ files.forEach(function (file) {
 
 function jadeify (filename, options) {
   options || (options = {});
-  options.package = package;
+  options.package = pkg;
   options.hl = hl;
   options.linktype = linktype;
   options.href = href;
