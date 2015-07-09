@@ -122,6 +122,15 @@ doc.validateSync(); // Return StorageError if there are errors during validation
 ```
 
 ### Saving documents
+```javascript
+doc.save(doneCallback); // Return Deferred (jquery like deferred) object.
+```
+Use .then(), .fail(), .done(), .always() methods.
+```javascript
+doc.save().fail(function(err){
+  console.log(err); // Return StorageError object.
+});
+```
 
 ### Virtuals
 Virtuals are document properties that you can get and set but that do not get persisted to Storage. The getters are useful for formatting or combining fields, while settings are useful for de-composing a single value into multiple values for storage.
