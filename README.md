@@ -114,7 +114,14 @@ user.validate(function( err ){
 });
 ```
 
-### Validation sync coming soon
+### Validation sync
+Executes registered validation rules (skipping asynchronous validators) for this document.
+
+```javascript
+doc.validateSync(); // Return StorageError if there are errors during validation, or undefined if there is no error.
+```
+
+### Saving documents
 
 ### Virtuals
 Virtuals are document properties that you can get and set but that do not get persisted to Storage. The getters are useful for formatting or combining fields, while settings are useful for de-composing a single value into multiple values for storage.
