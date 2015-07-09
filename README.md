@@ -131,6 +131,12 @@ doc.save().fail(function(err){
   console.log(err); // Return StorageError object.
 });
 ```
+Convert document into a plain javascript object, ready for send to server.
+```javascript
+doc.save(function(plainDoc){
+  console.log(plainDoc);
+});
+```
 
 ### Virtuals
 Virtuals are document properties that you can get and set but that do not get persisted to Storage. The getters are useful for formatting or combining fields, while settings are useful for de-composing a single value into multiple values for storage.
