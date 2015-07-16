@@ -19,7 +19,7 @@
     "grunt-karma": "latest",
     "grunt-karma-coveralls": "latest",
     "grunt-webpack": "latest",
-    "karma": "latest",
+    "karma": "0.12.37",
     "karma-coverage": "latest",
     "karma-mocha": "latest",
     "karma-chai": "latest",
