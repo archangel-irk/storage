@@ -1299,6 +1299,39 @@ describe('document', function(){
     done();
   });
 
+  it('Check ability set single document to ref', function(done) {
+    var citySchema = new Schema('City', {
+      name: { type: String, required: true }
+    });
+    var placeSchema = new Schema('Place', {
+      location: {
+        city: {type: Schema.Types.ObjectId, ref: 'City', required: true}
+      }
+    });
+
+    var id = storage.ObjectId();
+    var place = storage.Document({
+      location: {
+        city: id
+      }
+    }, null, placeSchema, null, true );
+
+    assert.equal( id.toString(), place.location.city.toString() );
+
+    place.set({
+      location: {
+        city: {
+          _id: id.toString(),
+          name: 'Irkutsk'
+        }
+      }
+    });
+
+    assert.equal('Irkutsk', place.location.city.name);
+    assert.equal(id.toString(), place.location.city.id.toString());
+    done();
+  });
+
   //todo: test for new storage.Document( storage.schemas.User );
   //todo: test for new storage.users.add();
 });
