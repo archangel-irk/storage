@@ -30,7 +30,7 @@
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
     "karma-sourcemap-loader": "latest",
-    "karma-webpack": "latest",
+    "karma-webpack": "git+https://github.com/Dignifiedquire/karma-webpack.git#29fb1d801158f29cb0eb784edff69356705a7b74",
 
     "lodash": "2.4.1",
 
