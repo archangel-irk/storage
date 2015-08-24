@@ -706,9 +706,9 @@
       },
       {
         "type": "see",
-        "string": "http://jsfromhell.com/classes/binary-parser [v1.0]\n",
+        "string": "http://jsfromhell.com/classes/binary-parser [v1.0]",
         "title": "http://jsfromhell.com/classes/binary-parser",
-        "url": "[v1.0] ",
+        "url": "[v1.0]",
         "html": "<p><a href=\"http://jsfromhell.com/classes/binary-parser\">http://jsfromhell.com/classes/binary-parser</a> [v1.0]</p>"
       },
       {
@@ -893,7 +893,7 @@
     "tags": [
       {
         "type": "example",
-        "string": "storage.collection.add({ type: 'jelly bean' });\nstorage.collection.add([{ type: 'jelly bean' }, { type: 'snickers' }]);\nstorage.collection.add({ _id: '*****', type: 'jelly bean' }, true);\n",
+        "string": "storage.collection.add({ type: 'jelly bean' });\nstorage.collection.add([{ type: 'jelly bean' }, { type: 'snickers' }]);\nstorage.collection.add({ _id: '*****', type: 'jelly bean' }, true);",
         "html": "<p>storage.collection.add({ type: &#39;jelly bean&#39; });<br />storage.collection.add([{ type: &#39;jelly bean&#39; }, { type: &#39;snickers&#39; }]);<br />storage.collection.add({ _id: &#39;<strong>*</strong>&#39;, type: &#39;jelly bean&#39; }, true);</p>"
       },
       {
@@ -1009,7 +1009,7 @@
     "tags": [
       {
         "type": "example",
-        "string": "storage.collection.remove( Document );\nstorage.collection.remove( uuid );\n",
+        "string": "storage.collection.remove( Document );\nstorage.collection.remove( uuid );",
         "html": "<p>storage.collection.remove( Document );<br />storage.collection.remove( uuid );</p>"
       },
       {
@@ -1065,22 +1065,20 @@
     "tags": [
       {
         "type": "example",
-        "string": "// named john\nstorage.collection.find({ name: 'john' });\nstorage.collection.find({ author: 'Shakespeare', year: 1611 });\n",
+        "string": "// named john\nstorage.collection.find({ name: 'john' });\nstorage.collection.find({ author: 'Shakespeare', year: 1611 });",
         "html": "<p>// named john<br />storage.collection.find({ name: &#39;john&#39; });<br />storage.collection.find({ author: &#39;Shakespeare&#39;, year: 1611 });</p>"
       },
       {
         "type": "param",
         "string": "conditions",
-        "name": "",
+        "name": "conditions",
         "description": "",
-        "types": [
-          "ondition"
-        ],
-        "typesDescription": "<a href=\"ondition.html\">ondition</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>conditions</p>"
       },
       {
@@ -1121,22 +1119,20 @@
     "tags": [
       {
         "type": "example",
-        "string": "storage.collection.findById( id );\n",
+        "string": "storage.collection.findById( id );",
         "html": "<p>storage.collection.findById( id );</p>"
       },
       {
         "type": "param",
         "string": "_id",
-        "name": "",
+        "name": "_id",
         "description": "",
-        "types": [
-          "i"
-        ],
-        "typesDescription": "<a href=\"i.html\">i</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>_id</p>"
       },
       {
@@ -1177,7 +1173,7 @@
     "tags": [
       {
         "type": "example",
-        "string": "storage.collection.findByIdAndRemove( id ) // returns сollection\n",
+        "string": "storage.collection.findByIdAndRemove( id ) // returns сollection",
         "html": "<p>storage.collection.findByIdAndRemove( id ) // returns сollection</p>"
       },
       {
@@ -1188,23 +1184,21 @@
       },
       {
         "type": "see",
-        "string": "Collection.remove\n",
-        "local": "Collection.remove ",
+        "string": "Collection.remove",
+        "local": "Collection.remove",
         "html": "<p>Collection.remove</p>"
       },
       {
         "type": "param",
         "string": "_id",
-        "name": "",
+        "name": "_id",
         "description": "",
-        "types": [
-          "i"
-        ],
-        "typesDescription": "<a href=\"i.html\">i</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>_id</p>"
       },
       {
@@ -1251,23 +1245,21 @@
       },
       {
         "type": "see",
-        "string": "Collection.update\n",
-        "local": "Collection.update ",
+        "string": "Collection.update",
+        "local": "Collection.update",
         "html": "<p>Collection.update</p>"
       },
       {
         "type": "param",
         "string": "_id",
-        "name": "",
+        "name": "_id",
         "description": "",
-        "types": [
-          "i"
-        ],
-        "typesDescription": "<a href=\"i.html\">i</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>_id</p>"
       },
       {
@@ -1342,22 +1334,20 @@
     "tags": [
       {
         "type": "example",
-        "string": "// find one iphone adventures\nstorage.adventure.findOne({ type: 'iphone' });\n",
+        "string": "// find one iphone adventures\nstorage.adventure.findOne({ type: 'iphone' });",
         "html": "<p>// find one iphone adventures<br />storage.adventure.findOne({ type: &#39;iphone&#39; });</p>"
       },
       {
         "type": "param",
         "string": "conditions",
-        "name": "",
+        "name": "conditions",
         "description": "",
-        "types": [
-          "ondition"
-        ],
-        "typesDescription": "<a href=\"ondition.html\">ondition</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>conditions</p>"
       },
       {
@@ -1398,7 +1388,7 @@
     "tags": [
       {
         "type": "example",
-        "string": "storage.collection.findOneAndRemove( conditions ) // returns сollection\n",
+        "string": "storage.collection.findOneAndRemove( conditions ) // returns сollection",
         "html": "<p>storage.collection.findOneAndRemove( conditions ) // returns сollection</p>"
       },
       {
@@ -1409,8 +1399,8 @@
       },
       {
         "type": "see",
-        "string": "Collection.remove\n",
-        "local": "Collection.remove ",
+        "string": "Collection.remove",
+        "local": "Collection.remove",
         "html": "<p>Collection.remove</p>"
       },
       {
@@ -1472,8 +1462,8 @@
       },
       {
         "type": "see",
-        "string": "Collection.update\n",
-        "local": "Collection.update ",
+        "string": "Collection.update",
+        "local": "Collection.update",
         "html": "<p>Collection.update</p>"
       },
       {
@@ -1563,7 +1553,7 @@
     "tags": [
       {
         "type": "example",
-        "string": "storage.places.update( storage.places.findById( 0 ), {\n  name: 'Irkutsk'\n});\n",
+        "string": "storage.places.update( storage.places.findById( 0 ), {\n  name: 'Irkutsk'\n});",
         "html": "<p>storage.places.update( storage.places.findById( 0 ), {<br />  name: &#39;Irkutsk&#39;<br />});</p>"
       },
       {
@@ -2324,16 +2314,14 @@
       {
         "type": "property",
         "string": "schema",
-        "name": "",
+        "name": "schema",
         "description": "",
-        "types": [
-          "chem"
-        ],
-        "typesDescription": "<a href=\"chem.html\">chem</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>schema</p>"
       }
     ],
@@ -2369,16 +2357,14 @@
       {
         "type": "property",
         "string": "isNew",
-        "name": "",
+        "name": "isNew",
         "description": "",
-        "types": [
-          "sNe"
-        ],
-        "typesDescription": "<a href=\"sNe.html\">sNe</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>isNew</p>"
       }
     ],
@@ -2420,14 +2406,14 @@
       {
         "type": "property",
         "string": "id",
-        "name": "",
+        "name": "id",
         "description": "",
         "types": [],
-        "typesDescription": "<code>?</code>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>id</p>"
       }
     ],
@@ -2463,16 +2449,14 @@
       {
         "type": "property",
         "string": "errors",
-        "name": "",
+        "name": "errors",
         "description": "",
-        "types": [
-          "rror"
-        ],
-        "typesDescription": "<a href=\"rror.html\">rror</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>errors</p>"
       }
     ],
@@ -2750,16 +2734,15 @@
       },
       {
         "type": "param",
-        "string": "{Schema|String|Number|etc..} [type] optionally specify a type for \"on-the-fly\" attributes",
+        "string": "{Schema|String|Number|*} [type] optionally specify a type for \"on-the-fly\" attributes",
         "name": "[type]",
         "description": "<p>optionally specify a type for &quot;on-the-fly&quot; attributes</p>",
         "types": [
           "Schema",
           "String",
-          "Number",
-          "etc.."
+          "Number"
         ],
-        "typesDescription": "<a href=\"Schema.html\">Schema</a>|<code>String</code>|<code>Number</code>|<a href=\"etc...html\">etc..</a>",
+        "typesDescription": "<code>*</code>",
         "optional": true,
         "nullable": false,
         "nonNullable": false,
@@ -2798,7 +2781,7 @@
     "ignore": false,
     "line": 346,
     "codeStart": 377,
-    "code": "Document.prototype.set = function (path, val, type, options) {\n  if (type && 'Object' === utils.getFunctionName(type.constructor)) {\n    options = type;\n    type = undefined;\n  }\n\n  var merge = options && options.merge\n    , adhoc = type && true !== type\n    , constructing = true === type\n    , adhocs;\n\n  var strict = options && 'strict' in options\n    ? options.strict\n    : this.$__.strictMode;\n\n  if (adhoc) {\n    adhocs = this.$__.adhocPaths || (this.$__.adhocPaths = {});\n    adhocs[path] = Schema.interpretAsType(path, type);\n  }\n\n  if ('string' !== typeof path) {\n    // new Document({ key: val })\n\n    if (null === path || undefined === path) {\n      var _temp = path;\n      path = val;\n      val = _temp;\n\n    } else {\n      var prefix = val\n        ? val + '.'\n        : '';\n\n      if (path instanceof Document) path = path._doc;\n\n      var keys = Object.keys(path)\n        , i = keys.length\n        , pathtype\n        , key;\n\n\n      while (i--) {\n        key = keys[i];\n        var pathName = prefix + key;\n        pathtype = this.schema.pathType(pathName);\n\n        if (null != path[key]\n            // need to know if plain object - no Buffer, ObjectId, ref, etc\n            && _.isPlainObject(path[key])\n            && ( !path[key].constructor || 'Object' === utils.getFunctionName(path[key].constructor) )\n            && 'virtual' !== pathtype\n            && !(this.$__path(pathName) instanceof MixedSchema)\n            && !(this.schema.paths[pathName] && this.schema.paths[pathName].options.ref)) {\n\n          this.set(path[key], pathName, constructing);\n\n        } else if (strict) {\n          if ('real' === pathtype || 'virtual' === pathtype) {\n            this.set(prefix + key, path[key], constructing);\n\n          } else if ('throw' === strict) {\n            throw new Error('Field `' + key + '` is not in schema.');\n          }\n\n        } else if (undefined !== path[key]) {\n          this.set(prefix + key, path[key], constructing);\n        }\n      }\n\n      return this;\n    }\n  }\n\n  // ensure _strict is honored for obj props\n  // docschema = new Schema({ path: { nest: 'string' }})\n  // doc.set('path', obj);\n  var pathType = this.schema.pathType(path);\n  if ('nested' === pathType && val && _.isPlainObject(val) &&\n      (!val.constructor || 'Object' === utils.getFunctionName(val.constructor))) {\n    if (!merge) this.setValue(path, null);\n    this.set(val, path, constructing);\n    return this;\n  }\n\n  var schema;\n  var parts = path.split('.');\n  var subpath;\n\n  if ('adhocOrUndefined' === pathType && strict) {\n\n    // check for roots that are Mixed types\n    var mixed;\n\n    for (var i = 0; i < parts.length; ++i) {\n      subpath = parts.slice(0, i+1).join('.');\n      schema = this.schema.path(subpath);\n      if (schema instanceof MixedSchema) {\n        // allow changes to sub paths of mixed types\n        mixed = true;\n        break;\n      }\n    }\n\n    if (!mixed) {\n      if ('throw' === strict) {\n        throw new Error('Field `' + path + '` is not in schema.');\n      }\n      return this;\n    }\n\n  } else if ('virtual' === pathType) {\n    schema = this.schema.virtualpath(path);\n    schema.applySetters(val, this);\n    return this;\n  } else {\n    schema = this.$__path(path);\n  }\n\n  var pathToMark;\n\n  // When using the $set operator the path to the field must already exist.\n  // Else mongodb throws: \"LEFT_SUBFIELD only supports Object\"\n\n  if (parts.length <= 1) {\n    pathToMark = path;\n  } else {\n    for ( i = 0; i < parts.length; ++i ) {\n      subpath = parts.slice(0, i + 1).join('.');\n      if (this.isDirectModified(subpath) // earlier prefixes that are already\n                                         // marked as dirty have precedence\n          || this.get(subpath) === null) {\n        pathToMark = subpath;\n        break;\n      }\n    }\n\n    if (!pathToMark) pathToMark = path;\n  }\n\n  // if this doc is being constructed we should not trigger getters\n  var priorVal = constructing\n    ? undefined\n    : this.getValue(path);\n\n  if (!schema || undefined === val) {\n    this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);\n    return this;\n  }\n\n  var self = this;\n  var shouldSet = this.$__try(function(){\n    val = schema.applySetters(val, self, false, priorVal);\n  });\n\n  if (shouldSet) {\n    this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);\n  }\n\n  return this;\n};",
+    "code": "Document.prototype.set = function (path, val, type, options) {\n  if (type && 'Object' === utils.getFunctionName(type.constructor)) {\n    options = type;\n    type = undefined;\n  }\n\n  var merge = options && options.merge\n    , adhoc = type && true !== type\n    , constructing = true === type\n    , adhocs;\n\n  var strict = options && 'strict' in options\n    ? options.strict\n    : this.$__.strictMode;\n\n  if (adhoc) {\n    adhocs = this.$__.adhocPaths || (this.$__.adhocPaths = {});\n    adhocs[path] = Schema.interpretAsType(path, type);\n  }\n\n  if ('string' !== typeof path) {\n    // new Document({ key: val })\n\n    if (null === path || undefined === path) {\n      var _temp = path;\n      path = val;\n      val = _temp;\n\n    } else {\n      var prefix = val\n        ? val + '.'\n        : '';\n\n      if (path instanceof Document) path = path._doc;\n\n      var keys = Object.keys(path)\n        , i = keys.length\n        , pathtype\n        , key;\n\n\n      while (i--) {\n        key = keys[i];\n        var pathName = prefix + key;\n        pathtype = this.schema.pathType(pathName);\n\n        if (null != path[key]\n            // need to know if plain object - no Buffer, ObjectId, ref, etc\n            && _.isPlainObject(path[key])\n            && ( !path[key].constructor || 'Object' === utils.getFunctionName(path[key].constructor) )\n            && 'virtual' !== pathtype\n            && !(this.$__path(pathName) instanceof MixedSchema)\n            && !(this.schema.paths[pathName] && this.schema.paths[pathName].options.ref)) {\n\n          this.set(path[key], pathName, constructing);\n\n        } else if (strict) {\n          if ('real' === pathtype || 'virtual' === pathtype) {\n            this.set(prefix + key, path[key], constructing);\n\n          } else if ('throw' === strict) {\n            throw new Error('Field `' + key + '` is not in schema.');\n          }\n\n        } else if (undefined !== path[key]) {\n          this.set(prefix + key, path[key], constructing);\n        }\n      }\n\n      return this;\n    }\n  }\n\n  // ensure _strict is honored for obj props\n  // docschema = new Schema({ path: { nest: 'string' }})\n  // doc.set('path', obj);\n  var pathType = this.schema.pathType(path);\n  if ('nested' === pathType && val && _.isPlainObject(val) &&\n      (!val.constructor || 'Object' === utils.getFunctionName(val.constructor))) {\n    if (!merge) this.setValue(path, null);\n    this.set(val, path, constructing);\n    return this;\n  }\n\n  var schema;\n  var parts = path.split('.');\n  var subpath;\n\n  if ('adhocOrUndefined' === pathType && strict) {\n\n    // check for roots that are Mixed types\n    var mixed;\n\n    for (var i = 0; i < parts.length; ++i) {\n      subpath = parts.slice(0, i+1).join('.');\n      schema = this.schema.path(subpath);\n      if (schema instanceof MixedSchema) {\n        // allow changes to sub paths of mixed types\n        mixed = true;\n        break;\n      }\n    }\n\n    if (!mixed) {\n      if ('throw' === strict) {\n        throw new Error('Field `' + path + '` is not in schema.');\n      }\n      return this;\n    }\n\n  } else if ('virtual' === pathType) {\n    schema = this.schema.virtualpath(path);\n    schema.applySetters(val, this);\n    return this;\n  } else {\n    schema = this.$__path(path);\n  }\n\n  var pathToMark;\n\n  // When using the $set operator the path to the field must already exist.\n  // Else mongodb throws: \"LEFT_SUBFIELD only supports Object\"\n\n  if (parts.length <= 1) {\n    pathToMark = path;\n  } else {\n    for ( i = 0; i < parts.length; ++i ) {\n      subpath = parts.slice(0, i + 1).join('.');\n      if (this.isDirectModified(subpath) // earlier prefixes that are already\n                                         // marked as dirty have precedence\n          || this.get(subpath) === null) {\n        pathToMark = subpath;\n        break;\n      }\n    }\n\n    if (!pathToMark) pathToMark = path;\n  }\n\n  // if this doc is being constructed we should not trigger getters\n  var priorVal = constructing\n    ? undefined\n    : this.getValue(path);\n\n  if (!schema || undefined === val) {\n    this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);\n    return this;\n  }\n\n  var shouldSet = true;\n  try {\n    // If the user is trying to set a ref path to a document with\n    // the correct model name, treat it as populated\n    if (schema.options &&\n        schema.options.ref &&\n        val instanceof Document &&\n        schema.options.ref === val.schema.name) {\n      //todo: need test (see https://github.com/Automattic/mongoose/pull/2387/files)\n      this.populated(path, val._id);\n    }\n    val = schema.applySetters(val, this, false, priorVal);\n    this.$markValid(path);\n  } catch (e) {\n    this.invalidate(path,\n        new StorageError.CastError(schema.instance, val, path));\n\n    shouldSet = false;\n  }\n\n  if (shouldSet) {\n    this.$__set(pathToMark, path, constructing, parts, schema, val, priorVal);\n  }\n\n  return this;\n};",
     "ctx": {
       "type": "method",
       "constructor": "Document",
@@ -2851,8 +2834,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 538,
-    "codeStart": 546,
+    "line": 553,
+    "codeStart": 561,
     "code": "Document.prototype.$__shouldModify = function (\n    pathToMark, path, constructing, parts, schema, val, priorVal) {\n\n  if (this.isNew) return true;\n\n  if ( undefined === val && !this.isSelected(path) ) {\n    // when a path is not selected in a query, its initial\n    // value will be undefined.\n    return true;\n  }\n\n  if (undefined === val && path in this.$__.activePaths.states.default) {\n    // we're just unsetting the default value which was never saved\n    return false;\n  }\n\n  if (!utils.deepEqual(val, priorVal || this.get(path))) {\n    return true;\n  }\n\n  //тест не проходит из-за наличия лишнего поля в states.default (comments)\n  // На самом деле поле вроде и не лишнее\n  //console.info( path, path in this.$__.activePaths.states.default );\n  //console.log( this.$__.activePaths );\n\n  // Когда мы устанавливаем такое же значение как default\n  // Не понятно зачем мангуст его обновлял",
     "ctx": {
       "type": "method",
@@ -2874,8 +2857,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 573,
-    "codeStart": 587,
+    "line": 588,
+    "codeStart": 602,
     "code": "return false;\n};",
     "ctx": false
   },
@@ -2909,8 +2892,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 590,
-    "codeStart": 597,
+    "line": 605,
+    "codeStart": 612,
     "code": "Document.prototype.$__set = function ( pathToMark, path, constructing, parts, schema, val, priorVal ) {\n  var shouldModify = this.$__shouldModify.apply(this, arguments);\n\n  if (shouldModify) {\n    this.markModified(pathToMark, val);\n  }\n\n  var obj = this._doc\n    , i = 0\n    , l = parts.length;\n\n  for (; i < l; i++) {\n    var next = i + 1\n      , last = next === l;\n\n    if ( last ) {\n      obj[parts[i]] = val;\n\n      this.adapterHooks.documentSetValue.call( this, this, path, val );\n\n    } else {\n      if (obj[parts[i]] && 'Object' === utils.getFunctionName(obj[parts[i]].constructor)) {\n        obj = obj[parts[i]];\n\n      } else if (obj[parts[i]] && 'EmbeddedDocument' === utils.getFunctionName(obj[parts[i]].constructor) ) {\n        obj = obj[parts[i]];\n\n      } else if (obj[parts[i]] && Array.isArray(obj[parts[i]])) {\n        obj = obj[parts[i]];\n\n      } else {\n        obj = obj[parts[i]] = {};\n      }\n    }\n  }\n};",
     "ctx": {
       "type": "method",
@@ -2954,8 +2937,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 634,
-    "codeStart": 640,
+    "line": 649,
+    "codeStart": 655,
     "code": "Document.prototype.getValue = function (path) {\n  return utils.getValue(path, this._doc);\n};",
     "ctx": {
       "type": "method",
@@ -3014,8 +2997,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 644,
-    "codeStart": 651,
+    "line": 659,
+    "codeStart": 666,
     "code": "Document.prototype.setValue = function (path, value) {\n  utils.setValue(path, value, this._doc);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -3075,8 +3058,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 656,
-    "codeStart": 671,
+    "line": 671,
+    "codeStart": 686,
     "code": "Document.prototype.get = function (path, type) {\n  var adhocs;\n  if (type) {\n    adhocs = this.$__.adhocPaths || (this.$__.adhocPaths = {});\n    adhocs[path] = Schema.interpretAsType(path, type);\n  }\n\n  var schema = this.$__path(path) || this.schema.virtualpath(path)\n    , pieces = path.split('.')\n    , obj = this._doc;\n\n  for (var i = 0, l = pieces.length; i < l; i++) {\n    obj = undefined === obj || null === obj\n      ? undefined\n      : obj[pieces[i]];\n  }\n\n  if (schema) {\n    obj = schema.applyGetters(obj, this);\n  }\n\n  this.adapterHooks.documentGetValue.call( this, this, path );\n\n  return obj;\n};",
     "ctx": {
       "type": "method",
@@ -3131,8 +3114,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 697,
-    "codeStart": 705,
+    "line": 712,
+    "codeStart": 720,
     "code": "Document.prototype.$__path = function (path) {\n  var adhocs = this.$__.adhocPaths\n    , adhocType = adhocs && adhocs[path];\n\n  if (adhocType) {\n    return adhocType;\n  } else {\n    return this.schema.path(path);\n  }\n};",
     "ctx": {
       "type": "method",
@@ -3175,8 +3158,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 716,
-    "codeStart": 730,
+    "line": 732,
+    "codeStart": 746,
     "code": "Document.prototype.markModified = function (path) {\n  this.$__.activePaths.modify(path);\n};",
     "ctx": {
       "type": "method",
@@ -3244,8 +3227,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 734,
-    "codeStart": 743,
+    "line": 751,
+    "codeStart": 760,
     "code": "Document.prototype.$__try = function (fn, scope) {\n  var res;\n  try {\n    fn.call(scope);\n    res = true;\n  } catch (e) {\n    this.$__error(e);\n    res = false;\n  }\n  return res;\n};",
     "ctx": {
       "type": "method",
@@ -3288,8 +3271,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 755,
-    "codeStart": 761,
+    "line": 773,
+    "codeStart": 779,
     "code": "Document.prototype.modifiedPaths = function () {\n  var directModifiedPaths = Object.keys(this.$__.activePaths.states.modify);\n\n  return directModifiedPaths.reduce(function (list, path) {\n    var parts = path.split('.');\n    return list.concat(parts.reduce(function (chains, part, i) {\n      return chains.concat(parts.slice(0, i).concat(part).join('.'));\n    }, []));\n  }, []);\n};",
     "ctx": {
       "type": "method",
@@ -3346,8 +3329,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 772,
-    "codeStart": 789,
+    "line": 790,
+    "codeStart": 807,
     "code": "Document.prototype.isModified = function (path) {\n  return path\n    ? !!~this.modifiedPaths().indexOf(path)\n    : this.$__.activePaths.some('modify');\n};",
     "ctx": {
       "type": "method",
@@ -3405,8 +3388,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 795,
-    "codeStart": 808,
+    "line": 814,
+    "codeStart": 827,
     "code": "Document.prototype.isDirectModified = function (path) {\n  return (path in this.$__.activePaths.states.modify);\n};",
     "ctx": {
       "type": "method",
@@ -3464,8 +3447,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 812,
-    "codeStart": 819,
+    "line": 831,
+    "codeStart": 838,
     "code": "Document.prototype.isInit = function (path) {\n  return (path in this.$__.activePaths.states.init);\n};",
     "ctx": {
       "type": "method",
@@ -3523,8 +3506,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 823,
-    "codeStart": 838,
+    "line": 843,
+    "codeStart": 857,
     "code": "Document.prototype.isSelected = function isSelected (path) {\n  if (this.$__.selected) {\n\n    if ('_id' === path) {\n      return 0 !== this.$__.selected._id;\n    }\n\n    var paths = Object.keys(this.$__.selected)\n      , i = paths.length\n      , inclusive = false\n      , cur;\n\n    if (1 === i && '_id' === paths[0]) {\n      // only _id was selected.\n      return 0 === this.$__.selected._id;\n    }\n\n    while (i--) {\n      cur = paths[i];\n      if ('_id' === cur) continue;\n      inclusive = !! this.$__.selected[cur];\n      break;\n    }\n\n    if (path in this.$__.selected) {\n      return inclusive;\n    }\n\n    i = paths.length;\n    var pathDot = path + '.';\n\n    while (i--) {\n      cur = paths[i];\n      if ('_id' === cur) continue;\n\n      if (0 === cur.indexOf(pathDot)) {\n        return inclusive;\n      }\n\n      if (0 === pathDot.indexOf(cur + '.')) {\n        return inclusive;\n      }\n    }\n\n    return ! inclusive;\n  }\n\n  return true;\n};",
     "ctx": {
       "type": "method",
@@ -3567,8 +3550,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 888,
-    "codeStart": 905,
+    "line": 908,
+    "codeStart": 925,
     "code": "Document.prototype.validate = function (cb) {\n  var self = this;\n\n  // only validate required fields when necessary\n  var paths = Object.keys(this.$__.activePaths.states.require).filter(function (path) {\n    if (!self.isSelected(path) && !self.isModified(path)) return false;\n    return true;\n  });\n\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.init));\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.modify));\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.default));\n\n  if (0 === paths.length) {\n    complete();\n    return this;\n  }\n\n  var validating = {}\n    , total = 0;\n\n  paths.forEach(validatePath);\n  return this;\n\n  function validatePath (path) {\n    if (validating[path]) return;\n\n    validating[path] = true;\n    total++;\n\n    utils.setImmediate(function(){\n      var p = self.schema.path(path);\n      if (!p) return --total || complete();\n\n      var val = self.getValue(path);\n      p.doValidate(val, function (err) {\n        if (err) {\n          self.invalidate(\n              path\n            , err\n            , undefined\n            //, true // embedded docs\n            );\n        }\n        --total || complete();\n      }, self);\n    });\n  }\n\n  function complete () {\n    var err = self.$__.validationError;\n    self.$__.validationError = undefined;\n    cb && cb(err);\n  }\n};",
     "ctx": {
       "type": "method",
@@ -3576,6 +3559,49 @@
       "cons": "Document",
       "name": "validate",
       "string": "Document.prototype.validate()"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "return",
+        "string": "{StorageError|undefined} StorageError if there are errors during validation, or undefined if there is no error.",
+        "types": [
+          "StorageError"
+        ],
+        "typesDescription": "<a href=\"StorageError.html\">StorageError</a>|<code>undefined</code>",
+        "optional": true,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false,
+        "description": "<p>StorageError if there are errors during validation, or undefined if there is no error.</p>"
+      },
+      {
+        "type": "api",
+        "string": "public",
+        "visibility": "public",
+        "html": "<p>public</p>"
+      }
+    ],
+    "description": {
+      "full": "<p>Executes registered validation rules (skipping asynchronous validators) for this document.</p><h4>Note:</h4>\n<p>This method is useful if you need synchronous validation.</p><h4>Example:</h4>\n<pre><code>var err = doc.validateSync();\nif ( err ){\n  handleError( err );\n} else {\n  // validation passed\n}\n</code></pre>",
+      "summary": "<p>Executes registered validation rules (skipping asynchronous validators) for this document.</p>",
+      "body": "<h4>Note:</h4>\n<p>This method is useful if you need synchronous validation.</p><h4>Example:</h4>\n<pre><code>var err = doc.validateSync();\nif ( err ){\n  handleError( err );\n} else {\n  // validation passed\n}\n</code></pre>"
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isClass": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 982,
+    "codeStart": 1001,
+    "code": "Document.prototype.validateSync = function () {\n  var self = this;\n\n  // only validate required fields when necessary\n  var paths = Object.keys(this.$__.activePaths.states.require).filter(function (path) {\n    if (!self.isSelected(path) && !self.isModified(path)) return false;\n    return true;\n  });\n\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.init));\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.modify));\n  paths = paths.concat(Object.keys(this.$__.activePaths.states.default));\n\n  var validating = {};\n\n  paths.forEach(function (path) {\n    if (validating[path]) return;\n\n    validating[path] = true;\n\n    var p = self.schema.path(path);\n    if (!p) return;\n    if (!self.$isValid(path)) {\n      return;\n    }\n\n    var val = self.getValue(path);\n    var err = p.doValidateSync(val, self);\n    if (err) {\n      self.invalidate(path, err, undefined);\n    }\n  });\n\n  var err = self.$__.validationError;\n  self.$__.validationError = undefined;\n  //self.emit('validate', self);\n\n  if (err) {\n    for (var key in err.errors) {\n      // Make sure cast errors persist\n      if (err.errors[key] instanceof StorageError.CastError) {\n        self.invalidate(key, err.errors[key]);\n      }\n    }\n  }\n\n  return err;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Document",
+      "cons": "Document",
+      "name": "validateSync",
+      "string": "Document.prototype.validateSync()"
     }
   },
   {
@@ -3596,14 +3622,15 @@
       },
       {
         "type": "param",
-        "string": "{String|Error} errorMsg the error which states the reason `path` was invalid",
+        "string": "{String|StorageError|Error} errorMsg the error which states the reason `path` was invalid",
         "name": "errorMsg",
         "description": "<p>the error which states the reason <code>path</code> was invalid</p>",
         "types": [
           "String",
+          "StorageError",
           "Error"
         ],
-        "typesDescription": "<code>String</code>|<code>Error</code>",
+        "typesDescription": "<code>String</code>|<a href=\"StorageError.html\">StorageError</a>|<code>Error</code>",
         "optional": false,
         "nullable": false,
         "nonNullable": false,
@@ -3643,15 +3670,123 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 961,
-    "codeStart": 989,
-    "code": "Document.prototype.invalidate = function (path, errorMsg, value) {\n  if (!this.$__.validationError) {\n    this.$__.validationError = new ValidationError(this);\n  }\n\n  if (!errorMsg || 'string' === typeof errorMsg) {\n    errorMsg = new ValidatorError({\n      path: path,\n      message: errorMsg,\n      type: 'user defined',\n      value: value\n    });\n  }\n\n  if (this.$__.validationError === errorMsg) return;\n\n  this.$__.validationError.errors[path] = errorMsg;\n};",
+    "line": 1051,
+    "codeStart": 1079,
+    "code": "Document.prototype.invalidate = function (path, errorMsg, value) {\n  if (!this.$__.validationError) {\n    this.$__.validationError = new ValidationError(this);\n  }\n\n  if (this.$__.validationError.errors[path]) return;\n\n  if (!errorMsg || 'string' === typeof errorMsg) {\n    errorMsg = new ValidatorError({\n      path: path,\n      message: errorMsg,\n      type: 'user defined',\n      value: value\n    });\n  }\n\n  if (this.$__.validationError == errorMsg) return;\n\n  this.$__.validationError.errors[path] = errorMsg;\n};",
     "ctx": {
       "type": "method",
       "constructor": "Document",
       "cons": "Document",
       "name": "invalidate",
       "string": "Document.prototype.invalidate()"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "param",
+        "string": "{String} path the field to mark as valid",
+        "name": "path",
+        "description": "<p>the field to mark as valid</p>",
+        "types": [
+          "String"
+        ],
+        "typesDescription": "<code>String</code>",
+        "optional": false,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false
+      },
+      {
+        "type": "api",
+        "string": "private",
+        "visibility": "private",
+        "html": "<p>private</p>"
+      },
+      {
+        "type": "method",
+        "string": "$markValid",
+        "html": "<p>$markValid</p>"
+      },
+      {
+        "type": "receiver",
+        "string": "Document",
+        "html": "<p>Document</p>"
+      }
+    ],
+    "description": {
+      "full": "<p>Marks a path as valid, removing existing validation errors.</p>",
+      "summary": "<p>Marks a path as valid, removing existing validation errors.</p>",
+      "body": ""
+    },
+    "isPrivate": true,
+    "isConstructor": false,
+    "isClass": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 1101,
+    "codeStart": 1109,
+    "code": "Document.prototype.$markValid = function(path) {\n  if (!this.$__.validationError || !this.$__.validationError.errors[path]) {\n    return;\n  }\n\n  delete this.$__.validationError.errors[path];\n  if (Object.keys(this.$__.validationError.errors).length === 0) {\n    this.$__.validationError = null;\n  }\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Document",
+      "cons": "Document",
+      "name": "$markValid",
+      "string": "Document.prototype.$markValid()"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "param",
+        "string": "{String} path the field to check",
+        "name": "path",
+        "description": "<p>the field to check</p>",
+        "types": [
+          "String"
+        ],
+        "typesDescription": "<code>String</code>",
+        "optional": false,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false
+      },
+      {
+        "type": "method",
+        "string": "$isValid",
+        "html": "<p>$isValid</p>"
+      },
+      {
+        "type": "api",
+        "string": "private",
+        "visibility": "private",
+        "html": "<p>private</p>"
+      },
+      {
+        "type": "receiver",
+        "string": "Document",
+        "html": "<p>Document</p>"
+      }
+    ],
+    "description": {
+      "full": "<p>Checks if a path is invalid</p>",
+      "summary": "<p>Checks if a path is invalid</p>",
+      "body": ""
+    },
+    "isPrivate": true,
+    "isConstructor": false,
+    "isClass": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 1121,
+    "codeStart": 1129,
+    "code": "Document.prototype.$isValid = function(path) {\n  return !this.$__.validationError || !this.$__.validationError.errors[path];\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "Document",
+      "cons": "Document",
+      "name": "$isValid",
+      "string": "Document.prototype.$isValid()"
     }
   },
   {
@@ -3698,8 +3833,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1008,
-    "codeStart": 1017,
+    "line": 1134,
+    "codeStart": 1142,
     "code": "Document.prototype.$__reset = function reset () {\n  var self = this;\n\n  this.$__.activePaths\n  .map('init', 'modify', function (i) {\n    return self.getValue(i);\n  })\n  .filter(function (val) {\n    return val && val.isStorageDocumentArray && val.length;\n  })\n  .forEach(function (array) {\n    var i = array.length;\n    while (i--) {\n      var doc = array[i];\n      if (!doc) continue;\n      doc.$__reset();\n    }\n  });\n\n  // Clear 'modify'('dirty') cache\n  this.$__.activePaths.clear('modify');\n  this.$__.validationError = undefined;\n  this.errors = undefined;\n  //console.log( self.$__.activePaths.states.require );\n  //TODO: тут\n  this.schema.requiredPaths().forEach(function (path) {\n    self.$__.activePaths.require(path);\n  });\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -3739,8 +3874,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1050,
-    "codeStart": 1058,
+    "line": 1175,
+    "codeStart": 1183,
     "code": "Document.prototype.$__dirty = function () {\n  var self = this;\n\n  var all = this.$__.activePaths.map('modify', function (path) {\n    return { path: path\n           , value: self.getValue( path )\n           , schema: self.$__path( path ) };\n  });\n\n  // Sort dirty paths in a flat hierarchy.\n  all.sort(function (a, b) {\n    return (a.path < b.path ? -1 : (a.path > b.path ? 1 : 0));\n  });\n\n  // Ignore \"foo.a\" if \"foo\" is dirty already.\n  var minimal = []\n    , lastPath\n    , top;\n\n  all.forEach(function( item ){\n    lastPath = item.path + '.';\n    minimal.push(item);\n    top = item;\n  });\n\n  top = lastPath = null;\n  return minimal;\n};",
     "ctx": {
       "type": "method",
@@ -3762,8 +3897,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1087,
-    "codeStart": 1091,
+    "line": 1212,
+    "codeStart": 1216,
     "code": "function compile (self, tree, proto, prefix) {\n  var keys = Object.keys(tree)\n    , i = keys.length\n    , limb\n    , key;\n\n  while (i--) {\n    key = keys[i];\n    limb = tree[key];\n\n    defineProp(self\n        , key\n        , (('Object' === utils.getFunctionName(limb.constructor)\n               && Object.keys(limb).length)\n               && (!limb.type || limb.type.type)\n               ? limb\n               : null)\n        , proto\n        , prefix\n        , keys);\n  }\n}\n\n// gets descriptors for all properties of `object`\n// makes all properties non-enumerable to match previous behavior to #2211\nfunction getOwnPropertyDescriptors(object) {\n  var result = {};\n\n  Object.getOwnPropertyNames(object).forEach(function(key) {\n    result[key] = Object.getOwnPropertyDescriptor(object, key);\n    result[key].enumerable = false;\n  });\n\n  return result;\n}",
     "ctx": {
       "type": "function",
@@ -3783,8 +3918,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1127,
-    "codeStart": 1131,
+    "line": 1252,
+    "codeStart": 1256,
     "code": "function defineProp (self, prop, subprops, prototype, prefix, keys) {\n  prefix = prefix || '';\n  var path = (prefix ? prefix + '.' : '') + prop;\n\n  if (subprops) {\n    Object.defineProperty(prototype, prop, {\n        enumerable: true\n      , configurable: true\n      , get: function () {\n          if (!this.$__.getters)\n            this.$__.getters = {};\n\n          if (!this.$__.getters[path]) {\n            var nested = Object.create(Object.getPrototypeOf(this), getOwnPropertyDescriptors(this));\n\n            // save scope for nested getters/setters\n            if (!prefix) nested.$__.scope = this;\n\n            // shadow inherited getters from sub-objects so\n            // thing.nested.nested.nested... doesn't occur (gh-366)\n            var i = 0\n              , len = keys.length;\n\n            for (; i < len; ++i) {\n              // over-write the parents getter without triggering it\n              Object.defineProperty(nested, keys[i], {\n                  enumerable: false   // It doesn't show up.\n                , writable: true      // We can set it later.\n                , configurable: true  // We can Object.defineProperty again.\n                , value: undefined    // It shadows its parent.\n              });\n            }\n\n            nested.toObject = function () {\n              return this.get(path);\n            };\n\n            compile( self, subprops, nested, path );\n            this.$__.getters[path] = nested;\n          }\n\n          return this.$__.getters[path];\n        }\n      , set: function (v) {\n          if (v instanceof Document) v = v.toObject();\n          return (this.$__.scope || this).set( path, v );\n        }\n    });\n\n  } else {\n    Object.defineProperty( prototype, prop, {\n        enumerable: true\n      , configurable: true\n      , get: function ( ) { return this.get.call(this.$__.scope || this, path); }\n      , set: function (v) { return this.set.call(this.$__.scope || this, path, v); }\n    });\n  }\n\n  self.adapterHooks.documentDefineProperty.call( self, self, prototype, prop, prefix, path );\n  //self.adapterHooks.documentDefineProperty.call( self, self, path, prototype );\n}",
     "ctx": {
       "type": "function",
@@ -3837,8 +3972,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1193,
-    "codeStart": 1201,
+    "line": 1318,
+    "codeStart": 1326,
     "code": "Document.prototype.$__setSchema = function ( schema ) {\n  this.schema = schema;\n  compile( this, schema.tree, this );\n};",
     "ctx": {
       "type": "method",
@@ -3878,8 +4013,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1206,
-    "codeStart": 1213,
+    "line": 1331,
+    "codeStart": 1338,
     "code": "Document.prototype.$__getAllSubdocs = function () {\n  DocumentArray || (DocumentArray = require('./types/documentarray'));\n  Embedded = Embedded || require('./types/embedded');\n\n  function docReducer(seed, path) {\n    var val = this[path];\n    if (val instanceof Embedded) seed.push(val);\n    if (val instanceof DocumentArray){\n      val.forEach(function _docReduce(doc) {\n\n        if (!doc || !doc._doc) return;\n        if (doc instanceof Embedded) seed.push(doc);\n\n        seed = Object.keys(doc._doc).reduce(docReducer.bind(doc._doc), seed);\n      });\n    }\n    return seed;\n  }\n\n  return Object.keys(this._doc).reduce(docReducer.bind(this), []);\n};",
     "ctx": {
       "type": "method",
@@ -3919,8 +4054,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1235,
-    "codeStart": 1243,
+    "line": 1360,
+    "codeStart": 1368,
     "code": "Document.prototype.$__presaveValidate = function $__presaveValidate() {\n  // if any doc.set() calls failed\n\n  var docs = this.$__getArrayPathsToValidate();\n\n  var e2 = docs.map(function (doc) {\n    return doc.$__presaveValidate();\n  });\n  var e1 = [this.$__.saveError].concat(e2);\n  var err = e1.filter(function (x) {return x})[0];\n  this.$__.saveError = null;\n\n  return err;\n};",
     "ctx": {
       "type": "method",
@@ -3960,8 +4095,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1258,
-    "codeStart": 1265,
+    "line": 1383,
+    "codeStart": 1390,
     "code": "Document.prototype.$__getArrayPathsToValidate = function () {\n  DocumentArray || (DocumentArray = require('./types/documentarray'));\n\n  // validate all document arrays.\n  return this.$__.activePaths\n    .map('init', 'modify', function (i) {\n      return this.getValue(i);\n    }.bind(this))\n    .filter(function (val) {\n      return val && val instanceof DocumentArray && val.length;\n    }).reduce(function(seed, array) {\n      return seed.concat(array);\n    }, [])\n    .filter(function (doc) {return doc});\n};",
     "ctx": {
       "type": "method",
@@ -4016,8 +4151,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1281,
-    "codeStart": 1289,
+    "line": 1406,
+    "codeStart": 1414,
     "code": "Document.prototype.$__error = function (err) {\n  this.$__.saveError = err;\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -4057,8 +4192,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1294,
-    "codeStart": 1301,
+    "line": 1419,
+    "codeStart": 1426,
     "code": "Document.prototype.$__delta = function () {\n  var dirty = this.$__dirty();\n\n  var delta = {}\n    , len = dirty.length\n    , d = 0;\n\n  for (; d < len; ++d) {\n    var data = dirty[ d ];\n    var value = data.value;\n\n    value = utils.clone(value, { depopulate: 1 });\n    delta[ data.path ] = value;\n  }\n\n  return delta;\n};\n\nDocument.prototype.$__handleSave = function(){\n  // Получаем ресурс коллекции, куда будем сохранять данные\n  var resource;\n  if ( this.collection ){\n    resource = this.collection.api;\n  }\n\n  var innerPromise = new Deferred();\n\n  if ( this.isNew ) {\n    // send entire doc\n\n    var toObjectOptions = {};\n    if ( this.schema.options.toObject && this.schema.options.toObject.retainKeyOrder ) {\n      toObjectOptions.retainKeyOrder = true;\n    }\n\n    toObjectOptions.depopulate = 1;\n    var obj = this.toObject( toObjectOptions );\n\n    if ( ( obj || {} ).hasOwnProperty('_id') === false ) {\n      // documents must have an _id else mongoose won't know\n      // what to update later if more changes are made. the user\n      // wouldn't know what _id was generated by mongodb either\n      // nor would the ObjectId generated my mongodb necessarily\n      // match the schema definition.\n      innerPromise.reject(new Error('document must have an _id before saving'));\n      return innerPromise;\n    }\n\n    // Без ресурса можно просто делать валидацию (подготовить данные к отправке), даже если нет коллекции\n    if ( !resource ){\n      innerPromise.resolve( obj );\n    } else {\n      resource.create( obj ).always( innerPromise.resolve );\n    }\n\n    this.$__reset();\n    this.isNew = false;\n    this.trigger('isNew', false);\n    // Make it possible to retry the insert\n    this.$__.inserting = true;\n\n  } else {\n    // Make sure we don't treat it as a new object on error,\n    // since it already exists\n    this.$__.inserting = false;\n\n    var delta = this.$__delta();\n\n    if ( !_.isEmpty( delta ) ) {\n      this.$__reset();\n      // Без ресурса можно просто делать валидацию (подготовить данные к отправке), даже если нет коллекции\n      if ( !resource ){\n        innerPromise.resolve( delta );\n      } else {\n        resource( this.id ).update( delta ).always( innerPromise.resolve );\n      }\n    } else {\n      this.$__reset();\n      innerPromise.resolve( this );\n    }\n\n    this.trigger('isNew', false);\n  }\n\n  return innerPromise;\n};",
     "ctx": {
       "type": "method",
@@ -4072,7 +4207,7 @@
     "tags": [
       {
         "type": "description",
-        "string": "Saves this document.\n\nЕсли апи-клиента нет и документ новый, то в колбэке будет plain object со всеми данными для сохранения на сервер.\nЕсли апи-клиента нет и документ старое, то в колбэке будет plain object только с изменёнными данными.\n\nЕсли апи-клиент есть и не важно новый документ или старый, в колбэке всегда будет ответ от rest-api-client\n\n// todo: доописать это дело\nСейчас если есть ресурс (апи клиент), то:\nесли документ новый, то после ответа создастся новый документ на основе ответа, и обовляется!!! (получше объяснить это) ссылка (id) внутри коллекции\nесли документ старый, то после ответа ищется этот документ по id и делается set\n\n",
+        "string": "Saves this document.\n\nЕсли апи-клиента нет и документ новый, то в колбэке будет plain object со всеми данными для сохранения на сервер.\nЕсли апи-клиента нет и документ старое, то в колбэке будет plain object только с изменёнными данными.\n\nЕсли апи-клиент есть и не важно новый документ или старый, в колбэке всегда будет ответ от rest-api-client\n\n// todo: доописать это дело\nСейчас если есть ресурс (апи клиент), то:\nесли документ новый, то после ответа создастся новый документ на основе ответа, и обовляется!!! (получше объяснить это) ссылка (id) внутри коллекции\nесли документ старый, то после ответа ищется этот документ по id и делается set",
         "full": "Saves this document. \nЕсли апи-клиента нет и документ новый, то в колбэке будет plain object со всеми данными для сохранения на сервер.\nЕсли апи-клиента нет и документ старое, то в колбэке будет plain object только с изменёнными данными.\n\nЕсли апи-клиент есть и не важно новый документ или старый, в колбэке всегда будет ответ от rest-api-client\n\n// todo: доописать это дело\nСейчас если есть ресурс (апи клиент), то:\nесли документ новый, то после ответа создастся новый документ на основе ответа, и обовляется!!! (получше объяснить это) ссылка (id) внутри коллекции\nесли документ старый, то после ответа ищется этот документ по id и делается set",
         "summary": "Saves this document. \nЕсли апи-клиента нет и документ новый, то в колбэке будет plain object со всеми данными для сохранения на сервер.\nЕсли апи-клиента нет и документ старое, то в колбэке будет plain object только с изменёнными данными.",
         "body": "Если апи-клиент есть и не важно новый документ или старый, в колбэке всегда будет ответ от rest-api-client\n\n// todo: доописать это дело\nСейчас если есть ресурс (апи клиент), то:\nесли документ новый, то после ответа создастся новый документ на основе ответа, и обовляется!!! (получше объяснить это) ссылка (id) внутри коллекции\nесли документ старый, то после ответа ищется этот документ по id и делается set",
@@ -4080,7 +4215,7 @@
       },
       {
         "type": "example:",
-        "string": "\n    product.sold = Date.now();\n    product.save(function (err, product, numberAffected) {\n      if (err) ..\n    })\n",
+        "string": "\n    product.sold = Date.now();\n    product.save(function (err, product, numberAffected) {\n      if (err) ..\n    })",
         "html": "<pre><code>product.sold = Date.now();\nproduct.save(function (err, product, numberAffected) {\n  if (err) ..\n})\n</code></pre>"
       },
       {
@@ -4093,7 +4228,7 @@
       },
       {
         "type": "example:",
-        "string": "    var schema = new Schema(..);\n    var Product = storage.createCollection('Product', schema );\n    var doc = Product.add();\n\n    // todo: реализовать это\n    doc.on('error', handleError);\n",
+        "string": "    var schema = new Schema(..);\n    var Product = storage.createCollection('Product', schema );\n    var doc = Product.add();\n\n    // todo: реализовать это\n    doc.on('error', handleError);",
         "html": "<pre><code>var schema = new Schema(..);\nvar Product = storage.createCollection(&#39;Product&#39;, schema );\nvar doc = Product.add();\n\n// todo: реализовать это\ndoc.on(&#39;error&#39;, handleError);\n</code></pre>"
       },
       {
@@ -4106,7 +4241,7 @@
       },
       {
         "type": "example:",
-        "string": "    product.save().done(function( product ){\n       ...\n    }).fail(function( err ){\n       assert.ok( err )\n    })\n",
+        "string": "    product.save().done(function( product ){\n       ...\n    }).fail(function( err ){\n       assert.ok( err )\n    })",
         "html": "<pre><code>product.save().done(function( product ){\n   ...\n}).fail(function( err ){\n   assert.ok( err )\n})\n</code></pre>"
       },
       {
@@ -4119,7 +4254,7 @@
       },
       {
         "type": "example:",
-        "string": "    var Checkin = new Schema({\n      date: Date,\n      location: {\n        lat: Number,\n        lng: Number\n      }\n    }, {\n      toObject: {\n        retainKeyOrder: true\n      }\n    });\n    var Checkins = storage.createCollection('Product', schema );\n    var doc = Checkins.add();\n\n    doc.save().done(function( objToSave ){\n      // in `objToSave` followed the correct order of the keys of doc\n    });\n",
+        "string": "    var Checkin = new Schema({\n      date: Date,\n      location: {\n        lat: Number,\n        lng: Number\n      }\n    }, {\n      toObject: {\n        retainKeyOrder: true\n      }\n    });\n    var Checkins = storage.createCollection('Product', schema );\n    var doc = Checkins.add();\n\n    doc.save().done(function( objToSave ){\n      // in `objToSave` followed the correct order of the keys of doc\n    });",
         "html": "<pre><code>var Checkin = new Schema({\n  date: Date,\n  location: {\n    lat: Number,\n    lng: Number\n  }\n}, {\n  toObject: {\n    retainKeyOrder: true\n  }\n});\nvar Checkins = storage.createCollection(&#39;Product&#39;, schema );\nvar doc = Checkins.add();\n\ndoc.save().done(function( objToSave ){\n  // in `objToSave` followed the correct order of the keys of doc\n});\n</code></pre>"
       },
       {
@@ -4173,9 +4308,9 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1388,
-    "codeStart": 1453,
-    "code": "Document.prototype.save = function ( done ) {\n  var self = this;\n  var finalPromise = new Deferred().done( done );\n\n  // Сохранять документ можно только если он находится в коллекции\n  if ( !this.collection ){\n    finalPromise.reject( arguments );\n    console.error('Document.save api handle is not implemented.');\n    return finalPromise;\n  }\n\n  // Check for preSave errors (точо знаю, что она проверяет ошибки в массивах (CastError))\n  var preSaveErr = self.$__presaveValidate();\n  if ( preSaveErr ) {\n    finalPromise.reject( preSaveErr );\n    return finalPromise;\n  }\n\n  // Validate\n  var p0 = new Deferred();\n  self.validate(function( err ){\n    if ( err ){\n      p0.reject( err );\n      finalPromise.reject( err );\n    } else {\n      p0.resolve();\n    }\n  });\n\n  // Сначала надо сохранить все поддокументы и сделать resolve!!!\n  // (тут псевдосохранение смотреть EmbeddedDocument.prototype.save )\n  // Call save hooks on subdocs\n  var subDocs = self.$__getAllSubdocs();\n  var whenCond = subDocs.map(function (d) {return d.save();});\n\n  whenCond.push( p0 );\n\n  // Так мы передаём массив promise условий\n  var p1 = Deferred.when.apply( Deferred, whenCond );\n\n  p1.fail(function ( err ) {\n    // If the initial insert fails provide a second chance.\n    // (If we did this all the time we would break updates)\n    if (self.$__.inserting) {\n      self.isNew = true;\n      self.emit('isNew', true);\n    }\n    finalPromise.reject( err );\n  });\n\n  // Handle save and results\n  p1.done(function(){\n    self.$__handleSave().done(function(){\n      //todo: надо проверять, нужно ли писать проверку на наличие ресурса, если он есть - отдавать self, если нет, отдавать как сейчас написано\n      // возможно и скорее всего, api и так отдаёт всё в правильном порядке (doc, meta, jqxhr)\n      finalPromise.resolve.apply( finalPromise, arguments );\n\n    }).fail(function(){\n      finalPromise.reject.apply( finalPromise, arguments );\n    });\n  });\n\n  return finalPromise;\n};",
+    "line": 1513,
+    "codeStart": 1578,
+    "code": "Document.prototype.save = function ( done ) {\n  var self = this;\n  var finalPromise = new Deferred().done( done );\n\n  // Сохранять документ можно только если он находится в коллекции\n  if ( !this.collection ){\n    finalPromise.reject( arguments );\n    console.error('Document.save api handle is not implemented.');\n    return finalPromise;\n  }\n\n  // Check for preSave errors (точно знаю, что она проверяет ошибки в массивах (CastError))\n  var preSaveErr = self.$__presaveValidate();\n  if ( preSaveErr ) {\n    finalPromise.reject( preSaveErr );\n    return finalPromise;\n  }\n\n  // Validate\n  var p0 = new Deferred();\n  self.validate(function( err ){\n    if ( err ){\n      p0.reject( err );\n      finalPromise.reject( err );\n    } else {\n      p0.resolve();\n    }\n  });\n\n  // Сначала надо сохранить все поддокументы и сделать resolve!!!\n  // (тут псевдосохранение смотреть EmbeddedDocument.prototype.save )\n  // Call save hooks on subdocs\n  var subDocs = self.$__getAllSubdocs();\n  var whenCond = subDocs.map(function (d) {return d.save();});\n\n  whenCond.push( p0 );\n\n  // Так мы передаём массив promise условий\n  var p1 = Deferred.when.apply( Deferred, whenCond );\n\n  p1.fail(function ( err ) {\n    // If the initial insert fails provide a second chance.\n    // (If we did this all the time we would break updates)\n    if (self.$__.inserting) {\n      self.isNew = true;\n      self.emit('isNew', true);\n    }\n    finalPromise.reject( err );\n  });\n\n  // Handle save and results\n  p1.done(function(){\n    self.$__handleSave().done(function(){\n      //todo: надо проверять, нужно ли писать проверку на наличие ресурса, если он есть - отдавать self, если нет, отдавать как сейчас написано\n      // возможно и скорее всего, api и так отдаёт всё в правильном порядке (doc, meta, jqxhr)\n      finalPromise.resolve.apply( finalPromise, arguments );\n\n    }).fail(function(){\n      finalPromise.reject.apply( finalPromise, arguments );\n    });\n  });\n\n  return finalPromise;\n};",
     "ctx": {
       "type": "method",
       "constructor": "Document",
@@ -4231,8 +4366,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1519,
-    "codeStart": 1661,
+    "line": 1644,
+    "codeStart": 1786,
     "code": "Document.prototype.toObject = function (options) {\n  if (options && options.depopulate && this.$__.wasPopulated) {\n    // populated paths that we set to a document\n    return utils.clone(this._id, options);\n  }\n\n  // When internally saving this document we always pass options,\n  // bypassing the custom schema options.\n  var optionsParameter = options;\n  if (!(options && 'Object' == utils.getFunctionName(options.constructor)) ||\n    (options && options._useSchemaOptions)) {\n    options = this.schema.options.toObject\n      ? clone(this.schema.options.toObject)\n      : {};\n  }\n\n  if ( options.minimize === undefined ){\n    options.minimize = this.schema.options.minimize;\n  }\n\n  if (!optionsParameter) {\n    options._useSchemaOptions = true;\n  }\n\n  var ret = utils.clone(this._doc, options);\n\n  if (options.virtuals || options.getters && false !== options.virtuals) {\n    applyGetters(this, ret, 'virtuals', options);\n  }\n\n  if (options.getters) {\n    applyGetters(this, ret, 'paths', options);\n    // applyGetters for paths will add nested empty objects;\n    // if minimize is set, we need to remove them.\n    if (options.minimize) {\n      ret = minimize(ret) || {};\n    }\n  }\n\n  // In the case where a subdocument has its own transform function, we need to\n  // check and see if the parent has a transform (options.transform) and if the\n  // child schema has a transform (this.schema.options.toObject) In this case,\n  // we need to adjust options.transform to be the child schema's transform and\n  // not the parent schema's\n  var transform = options.transform;\n\n  if (true === options.transform ||\n      (this.schema.options.toObject && options.transform)) {\n    var opts = options.json\n      ? this.schema.options.toJSON\n      : this.schema.options.toObject;\n    if (opts) {\n      transform = (typeof options.transform === 'function' ? options.transform : opts.transform);\n    }\n  }\n\n  if ('function' == typeof transform) {\n    var xformed = transform(this, ret, options);\n    if ('undefined' != typeof xformed) ret = xformed;\n  }\n\n  return ret;\n};",
     "ctx": {
       "type": "method",
@@ -4283,8 +4418,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1725,
-    "codeStart": 1732,
+    "line": 1850,
+    "codeStart": 1857,
     "code": "function minimize (obj) {\n  var keys = Object.keys(obj)\n    , i = keys.length\n    , hasKeys\n    , key\n    , val;\n\n  while (i--) {\n    key = keys[i];\n    val = obj[key];\n\n    if ( _.isPlainObject(val) ) {\n      obj[key] = minimize(val);\n    }\n\n    if (undefined === obj[key]) {\n      delete obj[key];\n      continue;\n    }\n\n    hasKeys = true;\n  }\n\n  return hasKeys\n    ? obj\n    : undefined;\n}",
     "ctx": {
       "type": "function",
@@ -4362,8 +4497,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1760,
-    "codeStart": 1769,
+    "line": 1885,
+    "codeStart": 1894,
     "code": "function applyGetters (self, json, type, options) {\n  var schema = self.schema\n    , paths = Object.keys(schema[type])\n    , i = paths.length\n    , path;\n\n  while (i--) {\n    path = paths[i];\n\n    var parts = path.split('.')\n      , plen = parts.length\n      , last = plen - 1\n      , branch = json\n      , part;\n\n    for (var ii = 0; ii < plen; ++ii) {\n      part = parts[ii];\n      if (ii === last) {\n        branch[part] = utils.clone(self.get(path), options);\n      } else {\n        branch = branch[part] || (branch[part] = {});\n      }\n    }\n  }\n\n  return json;\n}",
     "ctx": {
       "type": "function",
@@ -4425,8 +4560,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1797,
-    "codeStart": 1812,
+    "line": 1922,
+    "codeStart": 1937,
     "code": "Document.prototype.toJSON = function (options) {\n  // check for object type since an array of documents\n  // being stringified passes array indexes instead\n  // of options objects. JSON.stringify([doc, doc])\n  // The second check here is to make sure that populated documents (or\n  // subdocuments) use their own options for `.toJSON()` instead of their\n  // parent's\n  if (!(options && 'Object' == utils.getFunctionName(options.constructor))\n      || ((!options || options.json) && this.schema.options.toJSON)) {\n\n    options = this.schema.options.toJSON\n      ? utils.clone(this.schema.options.toJSON)\n      : {};\n  }\n  options.json = true;\n\n  return this.toObject( options );\n};",
     "ctx": {
       "type": "method",
@@ -4483,8 +4618,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1831,
-    "codeStart": 1843,
+    "line": 1956,
+    "codeStart": 1968,
     "code": "Document.prototype.equals = function( doc ){\n  var tid = this.get('_id');\n  var docid = doc.get('_id');\n  if (!tid && !docid) {\n    return deepEqual(this, doc);\n  }\n  return tid && tid.equals\n    ? (docid ? tid.equals(docid) : false)\n    : tid === docid;\n};",
     "ctx": {
       "type": "method",
@@ -4546,8 +4681,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1854,
-    "codeStart": 1870,
+    "line": 1979,
+    "codeStart": 1995,
     "code": "Document.prototype.populated = function( path, val, options ){\n  // val and options are internal\n\n  //TODO: доделать эту проверку, она должна опираться не на $__.populated, а на то, что наш объект имеет родителя\n  // и потом уже выставлять свойство populated == true\n  if (null == val) {\n    if (!this.$__.populated) return undefined;\n    var v = this.$__.populated[path];\n    if (v) return v.value;\n    return undefined;\n  }\n\n  // internal\n\n  if (true === val) {\n    if (!this.$__.populated) return undefined;\n    return this.$__.populated[path];\n  }\n\n  this.$__.populated || (this.$__.populated = {});\n  this.$__.populated[path] = { value: val, options: options };\n  return val;\n};",
     "ctx": {
       "type": "method",
@@ -4616,8 +4751,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1894,
-    "codeStart": 1903,
+    "line": 2019,
+    "codeStart": 2028,
     "code": "Document.prototype.$__fullPath = function (path) {\n  // overridden in SubDocuments\n  return path || '';\n};",
     "ctx": {
       "type": "method",
@@ -4631,7 +4766,7 @@
     "tags": [
       {
         "type": "example",
-        "string": "document.remove();\n",
+        "string": "document.remove();",
         "html": "<p>document.remove();</p>"
       },
       {
@@ -4665,8 +4800,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1908,
-    "codeStart": 1917,
+    "line": 2033,
+    "codeStart": 2042,
     "code": "Document.prototype.remove = function(){\n  if ( this.collection ){\n    return this.collection.remove( this );\n  }\n\n  return delete this;\n};",
     "ctx": {
       "type": "method",
@@ -4688,8 +4823,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 1926,
-    "codeStart": 1929,
+    "line": 2051,
+    "codeStart": 2054,
     "code": "Document.prototype.empty = function(){\n  var doc = this\n    , self = this\n    , paths = Object.keys( this.schema.paths )\n    , plen = paths.length\n    , ii = 0;\n\n  for ( ; ii < plen; ++ii ) {\n    var p = paths[ii];\n\n    if ( '_id' == p ) continue;\n\n    var type = this.schema.paths[ p ]\n      , path = p.split('.')\n      , len = path.length\n      , last = len - 1\n      , doc_ = doc\n      , i = 0;\n\n    for ( ; i < len; ++i ) {\n      var piece = path[ i ]\n        , defaultVal;\n\n      if ( i === last ) {\n        defaultVal = type.getDefault( self, true );\n\n        doc_[ piece ] = defaultVal || undefined;\n        self.$__.activePaths.default( p );\n      } else {\n        doc_ = doc_[ piece ] || ( doc_[ piece ] = {} );\n      }\n    }\n  }\n};",
     "ctx": {
       "type": "method",
@@ -4711,8 +4846,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 1964,
-    "codeStart": 1968,
+    "line": 2089,
+    "codeStart": 2093,
     "code": "Document.ValidationError = ValidationError;\nmodule.exports = Document;",
     "ctx": {
       "type": "property",
@@ -4749,6 +4884,11 @@
   },
   {
     "tags": [
+      {
+        "type": "constructor",
+        "string": "",
+        "html": ""
+      },
       {
         "type": "param",
         "string": "{String} type",
@@ -4812,7 +4952,7 @@
       "body": ""
     },
     "isPrivate": true,
-    "isConstructor": false,
+    "isConstructor": true,
     "isClass": false,
     "isEvent": false,
     "ignore": false,
@@ -4820,7 +4960,7 @@
     "codeStart": 19,
     "code": "function CastError (type, value, path) {\n  StorageError.call(this, 'Cast to ' + type + ' failed for value \"' + value + '\" at path \"' + path + '\"');\n  this.name = 'CastError';\n  this.type = type;\n  this.value = value;\n  this.path = path;\n}",
     "ctx": {
-      "type": "function",
+      "type": "constructor",
       "name": "CastError",
       "string": "CastError()"
     }
@@ -4879,16 +5019,14 @@
       {
         "type": "property",
         "string": "messages",
-        "name": "",
+        "name": "messages",
         "description": "",
-        "types": [
-          "essage"
-        ],
-        "typesDescription": "<a href=\"essage.html\">essage</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>messages</p>"
       },
       {
@@ -5279,6 +5417,11 @@
         "variable": false
       },
       {
+        "type": "constructor",
+        "string": "",
+        "html": ""
+      },
+      {
         "type": "inherits",
         "string": "Error https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error http://stackoverflow.com/questions/783818/how-do-i-create-a-custom-error-in-javascript",
         "html": "<p>Error <a href=\"https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error\">https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error</a> <a href=\"http://stackoverflow.com/questions/783818/how-do-i-create-a-custom-error-in-javascript\">http://stackoverflow.com/questions/783818/how-do-i-create-a-custom-error-in-javascript</a></p>"
@@ -5290,15 +5433,15 @@
       "body": ""
     },
     "isPrivate": false,
-    "isConstructor": false,
+    "isConstructor": true,
     "isClass": false,
     "isEvent": false,
     "ignore": false,
     "line": 3,
-    "codeStart": 10,
+    "codeStart": 11,
     "code": "function StorageError ( msg ) {\n  this.message = msg;\n  this.name = 'StorageError';\n}\nStorageError.prototype = new Error();",
     "ctx": {
-      "type": "function",
+      "type": "constructor",
       "name": "StorageError",
       "string": "StorageError()"
     }
@@ -5315,8 +5458,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 17,
-    "codeStart": 20,
+    "line": 18,
+    "codeStart": 21,
     "code": "module.exports = StorageError;",
     "ctx": {
       "type": "property",
@@ -5351,8 +5494,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 22,
-    "codeStart": 28,
+    "line": 23,
+    "codeStart": 29,
     "code": "StorageError.messages = require('./error/messages');",
     "ctx": {
       "type": "property",
@@ -5374,8 +5517,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 30,
-    "codeStart": 33,
+    "line": 31,
+    "codeStart": 34,
     "code": "StorageError.CastError = require('./error/cast');\nStorageError.ValidationError = require('./error/validation');\nStorageError.ValidatorError = require('./error/validator');\n//todo:\n//StorageError.OverwriteModelError = require('./error/overwriteModel');\nStorageError.MissingSchemaError = require('./error/missingSchema');\n//StorageError.DivergentArrayError = require('./error/divergentArray');",
     "ctx": {
       "type": "property",
@@ -5414,46 +5557,40 @@
       {
         "type": "param",
         "string": "name",
-        "name": "",
+        "name": "name",
         "description": "",
-        "types": [
-          "am"
-        ],
-        "typesDescription": "<a href=\"am.html\">am</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>name</p>"
       },
       {
         "type": "param",
         "string": "callback",
-        "name": "",
+        "name": "callback",
         "description": "",
-        "types": [
-          "allbac"
-        ],
-        "typesDescription": "<a href=\"allbac.html\">allbac</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>callback</p>"
       },
       {
         "type": "param",
         "string": "context",
-        "name": "",
+        "name": "context",
         "description": "",
-        "types": [
-          "ontex"
-        ],
-        "typesDescription": "<a href=\"ontex.html\">ontex</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>context</p>"
       },
       {
@@ -5495,46 +5632,40 @@
       {
         "type": "param",
         "string": "name",
-        "name": "",
+        "name": "name",
         "description": "",
-        "types": [
-          "am"
-        ],
-        "typesDescription": "<a href=\"am.html\">am</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>name</p>"
       },
       {
         "type": "param",
         "string": "callback",
-        "name": "",
+        "name": "callback",
         "description": "",
-        "types": [
-          "allbac"
-        ],
-        "typesDescription": "<a href=\"allbac.html\">allbac</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>callback</p>"
       },
       {
         "type": "param",
         "string": "context",
-        "name": "",
+        "name": "context",
         "description": "",
-        "types": [
-          "ontex"
-        ],
-        "typesDescription": "<a href=\"ontex.html\">ontex</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>context</p>"
       },
       {
@@ -5576,46 +5707,40 @@
       {
         "type": "param",
         "string": "name",
-        "name": "",
+        "name": "name",
         "description": "",
-        "types": [
-          "am"
-        ],
-        "typesDescription": "<a href=\"am.html\">am</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>name</p>"
       },
       {
         "type": "param",
         "string": "callback",
-        "name": "",
+        "name": "callback",
         "description": "",
-        "types": [
-          "allbac"
-        ],
-        "typesDescription": "<a href=\"allbac.html\">allbac</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>callback</p>"
       },
       {
         "type": "param",
         "string": "context",
-        "name": "",
+        "name": "context",
         "description": "",
-        "types": [
-          "ontex"
-        ],
-        "typesDescription": "<a href=\"ontex.html\">ontex</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>context</p>"
       },
       {
@@ -5657,16 +5782,14 @@
       {
         "type": "param",
         "string": "name",
-        "name": "",
+        "name": "name",
         "description": "",
-        "types": [
-          "am"
-        ],
-        "typesDescription": "<a href=\"am.html\">am</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>name</p>"
       },
       {
@@ -5708,46 +5831,40 @@
       {
         "type": "param",
         "string": "obj",
-        "name": "",
+        "name": "obj",
         "description": "",
-        "types": [
-          "b"
-        ],
-        "typesDescription": "<a href=\"b.html\">b</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>obj</p>"
       },
       {
         "type": "param",
         "string": "name",
-        "name": "",
+        "name": "name",
         "description": "",
-        "types": [
-          "am"
-        ],
-        "typesDescription": "<a href=\"am.html\">am</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>name</p>"
       },
       {
         "type": "param",
         "string": "callback",
-        "name": "",
+        "name": "callback",
         "description": "",
-        "types": [
-          "allbac"
-        ],
-        "typesDescription": "<a href=\"allbac.html\">allbac</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>callback</p>"
       },
       {
@@ -5789,61 +5906,53 @@
       {
         "type": "param",
         "string": "obj",
-        "name": "",
+        "name": "obj",
         "description": "",
-        "types": [
-          "b"
-        ],
-        "typesDescription": "<a href=\"b.html\">b</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>obj</p>"
       },
       {
         "type": "param",
         "string": "action",
-        "name": "",
+        "name": "action",
         "description": "",
-        "types": [
-          "ctio"
-        ],
-        "typesDescription": "<a href=\"ctio.html\">ctio</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>action</p>"
       },
       {
         "type": "param",
         "string": "name",
-        "name": "",
+        "name": "name",
         "description": "",
-        "types": [
-          "am"
-        ],
-        "typesDescription": "<a href=\"am.html\">am</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>name</p>"
       },
       {
         "type": "param",
         "string": "rest",
-        "name": "",
+        "name": "rest",
         "description": "",
-        "types": [
-          "es"
-        ],
-        "typesDescription": "<a href=\"es.html\">es</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>rest</p>"
       },
       {
@@ -5885,31 +5994,27 @@
       {
         "type": "param",
         "string": "events",
-        "name": "",
+        "name": "events",
         "description": "",
-        "types": [
-          "vent"
-        ],
-        "typesDescription": "<a href=\"vent.html\">vent</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>events</p>"
       },
       {
         "type": "param",
         "string": "args",
-        "name": "",
+        "name": "args",
         "description": "",
-        "types": [
-          "rg"
-        ],
-        "typesDescription": "<a href=\"rg.html\">rg</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>args</p>"
       }
     ],
@@ -5938,8 +6043,8 @@
   {
     "tags": [],
     "description": {
-      "full": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.27 and 3.9.2)</p><p>Storage implementation<br /><a href=\"http://docs.meteor.com/#selectors\">http://docs.meteor.com/#selectors</a><br /><a href=\"https://github.com/meteor/meteor/tree/master/packages/minimongo\">https://github.com/meteor/meteor/tree/master/packages/minimongo</a></p><p>to track the bug gh-1638 (3.8.16)</p>",
-      "summary": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.27 and 3.9.2)</p>",
+      "full": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.27 and 3.9.5)</p><p>Storage implementation<br /><a href=\"http://docs.meteor.com/#selectors\">http://docs.meteor.com/#selectors</a><br /><a href=\"https://github.com/meteor/meteor/tree/master/packages/minimongo\">https://github.com/meteor/meteor/tree/master/packages/minimongo</a></p><p>to track the bug gh-1638 (3.8.16)</p>",
+      "summary": "<p>Storage documents using schema<br />inspired by mongoose 3.8.4 (fixed bugs for 3.8.27 and 3.9.5)</p>",
       "body": "<p>Storage implementation<br /><a href=\"http://docs.meteor.com/#selectors\">http://docs.meteor.com/#selectors</a><br /><a href=\"https://github.com/meteor/meteor/tree/master/packages/minimongo\">https://github.com/meteor/meteor/tree/master/packages/minimongo</a></p><p>to track the bug gh-1638 (3.8.16)</p>"
     },
     "isPrivate": false,
@@ -6213,16 +6318,14 @@
       {
         "type": "property",
         "string": "version",
-        "name": "",
+        "name": "version",
         "description": "",
-        "types": [
-          "ersio"
-        ],
-        "typesDescription": "<a href=\"ersio.html\">ersio</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>version</p>"
       },
       {
@@ -6367,16 +6470,14 @@
       {
         "type": "property",
         "string": "SchemaTypes",
-        "name": "",
+        "name": "SchemaTypes",
         "description": "",
-        "types": [
-          "chemaType"
-        ],
-        "typesDescription": "<a href=\"chemaType.html\">chemaType</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>SchemaTypes</p>"
       },
       {
@@ -6455,16 +6556,14 @@
       {
         "type": "property",
         "string": "Types",
-        "name": "",
+        "name": "Types",
         "description": "",
-        "types": [
-          "ype"
-        ],
-        "typesDescription": "<a href=\"ype.html\">ype</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>Types</p>"
       },
       {
@@ -7808,28 +7907,6 @@
 ### lib/schema/documentarray.js
 [
   {
-    "tags": [],
-    "description": {
-      "full": "<p>Module dependencies.</p>",
-      "summary": "<p>Module dependencies.</p>",
-      "body": ""
-    },
-    "isPrivate": false,
-    "isConstructor": false,
-    "isClass": false,
-    "isEvent": false,
-    "ignore": true,
-    "line": 3,
-    "codeStart": 7,
-    "code": "var SchemaType = require('../schematype')\n  , ArrayType = require('./array')\n  , StorageDocumentArray = require('../types/documentarray')\n  , Subdocument = require('../types/embedded')\n  , Document = require('../document')\n  , oid = require('../types/objectid')\n  , utils = require('../utils');",
-    "ctx": {
-      "type": "declaration",
-      "name": "SchemaType",
-      "value": "require('../schematype')",
-      "string": "SchemaType"
-    }
-  },
-  {
     "tags": [
       {
         "type": "param",
@@ -7898,8 +7975,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 15,
-    "codeStart": 24,
+    "line": 12,
+    "codeStart": 21,
     "code": "function DocumentArray (key, schema, options) {\n\n  // compile an embedded document for this schema\n  function EmbeddedDocument () {\n    Subdocument.apply( this, arguments );\n  }\n\n  EmbeddedDocument.prototype = Object.create( Subdocument.prototype );\n  EmbeddedDocument.prototype.constructor = EmbeddedDocument;\n  EmbeddedDocument.prototype.$__setSchema( schema );\n\n  // apply methods\n  for (var i in schema.methods) {\n    EmbeddedDocument.prototype[i] = schema.methods[i];\n  }\n\n  // apply statics\n  for (var j in schema.statics) {\n    EmbeddedDocument[j] = schema.statics[j];\n  }\n\n  EmbeddedDocument.options = options;\n  this.schema = schema;\n\n  ArrayType.call(this, key, EmbeddedDocument, options);\n\n  this.schema = schema;\n  var path = this.path;\n  var fn = this.defaultValue;\n\n  this.default(function(){\n    var arr = fn.call(this);\n    if (!Array.isArray(arr)) arr = [arr];\n    return new StorageDocumentArray(arr, path, this);\n  });\n}",
     "ctx": {
       "type": "function",
@@ -7919,8 +7996,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 61,
-    "codeStart": 64,
+    "line": 58,
+    "codeStart": 61,
     "code": "DocumentArray.prototype = Object.create( ArrayType.prototype );\nDocumentArray.prototype.constructor = DocumentArray;",
     "ctx": {
       "type": "property",
@@ -7949,8 +8026,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 67,
-    "codeStart": 72,
+    "line": 66,
+    "codeStart": 71,
     "code": "DocumentArray.prototype.doValidate = function (array, fn, scope) {\n  var self = this;\n\n  SchemaType.prototype.doValidate.call(this, array, function (err) {\n    if (err) return fn(err);\n\n    var count = array && array.length\n      , error;\n\n    if (!count) return fn();\n\n    // handle sparse arrays, do not use array.forEach which does not\n    // iterate over sparse elements yet reports array.length including\n    // them :(\n\n    for (var i = 0, len = count; i < len; ++i) {\n      // sidestep sparse entries\n      var doc = array[i];\n      if (!doc) {\n        --count || fn();\n        continue;\n      }\n\n      !(function (i) {\n        doc.validate(function (err) {\n          if (err && !error) {\n            // rewrite the key\n            err.key = self.key + '.' + i + '.' + err.key;\n            return fn(error = err);\n          }\n          --count || fn();\n        });\n      })(i);\n    }\n  }, scope);\n};",
     "ctx": {
       "type": "method",
@@ -7958,6 +8035,50 @@
       "cons": "DocumentArray",
       "name": "doValidate",
       "string": "DocumentArray.prototype.doValidate()"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "return",
+        "string": "{StorageError|undefined}",
+        "types": [
+          "StorageError"
+        ],
+        "typesDescription": "<a href=\"StorageError.html\">StorageError</a>|<code>undefined</code>",
+        "optional": true,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false,
+        "description": "",
+        "html": "<p>{StorageError|undefined}</p>"
+      },
+      {
+        "type": "api",
+        "string": "private",
+        "visibility": "private",
+        "html": "<p>private</p>"
+      }
+    ],
+    "description": {
+      "full": "<p>Performs local validations first, then validations on each embedded doc.</p><h4>Note:</h4>\n<p>This method ignores the asynchronous validators.</p>",
+      "summary": "<p>Performs local validations first, then validations on each embedded doc.</p>",
+      "body": "<h4>Note:</h4>\n<p>This method ignores the asynchronous validators.</p>"
+    },
+    "isPrivate": true,
+    "isConstructor": false,
+    "isClass": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 109,
+    "codeStart": 119,
+    "code": "DocumentArray.prototype.doValidateSync = function (array, scope) {\n  var schemaTypeError = SchemaType.prototype.doValidateSync.call(this, array, scope);\n  if (schemaTypeError) return schemaTypeError;\n\n  var count = array && array.length\n      , resultError = null;\n\n  if (!count) return;\n\n  // handle sparse arrays, do not use array.forEach which does not\n  // iterate over sparse elements yet reports array.length including\n  // them :(\n\n  for (var i = 0, len = count; i < len; ++i) {\n    // only first error\n    if ( resultError ) break;\n    // sidestep sparse entries\n    var doc = array[i];\n    if (!doc) continue;\n\n    var subdocValidateError = doc.validateSync();\n\n    if (subdocValidateError) {\n      resultError = subdocValidateError;\n    }\n  }\n\n  return resultError;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "DocumentArray",
+      "cons": "DocumentArray",
+      "name": "doValidateSync",
+      "string": "DocumentArray.prototype.doValidateSync()"
     }
   },
   {
@@ -8035,8 +8156,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 109,
-    "codeStart": 118,
+    "line": 150,
+    "codeStart": 159,
     "code": "DocumentArray.prototype.cast = function (value, doc, init, prev) {\n  var selected\n    , subdoc\n    , i;\n\n  if (!Array.isArray(value)) {\n    // m-gh-2442: if we're loading this from the db and its not an array, mark\n    // the whole array as modified.\n    if (!!doc && !!init) {\n      doc.markModified(this.path);\n    }\n    return this.cast([value], doc, init, prev);\n  }\n\n  // Если два массива примерно (кроме _id) одинаковые - не надо перезаписывать\n  if ( prev && approximatelyEqual( value, prev ) ){\n    return prev;\n  }\n\n  if (!(value.isStorageDocumentArray)) {\n    value = new StorageDocumentArray(value, this.path, doc);\n    if (prev && prev._handlers) {\n      for (var key in prev._handlers) {\n        doc.off(key, prev._handlers[key]);\n      }\n    }\n  }\n\n  i = value.length;\n\n  while (i--) {\n    if (!(value[i] instanceof Subdocument) && value[i]) {\n      if (init) {\n        selected || (selected = scopePaths(this, doc.$__.selected, init));\n        subdoc = new this.casterConstructor(null, value, true, selected);\n        value[i] = subdoc.init(value[i]);\n      } else {\n        try {\n          subdoc = prev.id(value[i]._id);\n        } catch(e) {}\n\n        if (prev && subdoc) {\n          // handle resetting doc with existing id but differing data\n          // doc.array = [{ doc: 'val' }]\n          subdoc.set(value[i]);\n        } else {\n          subdoc = new this.casterConstructor(value[i], value);\n\n          restorePopulatedFields( subdoc, this.schema.tree, value[i], prev );\n        }\n\n        // if set() is hooked it will have no return value\n        // see gh-746\n        value[i] = subdoc;\n      }\n    }\n  }\n\n  return value;\n};",
     "ctx": {
       "type": "method",
@@ -8051,31 +8172,27 @@
       {
         "type": "param",
         "string": "value",
-        "name": "",
+        "name": "value",
         "description": "",
-        "types": [
-          "alu"
-        ],
-        "typesDescription": "<a href=\"alu.html\">alu</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>value</p>"
       },
       {
         "type": "param",
         "string": "prev",
-        "name": "",
+        "name": "prev",
         "description": "",
-        "types": [
-          "re"
-        ],
-        "typesDescription": "<a href=\"re.html\">re</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>prev</p>"
       },
       {
@@ -8101,8 +8218,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 179,
-    "codeStart": 193,
+    "line": 220,
+    "codeStart": 234,
     "code": "function approximatelyEqual ( value, prev ) {\n  prev = prev.toObject({depopulate: 1});\n\n  // Не сравнивать по subdoc _id\n  var i = value.length;\n  if ( i === prev.length ){\n    _.forEach( value, function( subdoc, i ){\n      if ( !subdoc._id ){\n        delete prev[ i ]._id;\n      }\n    });\n  }\n\n  return utils.deepEqual( value, prev );\n}",
     "ctx": {
       "type": "function",
@@ -8179,8 +8296,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 209,
-    "codeStart": 217,
+    "line": 250,
+    "codeStart": 258,
     "code": "function restorePopulatedFields ( subdoc, schemaTree, value, prev ) {\n  var props;\n  _.forEach( schemaTree, function( prop, key ){\n    var curVal;\n\n    if ( prop.ref ){\n      props = {};\n      curVal = value[ key ];\n\n      if ( curVal && oid.isValid( curVal ) ){\n\n        _.forEach( prev, function( prevDoc ){\n          var prevDocProp = prevDoc[ key ];\n\n          if ( prevDocProp instanceof Document ){\n            if ( prevDocProp._id.equals( curVal ) ){\n              subdoc[ key ] = prevDocProp;\n            }\n          }\n        });\n      }\n    }\n  });\n}",
     "ctx": {
       "type": "function",
@@ -8243,8 +8360,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 242,
-    "codeStart": 250,
+    "line": 283,
+    "codeStart": 291,
     "code": "function scopePaths (array, fields, init) {\n  if (!(init && fields)) return undefined;\n\n  var path = array.path + '.'\n    , keys = Object.keys(fields)\n    , i = keys.length\n    , selected = {}\n    , hasKeys\n    , key;\n\n  while (i--) {\n    key = keys[i];\n    if (0 === key.indexOf(path)) {\n      hasKeys || (hasKeys = true);\n      selected[key.substring(path.length)] = fields[key];\n    }\n  }\n\n  return hasKeys && selected || undefined;\n}",
     "ctx": {
       "type": "function",
@@ -8264,8 +8381,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 271,
-    "codeStart": 274,
+    "line": 312,
+    "codeStart": 315,
     "code": "module.exports = DocumentArray;",
     "ctx": {
       "type": "property",
@@ -9577,7 +9694,7 @@
     "ignore": false,
     "line": 171,
     "codeStart": 208,
-    "code": "StringSchema.prototype.match = function match (regExp, message) {\n  // yes, we allow multiple match validators\n\n  var msg = message || errorMessages.String.match;\n\n  function matchValidator (v){\n    return null != v && '' !== v\n      ? regExp.test(v)\n      : true;\n  }\n\n  this.validators.push({ validator: matchValidator, message: msg, type: 'regexp' });\n  return this;\n};",
+    "code": "StringSchema.prototype.match = function match (regExp, message) {\n  // yes, we allow multiple match validators\n\n  var msg = message || errorMessages.String.match;\n\n  var matchValidator = function(v) {\n    var ret = ((null != v && '' !== v)\n        ? regExp.test(v)\n        : true);\n    return ret;\n  };\n\n  this.validators.push({ validator: matchValidator, message: msg, type: 'regexp' });\n  return this;\n};",
     "ctx": {
       "type": "method",
       "constructor": "StringSchema",
@@ -9620,8 +9737,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 223,
-    "codeStart": 229,
+    "line": 224,
+    "codeStart": 230,
     "code": "StringSchema.prototype.checkRequired = function checkRequired (value, doc) {\n  if (SchemaType._isRef(this, value, doc, true)) {\n    return null != value;\n  } else {\n    return (value instanceof String || typeof value === 'string') && value.length;\n  }\n};",
     "ctx": {
       "type": "method",
@@ -9650,8 +9767,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 237,
-    "codeStart": 242,
+    "line": 238,
+    "codeStart": 243,
     "code": "StringSchema.prototype.cast = function ( value ) {\n  if ( value === null ) {\n    return value;\n  }\n\n  if ('undefined' !== typeof value) {\n    // handle documents being passed\n    if (value._id && 'string' === typeof value._id) {\n      return value._id;\n    }\n    if ( value.toString ) {\n      return value.toString();\n    }\n  }\n\n  throw new CastError('string', value, this.path);\n};",
     "ctx": {
       "type": "method",
@@ -9673,8 +9790,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": true,
-    "line": 260,
-    "codeStart": 264,
+    "line": 261,
+    "codeStart": 265,
     "code": "module.exports = StringSchema;",
     "ctx": {
       "type": "property",
@@ -9849,16 +9966,14 @@
       {
         "type": "property",
         "string": "paths",
-        "name": "",
+        "name": "paths",
         "description": "",
-        "types": [
-          "ath"
-        ],
-        "typesDescription": "<a href=\"ath.html\">ath</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>paths</p>"
       }
     ],
@@ -9894,16 +10009,14 @@
       {
         "type": "property",
         "string": "tree",
-        "name": "",
+        "name": "tree",
         "description": "",
-        "types": [
-          "re"
-        ],
-        "typesDescription": "<a href=\"re.html\">re</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>tree</p>"
       }
     ],
@@ -10972,16 +11085,14 @@
       {
         "type": "property",
         "string": "discriminators",
-        "name": "",
+        "name": "discriminators",
         "description": "",
-        "types": [
-          "iscriminator"
-        ],
-        "typesDescription": "<a href=\"iscriminator.html\">iscriminator</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>discriminators</p>"
       },
       {
@@ -11138,28 +11249,6 @@
 ### lib/schematype.js
 [
   {
-    "tags": [],
-    "description": {
-      "full": "<p>Module dependencies.</p>",
-      "summary": "<p>Module dependencies.</p>",
-      "body": ""
-    },
-    "isPrivate": false,
-    "isConstructor": false,
-    "isClass": false,
-    "isEvent": false,
-    "ignore": true,
-    "line": 3,
-    "codeStart": 6,
-    "code": "var error = require('./error')\n  , utils = require('./utils');\n\nvar errorMessages = error.messages;\nvar CastError = error.CastError;\nvar ValidatorError = error.ValidatorError;",
-    "ctx": {
-      "type": "declaration",
-      "name": "error",
-      "value": "require('./error')",
-      "string": "error"
-    }
-  },
-  {
     "tags": [
       {
         "type": "param",
@@ -11223,8 +11312,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 13,
-    "codeStart": 21,
+    "line": 11,
+    "codeStart": 19,
     "code": "function SchemaType (path, options, instance) {\n  this.path = path;\n  this.instance = instance;\n  this.validators = [];\n  this.setters = [];\n  this.getters = [];\n  this.options = options;\n\n  for (var i in options) if (this[i] && 'function' === typeof this[i]) {\n    var opts = Array.isArray(options[i])\n      ? options[i]\n      : [options[i]];\n\n    this[i].apply(this, opts);\n  }\n}",
     "ctx": {
       "type": "function",
@@ -11338,8 +11427,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 94,
-    "codeStart": 166,
+    "line": 95,
+    "codeStart": 167,
     "code": "SchemaType.prototype.set = function (fn) {\n  if ('function' !== typeof fn)\n    throw new TypeError('A setter must be a function.');\n  this.setters.push(fn);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -11396,8 +11485,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 173,
-    "codeStart": 234,
+    "line": 175,
+    "codeStart": 236,
     "code": "SchemaType.prototype.get = function (fn) {\n  if ('function' !== typeof fn)\n    throw new TypeError('A getter must be a function.');\n  this.getters.push(fn);\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -11469,8 +11558,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 241,
-    "codeStart": 312,
+    "line": 244,
+    "codeStart": 315,
     "code": "SchemaType.prototype.validate = function (obj, message, type) {\n  if ('function' == typeof obj || obj && 'RegExp' === utils.getFunctionName(obj.constructor)) {\n    var properties;\n    if (message instanceof Object && !type) {\n      properties = utils.clone(message);\n      if (!properties.message) {\n        properties.message = properties.msg;\n      }\n      properties.validator = obj;\n    } else {\n      if (!message) message = errorMessages.general.default;\n      if (!type) type = 'user defined';\n      properties = { message: message, type: type, validator: obj };\n    }\n    this.validators.push(properties);\n    return this;\n  }\n\n  var i;\n  var length;\n  var arg;\n\n  for (i=0, length=arguments.length; i<length; i++) {\n    arg = arguments[i];\n    if (!(arg && 'Object' === utils.getFunctionName(arg.constructor) )) {\n      var msg = 'Invalid validator. Received (' + typeof arg + ') '\n        + arg\n        + '. See http://mongoosejs.com/docs/api.html#schematype_SchemaType-validate';\n\n      throw new Error(msg);\n    }\n    this.validate(arg.validator, arg);\n  }\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -11546,8 +11635,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 349,
-    "codeStart": 375,
+    "line": 353,
+    "codeStart": 379,
     "code": "SchemaType.prototype.required = function (required, message) {\n  if (false === required) {\n    this.validators = this.validators.filter(function (v) {\n      return v.validator != this.requiredValidator;\n    }, this);\n\n    this.isRequired = false;\n    return this;\n  }\n\n  var self = this;\n  this.isRequired = true;\n\n  this.requiredValidator = function (v) {\n    // in here, `this` refers to the validating document.\n    // no validation when this path wasn't selected in the query.\n    if (this !== undefined && // специальная проверка из-за strict mode и особенности .call(undefined)\n        'isSelected' in this &&\n        !this.isSelected(self.path) &&\n        !this.isModified(self.path)) return true;\n\n    return (('function' === typeof required) && !required.apply(this)) ||\n      self.checkRequired(v, this);\n  };\n\n  if ('string' === typeof required) {\n    message = required;\n    required = undefined;\n  }\n\n  var msg = message || errorMessages.general.required;\n  this.validators.push({ validator: this.requiredValidator, message: msg, type: 'required' });\n\n  return this;\n};",
     "ctx": {
       "type": "method",
@@ -11605,8 +11694,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 412,
-    "codeStart": 419,
+    "line": 416,
+    "codeStart": 423,
     "code": "SchemaType.prototype.getDefault = function (scope, init) {\n  var ret = 'function' === typeof this.defaultValue\n    ? this.defaultValue.call(scope)\n    : this.defaultValue;\n\n  if (null !== ret && undefined !== ret) {\n    return this.cast(ret, scope, init);\n  } else {\n    return ret;\n  }\n};",
     "ctx": {
       "type": "method",
@@ -11691,8 +11780,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 431,
-    "codeStart": 440,
+    "line": 436,
+    "codeStart": 445,
     "code": "SchemaType.prototype.applySetters = function (value, scope, init, priorVal) {\n  if (SchemaType._isRef( this, value )) {\n    return init\n      ? value\n      : this.cast(value, scope, init, priorVal);\n  }\n\n  var v = value\n    , setters = this.setters\n    , len = setters.length\n    , caster = this.caster;\n\n  if (Array.isArray(v) && caster && caster.setters) {\n    for (var i = 0; i < v.length; i++) {\n      v[i] = caster.applySetters(v[i], scope, init, priorVal);\n    }\n  }\n\n  if (!len) {\n    if (null === v || undefined === v) return v;\n    return this.cast(v, scope, init, priorVal);\n  }\n\n  while (len--) {\n    v = setters[len].call(scope, v, this);\n  }\n\n  if (null === v || undefined === v) return v;\n\n  // do not cast until all setters are applied #665\n  v = this.cast(v, scope, init, priorVal);\n\n  return v;\n};",
     "ctx": {
       "type": "method",
@@ -11751,8 +11840,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 475,
-    "codeStart": 482,
+    "line": 481,
+    "codeStart": 488,
     "code": "SchemaType.prototype.applyGetters = function( value, scope ){\n  if ( SchemaType._isRef( this, value ) ) return value;\n\n  var v = value\n    , getters = this.getters\n    , len = getters.length;\n\n  if ( !len ) {\n    return v;\n  }\n\n  while ( len-- ) {\n    v = getters[ len ].call(scope, v, this);\n  }\n\n  return v;\n};",
     "ctx": {
       "type": "method",
@@ -11824,8 +11913,8 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 500,
-    "codeStart": 508,
+    "line": 507,
+    "codeStart": 515,
     "code": "SchemaType.prototype.doValidate = function (value, callback, scope) {\n  var err = false\n    , path = this.path\n    , count = this.validators.length;\n\n  if (!count) return callback(null);\n\n  var validate = function validate(ok, validatorProperties) {\n    if (err) return;\n    if (ok === undefined || ok) {\n      --count || callback(null);\n    } else {\n      err = new ValidatorError(validatorProperties);\n      callback(err);\n    }\n  };\n\n  var self = this;\n  this.validators.forEach(function (v) {\n    if (err) {\n      return;\n    }\n\n    var validator = v.validator;\n    var message = v.message;\n    var type = v.type;\n\n    var validatorProperties = utils.clone(v);\n    validatorProperties.path = path;\n    validatorProperties.value = value;\n\n    if (validator instanceof RegExp) {\n      validate(validator.test(value), validatorProperties);\n    } else if ('function' === typeof validator) {\n      if (value === undefined && !self.isRequired) {\n        validate(true, validatorProperties);\n        return;\n      }\n      if (2 === validator.length) {\n        validator.call(scope, value, function (ok) {\n          validate(ok, validatorProperties);\n        });\n      } else {\n        validate(validator.call(scope, value), validatorProperties);\n      }\n    }\n  });\n};",
     "ctx": {
       "type": "method",
@@ -11833,6 +11922,80 @@
       "cons": "SchemaType",
       "name": "doValidate",
       "string": "SchemaType.prototype.doValidate()"
+    }
+  },
+  {
+    "tags": [
+      {
+        "type": "param",
+        "string": "{any} value",
+        "name": "value",
+        "description": "",
+        "types": [
+          "any"
+        ],
+        "typesDescription": "<a href=\"any.html\">any</a>",
+        "optional": false,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false,
+        "html": "<p>{any} value</p>"
+      },
+      {
+        "type": "param",
+        "string": "{Object} scope",
+        "name": "scope",
+        "description": "",
+        "types": [
+          "Object"
+        ],
+        "typesDescription": "<code>Object</code>",
+        "optional": false,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false,
+        "html": "<p>{Object} scope</p>"
+      },
+      {
+        "type": "return",
+        "string": "{StorageError|undefined}",
+        "types": [
+          "StorageError"
+        ],
+        "typesDescription": "<a href=\"StorageError.html\">StorageError</a>|<code>undefined</code>",
+        "optional": true,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false,
+        "description": "",
+        "html": "<p>{StorageError|undefined}</p>"
+      },
+      {
+        "type": "api",
+        "string": "private",
+        "visibility": "private",
+        "html": "<p>private</p>"
+      }
+    ],
+    "description": {
+      "full": "<p>Performs a validation of <code>value</code> using the validators declared for this SchemaType.</p><h4>Note:</h4>\n<p>This method ignores the asynchronous validators.</p>",
+      "summary": "<p>Performs a validation of <code>value</code> using the validators declared for this SchemaType.</p>",
+      "body": "<h4>Note:</h4>\n<p>This method ignores the asynchronous validators.</p>"
+    },
+    "isPrivate": true,
+    "isConstructor": false,
+    "isClass": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 565,
+    "codeStart": 577,
+    "code": "SchemaType.prototype.doValidateSync = function (value, scope) {\n  var err = null\n      , path = this.path\n      , count = this.validators.length;\n\n  if (!count) return null;\n\n  var validate = function(ok, validatorProperties) {\n    if (err) return;\n    if (ok === undefined || ok) {\n\n    } else {\n      err = new ValidatorError(validatorProperties);\n    }\n  };\n\n  var self = this;\n  if (value === undefined && !self.isRequired) {\n    return null;\n  }\n\n  this.validators.forEach(function (v) {\n    if (err) {\n      return;\n    }\n\n    var validator = v.validator;\n    var validatorProperties = utils.clone(v);\n    validatorProperties.path = path;\n    validatorProperties.value = value;\n\n    if (validator instanceof RegExp) {\n      validate(validator.test(value), validatorProperties);\n    } else if ('function' === typeof validator) {\n      // if not async validators\n      if (2 !== validator.length) {\n        validate(validator.call(scope, value), validatorProperties);\n      }\n    }\n  });\n\n  return err;\n};",
+    "ctx": {
+      "type": "method",
+      "constructor": "SchemaType",
+      "cons": "SchemaType",
+      "name": "doValidateSync",
+      "string": "SchemaType.prototype.doValidateSync()"
     }
   },
   {
@@ -11898,37 +12061,14 @@
     "isClass": false,
     "isEvent": false,
     "ignore": false,
-    "line": 557,
-    "codeStart": 567,
-    "code": "SchemaType._isRef = function( self, value ){\n  // fast path\n  var ref = self.options && self.options.ref;\n\n  if ( ref ) {\n    if ( null == value ) return true;\n    if ( _.isObject( value ) ) {\n      return true;\n    }\n  }\n\n  return false;\n};",
+    "line": 622,
+    "codeStart": 632,
+    "code": "SchemaType._isRef = function( self, value ){\n  // fast path\n  var ref = self.options && self.options.ref;\n\n  if ( ref ) {\n    if ( null == value ) return true;\n    if ( _.isObject( value ) ) {\n      return true;\n    }\n  }\n\n  return false;\n};\n\n//exports\nmodule.exports = SchemaType;\n\nSchemaType.CastError = CastError;\nSchemaType.ValidatorError = ValidatorError;",
     "ctx": {
       "type": "method",
       "receiver": "SchemaType",
       "name": "_isRef",
       "string": "SchemaType._isRef()"
-    }
-  },
-  {
-    "tags": [],
-    "description": {
-      "full": "<p>Module exports.</p>",
-      "summary": "<p>Module exports.</p>",
-      "body": ""
-    },
-    "isPrivate": false,
-    "isConstructor": false,
-    "isClass": false,
-    "isEvent": false,
-    "ignore": true,
-    "line": 581,
-    "codeStart": 584,
-    "code": "module.exports = SchemaType;\n\nSchemaType.CastError = CastError;\n\nSchemaType.ValidatorError = ValidatorError;",
-    "ctx": {
-      "type": "property",
-      "receiver": "module",
-      "name": "exports",
-      "value": "SchemaType",
-      "string": "module.exports"
     }
   }
 ]
@@ -12461,16 +12601,14 @@
       {
         "type": "property",
         "string": "_parent",
-        "name": "",
+        "name": "_parent",
         "description": "",
-        "types": [
-          "paren"
-        ],
-        "typesDescription": "<a href=\"paren.html\">paren</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>_parent</p>"
       },
       {
@@ -12518,15 +12656,13 @@
       {
         "type": "return",
         "string": "value the casted value",
-        "types": [
-          "alu"
-        ],
-        "typesDescription": "<a href=\"alu.html\">alu</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
-        "description": "<p>the casted value</p>"
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
+        "description": "<p>value the casted value</p>"
       },
       {
         "type": "api",
@@ -13263,16 +13399,14 @@
       {
         "type": "property",
         "string": "_parent",
-        "name": "",
+        "name": "_parent",
         "description": "",
-        "types": [
-          "paren"
-        ],
-        "typesDescription": "<a href=\"paren.html\">paren</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>_parent</p>"
       }
     ],
@@ -13307,16 +13441,14 @@
       {
         "type": "property",
         "string": "_subtype",
-        "name": "",
+        "name": "_subtype",
         "description": "",
-        "types": [
-          "subtyp"
-        ],
-        "typesDescription": "<a href=\"subtyp.html\">subtyp</a>",
-        "optional": false,
-        "nullable": false,
-        "nonNullable": false,
+        "types": [],
+        "typesDescription": "",
         "variable": false,
+        "nonNullable": false,
+        "nullable": false,
+        "optional": false,
         "html": "<p>_subtype</p>"
       }
     ],
