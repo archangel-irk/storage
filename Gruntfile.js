@@ -122,6 +122,7 @@ module.exports = function (grunt) {
         ],
         browsers: [
           'Chrome'
+          //'Firefox'
         ],
         // coverage reporter generates the coverage
         reporters: [
