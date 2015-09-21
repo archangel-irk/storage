@@ -255,16 +255,16 @@ describe('document', function(){
     var doc = new TestDocument();
 
     doc.init({
-        test    : 'test'
+      test    : 'test'
       , oids    : []
       , em: [{title:'asdf'}]
       , nested  : {
-            age   : 5
-          , cool  : new DocumentObjectId('4c6c2d6240ced95d0e00003c')
-          , path  : 'my path'
-        }
+        age   : 5
+        , cool  : DocumentObjectId.createFromHexString('4c6c2d6240ced95d0e00003c')
+        , path  : 'my path'
+      }
       , nested2: {}
-      , date: new Date()
+      , date: new Date
     });
 
     var clone = doc.toObject({ getters: true, virtuals: false });
@@ -300,8 +300,7 @@ describe('document', function(){
 
     // test toObject options
     doc.schema.options.toObject = { virtuals: true };
-    clone = doc.toObject();
-
+    clone = doc.toObject({ transform: false, virtuals: true });
     assert.equal('test', clone.test);
     assert.ok(clone.oids instanceof Array);
     assert.equal(5, clone.nested.age);
@@ -318,20 +317,20 @@ describe('document', function(){
     clone = doc.toObject({ minimize: true, getters: true });
     assert.equal(undefined, clone.nested2);
     clone = doc.toObject({ minimize: false });
-    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ));
+    assert.equal('Object', clone.nested2.constructor.name);
     assert.equal(1, Object.keys(clone.nested2).length);
     clone = doc.toObject('2');
     assert.equal(undefined, clone.nested2);
 
     doc.schema.options.toObject = { minimize: false };
-    clone = doc.toObject();
-    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
+    clone = doc.toObject({ transform: false, minimize: false });
+    assert.equal('Object', clone.nested2.constructor.name);
     assert.equal(1, Object.keys(clone.nested2).length);
     delete doc.schema.options.toObject;
 
     doc.schema.options.minimize = false;
     clone = doc.toObject();
-    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ));
+    assert.equal('Object', clone.nested2.constructor.name);
     assert.equal(1, Object.keys(clone.nested2).length);
     doc.schema.options.minimize = true;
     clone = doc.toObject();
@@ -339,10 +338,10 @@ describe('document', function(){
 
     // transform
     doc.schema.options.toObject = {};
-    doc.schema.options.toObject.transform = function xform (doc, ret, options) {
+    doc.schema.options.toObject.transform = function xform(doc, ret) {
 
-      if ('function' === typeof doc.ownerDocument)
-        // ignore embedded docs
+      if ('function' == typeof doc.ownerDocument)
+      // ignore embedded docs
         return;
 
       delete ret.em;
@@ -361,9 +360,9 @@ describe('document', function(){
 
     // transform with return value
     var out = { myid: doc._id.toString() };
-    doc.schema.options.toObject.transform = function (doc, ret, options) {
-      if ('function' === typeof doc.ownerDocument)
-        // ignore embedded docs
+    doc.schema.options.toObject.transform = function(doc, ret) {
+      if ('function' == typeof doc.ownerDocument)
+      // ignore embedded docs
         return;
 
       return { myid: ret._id.toString() };
@@ -373,27 +372,27 @@ describe('document', function(){
     assert.deepEqual(out, clone);
 
     // ignored transform with inline options
-    clone = doc.toObject({ x: 1 });
+    clone = doc.toObject({ x: 1, transform: false });
     assert.ok(!('myid' in clone));
     assert.equal('test', clone.test);
     assert.ok(clone.oids instanceof Array);
     assert.equal(5, clone.nested.age);
     assert.equal(clone.nested.cool.toString(),'4c6c2d6240ced95d0e00003c');
     assert.equal('my path', clone.nested.path);
-    assert.equal('Object', utils.getFunctionName( clone.em[0].constructor ));
+    assert.equal('Object', clone.em[0].constructor.name);
 
     // applied transform when inline transform is true
-    clone = doc.toObject({ x: 1, transform: true });
+    clone = doc.toObject({ x: 1 });
     assert.deepEqual(out, clone);
 
     // transform passed inline
-    function xform (self, doc, opts) {
-      opts.fields.split(' ').forEach(function (field) {
+    function xform(self, doc, opts) {
+      opts.fields.split(' ').forEach(function(field) {
         delete doc[field];
       });
     }
     clone = doc.toObject({
-        transform: xform
+      transform: xform
       , fields: '_id em numbers oids nested'
     });
     assert.equal('test', doc.test);
@@ -418,20 +417,20 @@ describe('document', function(){
       }
     });
 
-    // transform didn't execute
     schema.set('toObject', {
-      transform: function ( doc, ret ) {
+      transform: function(doc, ret) {
         delete ret.iWillNotBeDelete;
         delete ret.nested.iWillNotBeDeleteToo;
 
         return ret;
       }
     });
-    var Test = storage.createCollection('TestToObject', schema );
+    var Test = storage.createCollection('TestToObject', schema);
 
-    var doc = Test.add({ name: 'chetverikov', iWillNotBeDelete: true, 'nested.iWillNotBeDeleteToo': true});
+    var doc = Test.add({name: 'chetverikov', iWillNotBeDelete: true, 'nested.iWillNotBeDeleteToo': true});
 
     doc.save(function( docObj ){
+      console.log(docObj);
       assert.equal( docObj.iWillNotBeDelete, true );
       assert.equal( docObj.nested.iWillNotBeDeleteToo, true );
 
@@ -492,20 +491,20 @@ describe('document', function(){
     var doc = new TestDocument();
 
     doc.init({
-        test    : 'test'
+      test    : 'test'
       , oids    : []
       , em: [{title:'asdf'}]
       , nested  : {
-            age   : 5
-          , cool  : new DocumentObjectId('4c6c2d6240ced95d0e00003c')
-          , path  : 'my path'
-        }
+        age   : 5
+        , cool  : DocumentObjectId.createFromHexString('4c6c2d6240ced95d0e00003c')
+        , path  : 'my path'
+      }
       , nested2: {}
     });
 
     // override to check if toJSON gets fired
     var path = TestDocument.prototype.schema.path('em');
-    path.casterConstructor.prototype.toJSON = function () {
+    path.casterConstructor.prototype.toJSON = function() {
       return {};
     };
 
@@ -517,36 +516,36 @@ describe('document', function(){
     assert.equal(clone.nested.cool.toString(),'4c6c2d6240ced95d0e00003c');
     assert.equal('my path', clone.nested.path);
     assert.equal(7, clone.nested.agePlus2);
-    assert.equal('Object', utils.getFunctionName( clone.em[0].constructor ) );
+    assert.equal('Object', clone.em[0].constructor.name);
     assert.equal(0, Object.keys(clone.em[0]).length);
     delete doc.schema.options.toJSON;
     delete path.casterConstructor.prototype.toJSON;
 
     doc.schema.options.toJSON = { minimize: false };
     clone = doc.toJSON();
-    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
+    assert.equal('Object', clone.nested2.constructor.name);
     assert.equal(1, Object.keys(clone.nested2).length);
     clone = doc.toJSON('8');
-    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
+    assert.equal('Object', clone.nested2.constructor.name);
     assert.equal(1, Object.keys(clone.nested2).length);
 
     // gh-852
     var arr = [doc]
-      , err = false
-      , str;
+        , err = false
+        , str;
     try {
       str = JSON.stringify(arr);
     } catch (_) { err = true; }
     assert.equal(false, err);
     assert.ok(/nested2/.test(str));
-    assert.equal('Object', utils.getFunctionName( clone.nested2.constructor ) );
+    assert.equal('Object', clone.nested2.constructor.name);
     assert.equal(1, Object.keys(clone.nested2).length);
 
     // transform
     doc.schema.options.toJSON = {};
-    doc.schema.options.toJSON.transform = function xform (doc, ret, options) {
-      if ('function' === typeof doc.ownerDocument)
-        // ignore embedded docs
+    doc.schema.options.toJSON.transform = function xform(doc, ret) {
+      if ('function' == typeof doc.ownerDocument)
+      // ignore embedded docs
         return;
 
       delete ret.em;
@@ -565,9 +564,9 @@ describe('document', function(){
 
     // transform with return value
     var out = { myid: doc._id.toString() };
-    doc.schema.options.toJSON.transform = function (doc, ret, options) {
-      if ('function' === typeof doc.ownerDocument)
-        // ignore embedded docs
+    doc.schema.options.toJSON.transform = function(doc, ret) {
+      if ('function' == typeof doc.ownerDocument)
+      // ignore embedded docs
         return;
 
       return { myid: ret._id.toString() };
@@ -577,27 +576,27 @@ describe('document', function(){
     assert.deepEqual(out, clone);
 
     // ignored transform with inline options
-    clone = doc.toJSON({ x: 1 });
+    clone = doc.toJSON({ x: 1, transform: false });
     assert.ok(!('myid' in clone));
     assert.equal('test', clone.test);
     assert.ok(clone.oids instanceof Array);
     assert.equal(5, clone.nested.age);
     assert.equal(clone.nested.cool.toString(),'4c6c2d6240ced95d0e00003c');
     assert.equal('my path', clone.nested.path);
-    assert.equal('Object', utils.getFunctionName( clone.em[0].constructor ) );
+    assert.equal('Object', clone.em[0].constructor.name);
 
     // applied transform when inline transform is true
-    clone = doc.toJSON({ x: 1, transform: true });
+    clone = doc.toJSON({ x: 1 });
     assert.deepEqual(out, clone);
 
     // transform passed inline
-    function xform (self, doc, opts) {
-      opts.fields.split(' ').forEach(function (field) {
+    function xform(self, doc, opts) {
+      opts.fields.split(' ').forEach(function(field) {
         delete doc[field];
       });
     }
     clone = doc.toJSON({
-        transform: xform
+      transform: xform
       , fields: '_id em numbers oids nested'
     });
     assert.equal('test', doc.test);
@@ -606,7 +605,6 @@ describe('document', function(){
     assert.ok(undefined === clone.oids);
     assert.ok(undefined === clone._id);
     assert.ok(undefined === clone.nested);
-    assert.ok(undefined === clone.myid);
 
     // all done
     delete doc.schema.options.toJSON;
