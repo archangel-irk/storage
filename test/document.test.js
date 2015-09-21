@@ -430,7 +430,6 @@ describe('document', function(){
     var doc = Test.add({name: 'chetverikov', iWillNotBeDelete: true, 'nested.iWillNotBeDeleteToo': true});
 
     doc.save(function( docObj ){
-      console.log(docObj);
       assert.equal( docObj.iWillNotBeDelete, true );
       assert.equal( docObj.nested.iWillNotBeDeleteToo, true );
 
