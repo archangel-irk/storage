@@ -84,33 +84,32 @@ var doc = storage.amsterdam.add({
     }
 });*/
 
-var schema = new Schema({
-  name: String,
-  iWillNotBeDelete: Boolean,
-  nested: {
-    iWillNotBeDeleteToo: Boolean
-  }
+var PersonSchema = new Schema({
+  name: { type: String },
+  num_cars: {type: Number, min: 20}
 });
 
-schema.set('toObject', {
-  transform: function(doc, ret) {
-    delete ret.iWillNotBeDelete;
-    delete ret.nested.iWillNotBeDeleteToo;
-
-    return ret;
-  }
-});
-var Test = storage.createCollection('TestToObject', schema);
-
-var doc = Test.add({name: 'chetverikov', iWillNotBeDelete: true, 'nested.iWillNotBeDeleteToo': true});
-
-doc.save(function( docObj ){
-  console.log(docObj);
-  console.log( docObj.iWillNotBeDelete, true );
-  console.log( docObj.nested.iWillNotBeDeleteToo, true );
+var Person = storage.createCollection('person-schema-validation-test', PersonSchema);
 
 
-})
+  var p = Person.add({name: 'Daniel'});
+  p.num_cars = 25;
+
+  p.save(function() {
+    console.log(p.num_cars, 25);
+    p.num_cars = undefined;
+
+    p.save(function() {
+      console.log(p.num_cars, undefined);
+      p.num_cars = 5;
+
+      p.save().fail(function(err) {
+        // validation should still work for non-undefined values
+        console.log(err);
+        done();
+      });
+    });
+  });
 </script>
 </body>
 </html>
