@@ -863,25 +863,76 @@ describe('schema', function(){
         done();
       });
 
-      it('number min and max', function(done){
-        var Tobi = new Schema({
-          friends: { type: Number, max: 15, min: 5 }
+
+      describe('non-required fields', function() {
+        describe('are validated correctly', function() {
+          var PersonSchema = new Schema({
+            name: { type: String },
+            num_cars: {type: Number, min: 20}
+          });
+
+          var Person = storage.createCollection('person-schema-validation-test', PersonSchema);
+
+          it('and can be set to "undefined" (gh-1594)', function(done) {
+            var p = Person.add({name: 'Daniel'});
+            p.num_cars = 25;
+
+            p.save(function() {
+              assert.equal(p.num_cars, 25);
+              p.num_cars = undefined;
+
+              p.save(function() {
+                assert.equal(p.num_cars, undefined);
+                p.num_cars = 5;
+
+                p.save().fail(function(err) {
+                  // validation should still work for non-undefined values
+                  assert.ok(err);
+                  done();
+                });
+              });
+            });
+          });
         });
 
-        assert.ifError(Tobi.path('friends').doValidateSync(10));
 
-        var err = Tobi.path('friends').doValidateSync(100);
-        assert.ok(err instanceof ValidatorError);
-        assert.equal('friends', err.path);
-        assert.equal('max', err.type);
-        assert.equal(100, err.value);
+        it('number min and max', function(done) {
+          var Tobi = new Schema({
+            friends: { type: Number, max: 15, min: 5 }
+          });
 
-        assert.ok(Tobi.path('friends').doValidateSync(1) instanceof ValidatorError);
+          assert.equal(Tobi.path('friends').validators.length, 2);
 
-        // null is allowed
-        assert.ifError(Tobi.path('friends').doValidateSync(null));
-        done();
+          Tobi.path('friends').doValidate(10, function(err) {
+            assert.ifError(err);
+          });
+
+          Tobi.path('friends').doValidate(100, function(err) {
+            assert.ok(err instanceof ValidatorError);
+            assert.equal('friends', err.path);
+            assert.equal('max', err.type);
+            assert.equal(100, err.value);
+          });
+
+          Tobi.path('friends').doValidate(1, function(err) {
+            assert.ok(err instanceof ValidatorError);
+            assert.equal('friends', err.path);
+            assert.equal('min', err.type);
+          });
+
+          // null is allowed
+          Tobi.path('friends').doValidate(null, function(err) {
+            assert.ifError(err);
+          });
+
+          Tobi.path('friends').min();
+          Tobi.path('friends').max();
+
+          assert.equal(Tobi.path('friends').validators.length, 0);
+          done();
+        });
       });
+
 
       describe('required', function(){
         it('string required', function(done){
