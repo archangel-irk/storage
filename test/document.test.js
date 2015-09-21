@@ -440,6 +440,46 @@ describe('document', function(){
     });
   });
 
+  it('does not apply toObject functions of subdocuments to root document', function( done ) {
+    var subdocSchema = new Schema({
+      test: String,
+      wow: String
+    });
+
+    subdocSchema.options.toObject = {};
+    subdocSchema.options.toObject.transform = function(doc, ret) {
+      delete ret.wow;
+    };
+
+    var docSchema = new Schema({
+      foo: String,
+      wow: Boolean,
+      sub: [subdocSchema]
+    });
+
+    var Doc = storage.createCollection('Doc', docSchema);
+
+    var d = Doc.add({
+      foo: 'someString',
+      wow: true,
+      sub: [{
+        test: 'someOtherString',
+        wow: 'thisIsAString'
+      }]
+    });
+
+    var obj = d.toObject({
+      transform: function(doc, ret) {
+        ret.phew = 'new';
+      }
+    });
+
+    assert.equal(obj.phew, 'new');
+    assert.ok(!d.sub.wow);
+
+    done();
+  });
+
   it('handles child schema transforms', function(done) {
     var userSchema = new Schema({
       name: String,
