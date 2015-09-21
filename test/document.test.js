@@ -1332,6 +1332,36 @@ describe('document', function(){
     done();
   });
 
+  it('applies toJSON transform correctly for populated docs (gh-2910)', function(done) {
+    var parentSchema = new Schema('gh-2910-0', {
+      c: { type: Schema.Types.ObjectId, ref: 'gh-2910-1' }
+    });
+
+    var called = [];
+    parentSchema.options.toJSON = {
+      transform: function(doc, ret, options) {
+        called.push(ret);
+        return ret;
+      }
+    };
+
+    var childSchema = new Schema('gh-2910-1', {
+      name: String
+    });
+
+    var Child = storage.createCollection('gh-2910-1', childSchema);
+    var Parent = storage.createCollection('gh-2910-0', parentSchema);
+
+    var c = Child.add({ name: 'test' });
+    var p = Parent.add({ c: c._id });
+
+    var doc = p.toJSON();
+    assert.equal(called.length, 1);
+    assert.equal(called[0]._id.toString(), p._id.toString());
+    assert.equal(doc._id.toString(), p._id.toString());
+    done();
+  });
+
   //todo: test for new storage.Document( storage.schemas.User );
   //todo: test for new storage.users.add();
 });
