@@ -12,66 +12,64 @@
 <div id="elem"></div>
 
 <script>
-var User = new Schema('User', {
-  userId: {
-    type: String,
-    required: true
-  },
-  clientId: {
-    type: String,
-    required: true
-  },
-  token: {
-    type: String,
-    unique: true,
-    required: true
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  wifi: Boolean,
-
-  children: [ Number ]
-},{
-  strict: false
-});
-
-storage.createCollection('users', User );
-
-var doc = storage.users.add({
-    userId: 'e45345',
-    clientId: 'e45345',
-    token: 'e45345',
-    fuck: 'fuck',
-    wifi: true,
-    children: [1,2,3,4,5]
-});
-
-
-var id = doc.id;
-
-doc.getChildren = function(){
-    return storage.users.findById( id ).children;
-};
-
-var doc2 = new storage.Document( new Schema('Tree', {
-  rootNodes: []
-}));
-
-doc2.getChildren = function( param ){
-    return _.filter( storage.users.findById( id ).children, function ( num ) {
-        return num % param == 0;
-    });
-};
-
-/*doc.getSubtotal = function() {
-    return "$" + this.userId + this.clientId;
-};*/
-
-console.log( doc2.rootNodes );
-doc2.rootNodes = doc2.getChildren( 1 );
-console.log( doc2.rootNodes );
+//var User = new Schema('User', {
+//  userId: {
+//    type: String,
+//    required: true
+//  },
+//  clientId: {
+//    type: String,
+//    required: true
+//  },
+//  token: {
+//    type: String,
+//    unique: true,
+//    required: true
+//  },
+//  created: {
+//    type: Date,
+//    default: Date.now
+//  },
+//  wifi: Boolean,
+//
+//  children: [ Number ]
+//},{
+//  strict: false
+//});
+//
+//storage.createCollection('users', User );
+//
+//var doc = storage.users.add({
+//    userId: 'e45345',
+//    fuck: 'fuck',
+//    wifi: true,
+//    children: [1,2,3,4,5]
+//});
+//
+//
+//var id = doc.id;
+//
+//doc.getChildren = function(){
+//    return storage.users.findById( id ).children;
+//};
+//
+//var doc2 = new storage.Document( new Schema('Tree', {
+//  rootNodes: []
+//}));
+//
+//doc2.getChildren = function( param ){
+//    return _.filter( storage.users.findById( id ).children, function ( num ) {
+//        return num % param == 0;
+//    });
+//};
+//
+///*doc.getSubtotal = function() {
+//    return "$" + this.userId + this.clientId;
+//};*/
+//
+//console.log( doc2.rootNodes );
+//doc2.rootNodes = doc2.getChildren( 1 );
+//console.log( doc2.rootNodes );
 
 //----------------------------------------------
 
@@ -85,6 +83,34 @@ var doc = storage.amsterdam.add({
         return "$" + (this.price * this.quantity).toFixed(2);
     }
 });*/
+
+var schema = new Schema({
+  name: String,
+  iWillNotBeDelete: Boolean,
+  nested: {
+    iWillNotBeDeleteToo: Boolean
+  }
+});
+
+schema.set('toObject', {
+  transform: function(doc, ret) {
+    delete ret.iWillNotBeDelete;
+    delete ret.nested.iWillNotBeDeleteToo;
+
+    return ret;
+  }
+});
+var Test = storage.createCollection('TestToObject', schema);
+
+var doc = Test.add({name: 'chetverikov', iWillNotBeDelete: true, 'nested.iWillNotBeDeleteToo': true});
+
+doc.save(function( docObj ){
+  console.log(docObj);
+  console.log( docObj.iWillNotBeDelete, true );
+  console.log( docObj.nested.iWillNotBeDeleteToo, true );
+
+
+})
 </script>
 </body>
 </html>
