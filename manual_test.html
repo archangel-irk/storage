@@ -91,24 +91,27 @@ var PersonSchema = new Schema({
 
 var Person = storage.createCollection('person-schema-validation-test', PersonSchema);
 
+var p = Person.add({name: 'Daniel'});
+p.num_cars = 25;
 
-  var p = Person.add({name: 'Daniel'});
-  p.num_cars = 25;
+p.on('save', function(){
+  return console.log('save callback');
+});
+
+p.save(function() {
+  console.log(p.num_cars, 25);
+  p.num_cars = undefined;
 
   p.save(function() {
-    console.log(p.num_cars, 25);
-    p.num_cars = undefined;
+    console.log(p.num_cars, undefined);
+    p.num_cars = 5;
 
-    p.save(function() {
-      console.log(p.num_cars, undefined);
-      p.num_cars = 5;
-
-      p.save().fail(function(err) {
-        // validation should still work for non-undefined values
-        console.log(err);
-      });
+    p.save().fail(function(err) {
+      // validation should still work for non-undefined values
+      console.log(err);
     });
   });
+});
 </script>
 </body>
 </html>
