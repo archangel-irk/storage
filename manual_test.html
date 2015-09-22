@@ -106,7 +106,6 @@ var Person = storage.createCollection('person-schema-validation-test', PersonSch
       p.save().fail(function(err) {
         // validation should still work for non-undefined values
         console.log(err);
-        done();
       });
     });
   });
