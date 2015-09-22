@@ -761,13 +761,13 @@ describe('document', function(){
     var traced = false;
     var trace = console.trace;
 
-    console.trace = function () {
+    console.trace = function() {
       traced = true;
       console.trace = trace;
     };
 
     var schema = new Schema({
-        title: String
+      title: String
       , embed1: [new Schema({name:String})]
       , embed2: [new Schema({name:String})]
       , embed3: [new Schema({name:String})]
