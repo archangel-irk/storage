@@ -214,14 +214,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks("grunt-webpack");
 
-  grunt.registerTask('default', [
-    'build',
-    'test'
-  ]);
-
-  grunt.registerTask('lint', [
-    'jshint'
-  ]);
+  grunt.registerTask('default', ['build', 'test']);
+  grunt.registerTask('lint', ['jshint']);
 
   grunt.registerTask('build', [
     //'lint',
@@ -230,19 +224,9 @@ module.exports = function (grunt) {
     'webpack:dev'
   ]);
 
-  grunt.registerTask('watch', [
-    'webpack:watch'
-  ]);
-
-  grunt.registerTask('test', [
-    'webpack:dev',
-    'karma:local'
-  ]);
-
-  grunt.registerTask('cov', [
-    'karma:cov'
-  ]);
-
+  grunt.registerTask('watch', ['webpack:watch']);
+  grunt.registerTask('test', ['webpack:dev', 'karma:local']);
+  grunt.registerTask('cov', ['karma:cov']);
   grunt.registerTask('travis', [
     'build',
     'karma:phantom',
